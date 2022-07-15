@@ -334,12 +334,6 @@ def control():
     type_dict={0: "AMX", 1: "Crestrion"}
     return render_template('admin_control_list.html', type_dict=type_dict)
 
-@admin_blue.route("/control", methods=['GET', 'POST'])
-@check_admin
-def control():
-    room_id = request.args.get('room_id')
-    return render_template('admin_control_list.html',room_id=room_id,steps=steps)
-
 @admin_blue.route("/control_device", methods=['GET', 'POST'])
 @check_admin
 def control_device():
