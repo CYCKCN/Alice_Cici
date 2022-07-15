@@ -6,8 +6,8 @@ from functools import wraps
 from flask_login import LoginManager, login_user, logout_user, current_user
 from numpy import identity
 
-from .database.db import accountdb, devicedb, roomdb
-from .database.object import User, LoginForm
+from .database.db import accountdb, systemdb, roomdb
+from .database.utils import User, LoginForm
 # from .model import User, LoginForm
 
 auth = Blueprint('auth', __name__)

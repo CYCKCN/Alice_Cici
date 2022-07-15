@@ -5,7 +5,7 @@ from flask_mongoengine import MongoEngine
 from flask_user import UserManager, UserMixin
 
 from flask_login import LoginManager
-from .database.object import User
+from .database.utils import User
 from .database.db import accountdb, connection
 
 '''
@@ -37,7 +37,7 @@ login_manager.init_app(app)
 def load_user(user_id):
     account = accountdb.findUser(user_id)
     if not account: return None
-    return User(email=account["accountEmail"], room=account["room"], identity=account["accountID"], personal=account["personal"], dev=account["device"])
+    return User(email=account["accountEmail"], room=account["room"], identity=account["accountID"], deviceIDList=account["deviceIDList"])
 
 #mongo = MongoEngine(app)
 
@@ -47,7 +47,7 @@ def load_user(user_id):
 
 #from .database import connection#, AccountDB, DeviceDB, RoomDB
 
-db = connection("AVATA")
+db = connection("test")
 #accountdb = AccountDB(db)
 #devicedb = DeviceDB(db)
 #roomdb = RoomDB(db)

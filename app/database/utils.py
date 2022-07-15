@@ -1,6 +1,7 @@
 from os import access
 from flask_login import UserMixin
 from flask_wtf import FlaskForm
+from pymysql import DatabaseError
 import wtforms
 from wtforms.validators import InputRequired, Email, Length, Regexp
 from datetime import datetime
@@ -97,35 +98,80 @@ class User(UserMixin):
         return self.email
 
 class Account(object):
-    def __init__(self, email, password, identity="USER", room="", personal="", device=[]):
+    def __init__(self, email, password, identity="USER", room="", deviceIDList=[]):
         self.accountEmail = email # "example@example.com"
         self.accountPw = password # "examplePW"
         self.accountID = identity # "USER" / "ADMIN" / "GUEST"
         self.room = room # "5554"
-        self.personal = personal # "Apple" / "Win" / "PC"
-        self.device = device # []
+        self.deviceIDList = deviceIDList # deviceIDList
 
 class Device(object):
     def __init__(self, roomName, deviceName, deviceType, deviceIP, deviceLocX, deviceLocY):
-        self.roomName = roomName # "IEDA Conference Room, Room 5554"
-        self.deviceName = deviceName # "project_1"
-        self.deviceType = deviceType # "display_projector_WIFI"
+        self.roomName = roomName # "5554"
+        self.deviceName = deviceName # "project-1"
+        self.deviceType = deviceType # "projector & screen"
         self.deviceIP = deviceIP # "000.00.000.000:0000"
         self.deviceLocX = deviceLocX # 1
         self.deviceLocY = deviceLocY # 2
 
 class Room(object):
-    def __init__(self, roomName, roomImg, roomLoc):
+    def __init__(self, roomName, roomImg, roomLoc, controlSystem):
         self.roomName = roomName # "IEDA Conference Room, Room 5554"
         self.roomImg = roomImg # ""
         self.roomLoc = roomLoc # "Academic Building"
+        self.controlSystem = controlSystem
         self.room360Img = ""
         self.bookBy = {}
         self.bookTime = {}
-        self.insInitial = []
-        self.insTurnon = {}
-        self.insPair = []
-        self.insZoom = {"video": [], "audio": []}
+
+        # device List for room
+        self.deviceNameList = {"0": "personal windows", "1": "personal apple", "2": "zoom", "3": "additional iPad"} # "project-1"
+        self.deviceTypeList = {"0": "win", "1": "apple", "2": "zoom", "3": "additional iPad"} # "projector & screen"
+        self.deviceIPList = {"0": "-1", "1": "-1", "2": "-1", "3": "-1"} # "000.00.000.000:0000"
+        self.deviceLocXList = {"0": "-1", "1": "-1", "2": "-1", "3": "-1"} # 1
+        self.deviceLocYList = {"0": "-1", "1": "-1", "2": "-1", "3": "-1"} # 2
+
+        # maximum instruction for room
+        self.roomInsDevice = {} # {0: [], 1: ["projector & screen"], 2: ["win", "projector & screen"], ...}
+        self.roomInsCases = {} 
+        # {0: -> device list
+        #   {0: -> step number
+        #       {"text": , "image": , "command": , "help": }, 
+        #    1: 
+        #       {"text": , "image": , "command": , "help": }
+        #   }, 
+        #  1:
+        #   {0: 
+        #       {"text": , "image": , "command": , "help": }, 
+        #    1: 
+        #       {"text": , "image": , "command": , "help": }
+        #   }, 
+        # ...}
+
+
+class System(object):
+    def __init__(self, controlSystem):
+        self.controlSystem = controlSystem # "AMX"
+        self.deviceTypeList = ["win", "apple", "zoom", "additional iPad"] # ["speaker", "projector & screen", "Display TV"...]
+
+        # maximum instruction for the whole controling system
+
+        self.insDevice = {} # {0: [], 1: ["projector & screen"], 2: ["win", "projector & screen"], ...}
+        self.insCases = {} 
+        # {0: -> evice list
+        #   {0: -> step number
+        #       {"text": , "image": , "command": }, 
+        #    1: 
+        #       {"text": , "image": , "command": }
+        #   }, 
+        #  1:
+        #   {0: 
+        #       {"text": , "image": , "command": }, 
+        #    1: 
+        #       {"text": , "image": , "command": }
+        #   }, 
+        # ...}
+
 
 class RegisterForm(FlaskForm):
     username = wtforms.StringField('username', validators=[InputRequired(), Length(max=10)])
@@ -150,3 +196,4 @@ class RoomBasicForm(FlaskForm):
     roomName = wtforms.StringField('roomName', validators=[InputRequired(), Length(max=10)])
     roomImage = wtforms.FileField('roomImage', validators=[InputRequired(), Regexp('([^\\s]+(\\.(?i)(jpe?g|png|bmp))$)')])
     roomLoc = wtforms.StringField('roomLoc', validators=[InputRequired(), Length(max=30)])
+
