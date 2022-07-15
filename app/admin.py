@@ -40,6 +40,7 @@ def main():
         room_id=request.form.get('room_id') if not request.form.get('room_id')=='' else request.form.get('roomid')
         add=request.form.get('add')
         btn_profile=request.form.get('profile')
+        btn_control = request.form.get('control')
         room = roomdb.getroom(room_id)
 
         if add:
@@ -47,6 +48,9 @@ def main():
 
         if btn_profile and room_id=='':
             return redirect(url_for('admin.profile'))
+
+        if btn_control and room_id=='':
+            return redirect(url_for('admin.control', room_id=room_id))
         
         if not room:
             return redirect(url_for('admin.main',error='Room not exists!'))
@@ -316,13 +320,22 @@ def room_instruction_preview():
     room_id = request.args.get('room_id')
     return room_id
 
-# # steps={
-# #     'step 1':{'text':'', 'image':'', 'command':'', 'help':''},
-# #     'step 2':{'text':'', 'image':'', 'command':'', 'help':''},
-# #     'step 3':{'text':'', 'image':'', 'command':'', 'help':''},
-# #     'step 4':{'text':'', 'image':'', 'command':'', 'help':''},
-# #     'step 5':{'text':'', 'image':'', 'command':'', 'help':''},
-# # }
+steps={
+    'step 1':{'text':'', 'image':'', 'command':'', 'help':''},
+    'step 2':{'text':'', 'image':'', 'command':'', 'help':''},
+    'step 3':{'text':'', 'image':'', 'command':'', 'help':''},
+    'step 4':{'text':'', 'image':'', 'command':'', 'help':''},
+    'step 5':{'text':'', 'image':'', 'command':'', 'help':''},
+}
+
+@admin_blue.route("/control", methods=['GET', 'POST'])
+@check_admin
+def control():
+    room_id = request.args.get('room_id')
+    return render_template('admin_control_list.html',room_id=room_id,steps=steps)
+
+
+
 # '''
 # steps={
 #    'step 1':{'text':'Find the HDMI cable underneath the conference table', 'image':'', 'command':"print('instruction_initial_list')\r\nprint(steps)", 'help':''},
