@@ -95,7 +95,8 @@ def basic_info():
         if is_addRoom and continue_:
             #roomName
             roomName=request.form.get('room_id')
-            if utils.room_is_exist(roomName):
+            room = roomdb.getroom(roomName)
+            if room:
                 return redirect(url_for('admin.room',room_id=roomName,is_editRoom=True,error='Room exists, please edit the room.'))
 
             #roomImage
@@ -106,23 +107,30 @@ def basic_info():
 
             #roomLoc
             roomLoc=request.form.get('room_loc')
-            utils.create_room_with_name_image_loc(roomName, roomImage, roomLoc)
+            controlSystem = "AMX" # need to be changed
+            roomdb.addRoom(roomName, roomLoc, controlSystem)
+            roomdb.uploadImage(roomName, roomImage, "_basic_upload.png")
+            # utils.create_room_with_name_image_loc(roomName, roomImage, roomLoc)
             return redirect(url_for('admin.photo_360',room_id=roomName,is_addRoom=True))
         
         if is_editRoom and continue_:
             roomName = request.form.get('room_id') if request.form.get('room_id') else None
             roomLoc = request.form.get('room_loc') if request.form.get('room_loc') else None
+            roomControlSystem = "AMX" # need to changed
             
             img_base64=request.form.get('imgSrc')
             roomImage=(img_base64.split(','))[-1] if img_base64 else None
-            has_udpate=utils.update_room_with_name_image_loc(room_id, roomName, roomImage, roomLoc)
 
-            if has_udpate:
-                return redirect(url_for('admin.photo_360',
-                room_id=roomName if roomName else room_id,
-                is_editRoom=True))
+            dbInfo = roomdb.editRoom(room_id, roomName, roomLoc, roomControlSystem)
+            
+            # has_udpate=utils.update_room_with_name_image_loc(room_id, roomName, roomImage, roomLoc)
+
+            if "Err" in dbInfo:
+                roomdb.uploadImage(roomName, roomImage, "_basic_upload.png")
+                return redirect(url_for('admin.photo_360', room_id=roomName if roomName else room_id, is_editRoom=True))
             else:
                 return redirect(url_for('admin.room',room_id=roomName,is_editRoom=True,error='Invalid room name or empty submit!'))
+       
         back=request.form.get('back')
         if back:
             return redirect(url_for('admin.room',room_id=room_id))
@@ -132,53 +140,54 @@ def basic_info():
         #    return redirect(url_for('admin.photo_360',room_id=room_id))
     
     return render_template('admin_basic_info.html',
-    room_id=room_id if is_editRoom else '1234',
+    room_id=room_id,
     is_addRoom=True if is_addRoom else False,
     is_editRoom=True if is_editRoom else False)
 
-# @admin_blue.route("/photo_360", methods=['POST','GET'])
-# def photo_360():
-#     room_id = request.args.get('room_id')
-#     is_addRoom = request.args.get('is_addRoom')
-#     is_editRoom = request.args.get('is_editRoom')
-#     if request.method == "POST":
-#         continue_=request.form.get('continue')
+@admin_blue.route("/photo_360", methods=['POST','GET'])
+@check_login 
+def photo_360():
+    room_id = request.args.get('room_id')
+    is_addRoom = request.args.get('is_addRoom')
+    is_editRoom = request.args.get('is_editRoom')
+    if request.method == "POST":
+        continue_=request.form.get('continue')
         
-#         #if len(room360Image)==0:
-#         #    return redirect(url_for('admin.photo_360',is_addRoom=True))
+        #if len(room360Image)==0:
+        #    return redirect(url_for('admin.photo_360',is_addRoom=True))
         
 
-#         #if is_addRoom and continue_:
-#         #    return redirect(url_for('admin.device_info',room_id=room_id,is_addRoom=True))
+        #if is_addRoom and continue_:
+        #    return redirect(url_for('admin.device_info',room_id=room_id,is_addRoom=True))
 
-#         #if is_editRoom and continue_:
-#         #    return redirect(url_for('admin.device_info',room_id=room_id,is_editRoom=True))
+        #if is_editRoom and continue_:
+        #    return redirect(url_for('admin.device_info',room_id=room_id,is_editRoom=True))
 
-#         if continue_:
-#             img360_base64=request.form.get('img360Src')
-#             room360Image=(img360_base64.split(','))[-1] if img360_base64 else None
-#             utils.add_room_360image_with_name(room_id,room360Image)
-#             return redirect(url_for('admin.device_info',room_id=room_id))
+        if continue_:
+            img360_base64=request.form.get('img360Src')
+            room360Image=(img360_base64.split(','))[-1] if img360_base64 else None
+            roomdb.uploadImage(room_id, room360Image, "_360_upload.png")
+            return redirect(url_for('admin.device_info',room_id=room_id))
 
-#         back=request.form.get('back')
-#         if back:
-#             return redirect(url_for('admin.basic_info',room_id=room_id))
+        back=request.form.get('back')
+        if back:
+            return redirect(url_for('admin.basic_info',room_id=room_id))
 
 
-#         '''
-#         img360_base64=request.form.get('img360Src')
-#         image_decoder((img360_base64.split(','))[-1],
-#         f'app/static/images/test/room{room_id}/_360_upload.png')
-#         #rint(img360_base64)
-#         if continue_:
-#             return redirect(url_for('admin.device_info',room_id=room_id))
-#         '''
+        '''
+        img360_base64=request.form.get('img360Src')
+        image_decoder((img360_base64.split(','))[-1],
+        f'app/static/images/test/room{room_id}/_360_upload.png')
+        #rint(img360_base64)
+        if continue_:
+            return redirect(url_for('admin.device_info',room_id=room_id))
+        '''
 
-#     #utils.download_room_360image_with_name(room_id)
-#     return render_template('admin_360_photo.html',
-#     room_id=room_id,
-#     is_addRoom=True if is_addRoom else False,
-#     is_editRoom=True if is_editRoom else False)
+    #utils.download_room_360image_with_name(room_id)
+    return render_template('admin_360_photo.html',
+    room_id=room_id,
+    is_addRoom=True if is_addRoom else False,
+    is_editRoom=True if is_editRoom else False)
 
 
 # #devices_dict = {}
@@ -190,6 +199,7 @@ def basic_info():
 # }
 
 # @admin_blue.route("/device_info", methods=['POST','GET'])
+# @check_login 
 # def device_info():
 #     room_id = request.args.get('room_id')
 #     #global devices_test_admin  # Three point initalization

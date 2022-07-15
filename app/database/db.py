@@ -1,5 +1,6 @@
 import os
 import shutil
+import base64
 from pymongo.mongo_client import MongoClient
 from .utils import Account, Room, System, time, compare_date_and_time, sort_bookInfo_list
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -20,6 +21,20 @@ def path_exist_or_mkdir(path:str):
     if not os.path.exists(path):
         os.makedirs(path)
     return True
+
+# def image_encoder(image_path: str):
+#     img = open(image_path,"rb")
+#     img_encode = base64.b64encode(img.read())
+#     img.close()
+#     img_string = img_encode.decode('utf-8')
+#     return img_string
+
+def image_decoder(encoded_image: str, save_path: str = "write.png"): #decode string from encoder
+    img_encode = encoded_image.encode('utf-8')
+    img = base64.b64decode(img_encode)
+    out = open(save_path,"wb")
+    out.write(img)
+    out.close()
 
 # def generateDeviceTypeList(devicetype):
 #     deviceTypeList = []
@@ -293,13 +308,26 @@ class RoomDB():
     def addRoom(self, roomName, roomLoc, controlSystem):
         room = self.db.find_one({"roomName": roomName})
 
-        if room:
-            self.db.update_one({"_id": room["_id"]}, {'$set': {"roomName": roomName, "roomImg": roomImg, "roomLoc": roomLoc, "controlSystem": controlSystem}})
-            return "Info: Edit Room Successfully!"
-        else:
+        if not room:
+            # self.db.update_one({"_id": room["_id"]}, {'$set': {"roomName": roomName, "roomLoc": roomLoc, "controlSystem": controlSystem}})
+            # return "Info: Edit Room Successfully!"
+        # else:
             newRoom = Room(roomName, roomLoc, controlSystem)
             self.db.insert_one(newRoom.__dict__)
             return "Info: Add Room Successfully!"
+        else:
+            return "Err: Room Exist!"
+
+    def editRoom(self, roomName, newRoomName, newRoomLoc, newControlSystem):
+        room = self.db.find_one({"roomName": roomName})
+        if not room:
+            return "Err: Room Exist!"
+        elif self.getroom(newRoomLoc):
+            return "Err: Rename Invalid!"            
+        else:
+            self.db.update_one({"_id": room["_id"]}, {'$set': {"roomName": newRoomName, "roomLoc": newRoomLoc, "controlSystem": newControlSystem}})
+            return "Info: Edit Room Successfully!"
+
 
     def delRoom(self, roomName):
         room = self.db.find_one({"roomName": roomName})
@@ -311,6 +339,13 @@ class RoomDB():
         shutil.rmtree(path)
 
         return "Info: Delete Successfully!"
+    
+    def uploadImage(self, roomName, roomImg, imgType):
+        if not roomImg: return "Err: Invalid Image!"
+        exist=f'app/static/images/test/room{roomName}'
+        path_exist_or_mkdir(exist)
+        path=f'app/static/images/test/room{roomName}/{imgType}'
+        image_decoder(roomImg,path)
 
     # def upload360Img(self, roomName, room360Img):
     #     self.db.update_one({"roomName": roomName}, {"room360Img": room360Img})
