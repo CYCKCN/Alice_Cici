@@ -195,6 +195,7 @@ class RoomDB():
         room = self.db.find_one({"roomName": roomName})
         if deviceID not in room["chooseDeviceIDList"]: 
             room["chooseDeviceIDList"].append(deviceID)
+            self.db.update_one({"roomName": roomName}, {'$set': {'chooseDeviceIDList': room["chooseDeviceIDList"]}})
     
     def getroomInfo(self):
         roomInfo = {}
