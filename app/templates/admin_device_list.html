@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+    #deviceList{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        width: 100vw;
+        padding: 5vh 5vw;
+    }
+
+    .admin-txt{
+        width: 100%;
+        height: 10vh;
+
+        /* font-family: 'Comfortaa'; */
+        font-style: normal;
+        font-weight: 450;
+        font-size: 8vw;
+        line-height: 10vh;
+        display: flex;
+        align-items: center;
+        letter-spacing: -0.015em;
+
+        color: #000000;
+    }
+
+    .device-div{
+        padding: 2vh 5vw;
+    }
+
+    .device-label{
+        float: left;
+        padding-top: 3vh;
+        padding-bottom: 1vh;
+
+        font-size: 1.8vh;
+        font-weight: 750;
+    }
+
+    .device-name{
+        float: left;
+        padding-left: 20vw;
+        padding-top: 3vh;
+        padding-bottom: 1vh;
+
+        font-size: 1.8vh;
+        font-weight: 500;
+    }
+
+    .device-type{
+        float: left;
+        padding-left: 22vw;
+        padding-top: 3vh;
+        padding-bottom: 1vh;
+
+        font-size: 1.8vh;
+        font-weight: 500;
+    }
+
+    .device-ip{
+        float: left;
+        padding-left: 26.6vw;
+        padding-top: 3vh;
+        padding-bottom: 1vh;
+
+        font-size: 1.8vh;
+        font-weight: 500;
+    }
+
+    .empty-text{
+        font-weight: 700;
+        font-size: 3vw;
+
+        color: rgba(0, 0, 0, 0.3);
+        margin-top: 30vh;
+        margin-left: 15vw;
+    }
+
+    .back{
+        margin: 4vh 0vw 0vh -84vw;
+    }
+
+    .img_back{
+        transform: scale(4);
+        position: absolute;
+        margin: 1vh 0vw 0vh 89vw;
+        width: 5vw;
+        height: 5vh;
+	}
+
+    #btn-back {
+        opacity: 0;
+        margin: -8vh 0vw 0vh 81vw;
+        position:absolute;
+        z-index: 100;
+        width: 7vw;
+        height: 7vh;
+
+        
+        background: #000000;
+        border: 2px solid #000000;
+        border-radius: 1vw;
+
+        font-style: normal;
+        font-weight: 500;
+        font-size: 2vh;
+        color: #FFFFFF;
+    }
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<form method="post" id="admin-device-list" enctype="multipart/form-data">
+  <div id="deviceList">  
+    <div class="back">
+		<input id="btn-back" type='submit' name="back" value="back">
+        <div class="img_back">
+            <svg width="19.5" height="18" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M1.91421 4.35355L4.56066 7L3.85355 7.70711L0.353553 4.20711L0 3.85355L0.353553 3.5L3.85355 0L4.56066 0.707107L1.91421 3.35355L5.70711 3.35355C9.28325 3.35355 12.2071 6.27741 12.2071 9.85355L12.2071 11.3536H11.2071L11.2071 9.85355C11.2071 6.8297 8.73096 4.35355 5.70711 4.35355H1.91421Z" fill="black" fill-opacity="0.8"/>
+                <ellipse cx="20.2175" cy="15.913" rx="3.91307" ry="3.91304" stroke="black" stroke-linecap="square"/>
+            </svg>
+        </div>
+    </div>
+    <div class="admin-txt">Device List</div>
+    {% if devices|length==0 %}
+        <div class="empty-text">THERE IS NO DEVICE CREATED SO FAR.</div>
+    {% else %}
+        {% for k, v in devices.items() %} 
+            <div class="device-div">
+                <div class="line">
+                    <div class="device-label">DEVICE NAME</div>
+                    <div class="device-name">{{v.name}}</div>
+                </div>
+                <div class="line">
+                    <div class="device-label">DEVICE TYPE</div>
+                    <div class="device-type">{{v.type}}</div>
+                </div>
+                <div class="line">
+                    <div class="device-label">DEVICE IP</div>
+                    <div class="device-ip">Example</div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+  </div>
+</form>
+
+<script>
+    Vue.createApp({
+      data() {
+        return {
+        }
+      },
+      delimiters: ['{[', ']}'],
+      methods: {
+    
+      }
+    }).mount('#admin-device-list')    
+</script>
+
+<script>
+   
+
+</script>
+{% endblock %}

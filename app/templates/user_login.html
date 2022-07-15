@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+    #user{
+        /* display: flex;
+        flex-direction: column;
+        align-items: flex-start; */
+        justify-content: center;
+        width: 100vw;
+        height: 100vh;
+        padding: 5vh 5vw;
+    }
+    .user-title{
+        width: 20vw;
+        height: 10vh;
+
+        /* font-family: 'Comfortaa'; */
+        font-style: normal;
+        font-weight: 360;
+        font-size: 8vw;
+        line-height: 10vh;
+        display: flex;
+        align-items: center;
+        letter-spacing: -0.015em;
+
+        color: #000000;
+    }
+    .user-txt{
+        margin-top: 4vh;
+        font-style: normal;
+        font-weight: 900;
+        font-size: 3vw;
+        line-height: 2vh;
+        display: flex;
+        align-items: center;
+        letter-spacing: -0.015em;
+
+        color: #000000;
+    }
+    .user-error{
+        /* font-family: 'Comfortaa'; */
+        float: left;
+        margin-left: 5vw;
+        margin-top: 5vh;
+        font-style: normal;
+        font-weight: 360;
+        font-size: 6vw;
+        line-height: 5vh;
+        display: flex;
+        letter-spacing: -0.015em;
+
+        color: #000000;
+    }
+    .user-ans{
+        /* margin: 2vh 0 0vh 0; */
+        margin: auto;
+        width: 100%;
+        height: 6vh;
+        box-sizing: border-box;
+        background: #FFFFFF;
+        border: 0.5vw solid #000000;
+        padding: 0 3vw;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 2vh;
+        color: #000000;
+    }
+    #btn-login {
+        /* margin:auto; */
+        margin-top: 8vh;
+        width: 100%;
+        height: 7vh;
+        
+        background: #0074BC;
+        border: 2px solid #0074BC;
+        border-radius: 1vw;
+
+        font-style: normal;
+        font-weight: 900;
+        font-size: 3vw;
+        color: #FFFFFF;
+    }
+    #btn-register{
+        position: relative;
+        margin-top: 4vh;
+        width: 90vw;
+        height: 7vh;
+        padding-top:2vh;
+        text-align: center;
+    }
+    #btn-register a{
+        text-decoration: none;
+        font-style: normal;
+        font-weight: 900;
+        font-size: 3vw;
+        color: #0074BC;
+    }
+    #btn-reset{
+        margin-top: 1vh;
+        width: 90vw;
+        height: 7vh;
+        left: 5vw;
+        padding-top:2vh;
+
+        /* background: #000000;
+        border: 2px solid #000000; */
+        border-radius: 1vw;
+
+        text-align: center;
+    }
+    #btn-reset a{
+        text-decoration: none;
+        font-style: normal;
+        font-weight: 900;
+        font-size: 3vw;
+        color: #0074BC;
+    }
+    /* 去掉Google密码自动填充的丑蓝色 */
+    input:-webkit-autofill {
+        box-shadow: 0 0 0 32vh #fff inset;;
+        -webkit-box-shadow: 0 0 0 32vh #fff inset; /**通过边框阴影遮挡住背景*/
+        -webkit-text-fill-color: #000; /*自动填充内容的文本颜色*/
+    }       
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<form method="post" id="user-login" enctype="multipart/form-data">
+    <div id="user">  
+        <div class="user-title">User</div>
+        <!--
+        <input class="admin-ans" v-model="adminEmail" name="email" placeholder="">
+        <input class="admin-ans" v-model="adminPwd" type="password" name="pwd" placeholder="">
+        -->
+        <p class="user-txt">EMAIL</p>
+        {{ form.email(class_='user-ans', **{'v-model': 'userEmail'}) }}
+        <p class="user-txt">PASSWORD</p>
+        {{ form.password(class_='user-ans', **{'v-model': 'userPwd'}) }}
+        {{ form.hidden_tag() }}
+        <input id="btn-login" type='submit' name="login" value="LOG IN">
+        
+    
+        <div id="btn-register"><a href="/auth/register">REGISTER</a></p>
+        <div id="btn-reset"><a href="/auth/reset">FORGET PASSWORD</a></p>
+        {% if not pass_right %}
+            <p class="user-error">Password is not correct!</p>
+        {% endif %}
+
+        {% if not register %}
+            <p class="user-error">User not exists! Please register.</p>
+        {% endif %}
+    </div>
+</form>
+
+<script>
+    Vue.createApp({
+      data() {
+        return {
+        }
+      },
+      delimiters: ['{[', ']}'],
+      methods: {
+    
+      }
+    }).mount('#user-login')    
+</script>
+
+<script>
+   
+
+</script>
+{% endblock %}

@@ -1,0 +1,462 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+form{
+    position:fixed;
+    padding:0;
+    margin:0;
+    top: 0;
+	left: 0;
+	width: 100%;
+    height: 100%;
+    border: 0;
+}
+/* header */
+.header{
+    position: relative;
+    height: 6.5vh;
+    background-color: #F5F5F5;
+    text-align: center;
+    padding-top:1vh;
+}
+.header-name{
+    font-size: 2.8vh;
+	color: black;
+}
+.header-back{
+    position: absolute;
+    top:0;
+    height: 100%;
+    width: 6.5vh;
+}
+.header-back input{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color:rgba(0, 0, 0, 0);
+    border: 0;
+    z-index: 5;
+}
+.header-home{
+    position: absolute;
+    top:0;
+    right:0;
+    height: 100%;
+    width: 6.5vh;
+}
+.header-home input{
+    position: absolute;
+    top:0;
+    right:0;
+    width: 100%;
+    height: 100%;
+    background-color:rgba(0, 0, 0, 0);
+    border: 0;
+    z-index: 5;
+}
+/* date */
+.date{
+    position: relative;
+    height: 8vh;
+    background-color: #F5F5F5;
+    border-top: 2px solid black;
+}
+.date-ym{
+    position: absolute;
+    height: 100%;
+    width: 8vh;
+    text-align: center;
+    padding-top: 1vh;
+}
+.date-text1{
+    font-size: 1.7vh;
+	color: black;
+    z-index: 2;
+}
+.date-text2{
+    font-size: 2.2vh;
+	color: black;
+    z-index: 2;
+}
+.date-week{
+    position: absolute;
+    right:0;
+    height: 100%;
+    width: 80vw;
+    text-align: center;
+    padding-top: 1vh;
+
+}
+.date-week div{
+    position: relative;
+    display: inline-block;
+    height: 100%;
+    right: 2vw;
+    margin-left: 4vw;
+}
+.date-body{
+    position: absolute;
+    bottom: 0;
+    height: 85.5vh;
+    width: 100vw;
+    overflow-y: scroll;
+    border-top: 0.8vh solid #F5F5F5;
+}
+.date-time{
+    float: left;
+    width: 9vh;
+    border-top: 1px solid rgba(255, 255, 255, 0);
+    border-right: 2px solid gray;
+    text-align: center;
+}
+.date-time p{
+    margin-bottom: 2vh;
+}
+.date-choose{
+    float: left;
+    left: 0;
+    width: 80vw;
+    height: 132vh;
+}
+.unoccupy{
+    height: 100%;
+    width: 100%;
+    appearance: none;
+}
+.unoccupy:checked{
+    background-color:#FFD400;
+    opacity: 0.8;
+}
+.occupy{
+    height: 100%;
+    width: 100%;
+    appearance: none;
+    background-color:#cccccc;
+}
+.occupy:checked{
+    background-color:#FFD400;
+    opacity: 0.8;
+}
+
+th,td{
+    border: 0.5px solid rgb(197, 197, 197);
+}
+.book-img{
+    transform: scale(4);
+    position: absolute;
+    width:100%;
+    height: 100%;
+    z-index: 5;
+    margin: 9.7vh 0vw 0vh 20vw;
+}
+.book{
+    position: absolute;
+    width:12vw;
+    height:12vw;
+    right:10vw;
+    bottom: 10vw;
+    background-color:rgba(0, 0, 0, 0);
+    
+}
+.book input{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width:100%;
+    height: 100%;
+    appearance: none;
+    opacity: 0;
+    z-index: 100;
+    margin: 1.6vh 0vw 0vh 2.8vw;
+}
+.delete-img{
+    transform: scale(4);
+    position: absolute;
+    width:100%;
+    height: 100%;
+    z-index: 5;
+    margin: 10vh 0vw 0vh 3vw;
+}
+.delete{
+    position: absolute;
+    width:12vw;
+    height:12vw;
+    right:10vw;
+    bottom: 10vw;
+    background-color:rgba(0, 0, 0, 0);
+    
+}
+.delete input{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width:100%;
+    height: 100%;
+    appearance: none;
+    opacity: 0;
+    z-index: 100;
+    margin: 1.6vh 0vw 0vh -15vw;
+}
+.img_profile{
+    transform: scale(10);
+    position: absolute;
+    z-index: 1000;
+    margin: 21vh 0vw 0vh 90vw;
+    width: 5vw;
+    height: 5vh;
+}
+#btn-profile {
+    opacity: 0;
+    margin: -1vh 0vw 0vh 39vw;
+    position: absolute;
+    z-index: 1100;
+    width: 7vw;
+    height: 7vh;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 2vh;
+    color: black;
+}
+
+#mainFooter{
+    position: fixed;
+    z-index: 999;
+    width: 100vw;
+    height: 10vh;
+    bottom: 0vh;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-top: solid 0.1vw black;
+    background: #F5F5F5;
+    /* float: left;
+    width: 100vw;
+    height: 10vh;
+    
+    left: 0;
+
+    border-top: 0.1vw solid #D9D9D9; */
+}
+.search-btn{
+    transform: scale(8);
+    position:absolute;
+    margin: 18vh 0vw 0vh 35vw;
+    width: 5vw;
+    height: 5vh;
+}
+
+.search-btn1{
+    transform: scale(8);
+    position:absolute;
+    margin: 18vh 0vw 0vh 90vw;
+    width: 5vw;
+    height: 5vh;
+}
+
+.btn-txt{
+    font-size: 0.5vw;
+    margin: 0vh 0vw 0vh -1vw;
+}
+
+.btn-txt a{
+    font-size: 0.1vh;
+}
+
+.btn-txt1{
+    font-size: 0.5vw;
+    margin: 0vh 0vw 0vh -0.7vw
+}
+
+#btn-search {
+    opacity: 0;
+    margin: -1.4vh 0vw 0vh -0.4vw;
+    position:absolute;
+    z-index: 100;
+    width: 2.2vw;
+    height: 1.2vh;
+
+    
+    background: #000000;
+    border: 2px solid #000000;
+    border-radius: 1vw;
+
+    font-style: normal;
+    font-weight: 500;
+    font-size: 2vh;
+    color: #FFFFFF;
+}
+
+#btn-timetable {
+    opacity: 0;
+    margin: -1.4vh 0vw 0vh -0.3vw;
+    position:absolute;
+    z-index: 100;
+    width: 2.2vw;
+    height: 1.2vh;
+
+    
+    background: #000000;
+    border: 2px solid #000000;
+    border-radius: 1vw;
+
+    font-style: normal;
+    font-weight: 500;
+    font-size: 2vh;
+    color: #FFFFFF;
+}
+
+.delete-img{
+    transform: scale(4);
+    position: absolute;
+    width:100%;
+    height: 100%;
+    z-index: 5;
+    margin: 0vh 0vw 0vh 20vw;
+}
+.delete{
+    position: absolute;
+    width:12vw;
+    height:12vw;
+    right:10vw;
+    bottom: 10vw;
+    background-color:rgba(0, 0, 0, 0);
+    
+}
+.delete input{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width:100%;
+    height: 100%;
+    appearance: none;
+    opacity: 0;
+    z-index: 100;
+    margin: -8.4vh 0vw 0vh 2vw;
+}
+table label{
+    position: absolute;
+    transform: translateX(-10.5vw);
+    text-align: center;
+    font-size: 3.2vw;
+    color: white;
+    font-style: normal;
+    font-weight: 500;
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+<form method="post" id="timetable">
+    <div class="header">
+        <div class="profile">
+            <input id="btn-profile" type='submit' name="profile" value="profile">
+            <div class="img_profile">
+                <svg width="20" height="20" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20.2174 20.4783C17.3359 20.4783 15 22.8142 15 25.6957V27H25.4348V25.6957C25.4348 22.8142 23.0989 20.4783 20.2174 20.4783Z" stroke="black"/>
+                    <ellipse cx="20.2175" cy="15.913" rx="3.91307" ry="3.91304" stroke="black" stroke-linecap="square"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+    <div class="date">
+        <div class="date-ym">
+            <p class="date-text1">{{year}}</p>
+            <h1 class="date-text2"><b>{{month}}</b></h1>
+        </div>
+        <div class="date-week">
+        {% for w, d in week.items() %}
+            <div>
+                <p class="date-text1">{{w}}</p>
+                <h1 class="date-text2"><b>{{d}}</b></h1>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+
+    <div class="date-body">
+        <div class="date-time">
+        {% for t in time %}
+            <p class="date-text1">{{t}}</p>
+        {% endfor %}
+        </div>
+        <table class="date-choose">
+        {% for t in time %}
+            <tr>
+            {% for w, d in week.items() %}
+                <td>
+                    <!-- <input type="checkbox" name="time-{{d}}-{{t}}" value=" " class="unoccupy"> -->
+                    {% if occupy[t,d]=='n' %}
+                    <input type="checkbox" name="time-{{d}}-{{t}}" value=" " class="unoccupy" disabled>
+                    {% else %}
+                    <input type="checkbox" id="time-{{d}}-{{t}}" name="time-{{d}}-{{t}}" value="{{occupy[t,d]}}" class="occupy" >
+                    <label for="time-{{d}}-{{t}}">{{occupy[t,d]}}</label>
+                    {% endif %}
+                </td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+
+    <div class="delete">
+        <input type="submit" class="per-dev" name="delete" value="delete">
+        <div class="delete-img">
+            <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22.5 0C10.0736 0 0 10.0736 0 22.5C0 34.9264 10.0736 45 22.5 45C34.9264 45 45 34.9264 45 22.5C45 10.0736 34.9264 0 22.5 0ZM19.0091 8.41279H25.9909V10.5661H34.1318V14.5294H10.8682V10.5661H19.0091V8.41279ZM12.1179 17.5452H32.8821V36.5872H12.1179V17.5452Z" fill="#0074BC"/>
+            </svg>
+        </div>
+    </div>
+
+    <div id="mainFooter">
+        <div class="search-btn">
+			<svg class="icon" width="10" height="10" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M19.7266 17.293L15.832 13.3984C15.6562 13.2227 15.418 13.125 15.168 13.125H14.5312C15.6094 11.7461 16.25 10.0117 16.25 8.125C16.25 3.63672 12.6133 0 8.125 0C3.63672 0 0 3.63672 0 8.125C0 12.6133 3.63672 16.25 8.125 16.25C10.0117 16.25 11.7461 15.6094 13.125 14.5312V15.168C13.125 15.418 13.2227 15.6562 13.3984 15.832L17.293 19.7266C17.6602 20.0937 18.2539 20.0937 18.6172 19.7266L19.7227 18.6211C20.0898 18.2539 20.0898 17.6602 19.7266 17.293ZM8.125 13.125C5.36328 13.125 3.125 10.8906 3.125 8.125C3.125 5.36328 5.35937 3.125 8.125 3.125C10.8867 3.125 13.125 5.35937 13.125 8.125C13.125 10.8867 10.8906 13.125 8.125 13.125Z" :fill="isSelected == 1 ? '#0074BC': 'black'"/>
+			</svg>
+			<div class="btn-txt" v-bind:class="{ active: isSelected}">
+                Room Search
+            </div>
+			<input id="btn-search" type='submit' name="btn_search" value="search">
+		</div>
+		<div class="search-btn1">
+			<svg class="icon" width="12" height="12" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M14.583 12.5002H16.1455V15.4377L18.6872 16.9064L17.9059 18.2606L14.583 16.3439V12.5002ZM4.16634 2.0835H18.7497C19.3022 2.0835 19.8321 2.30299 20.2228 2.69369C20.6135 3.08439 20.833 3.6143 20.833 4.16683V10.521C22.1247 11.8335 22.9163 13.6356 22.9163 15.6252C22.9163 17.559 22.1481 19.4137 20.7807 20.7811C19.4132 22.1486 17.5585 22.9168 15.6247 22.9168C13.6351 22.9168 11.833 22.1252 10.5205 20.8335H4.16634C3.61381 20.8335 3.0839 20.614 2.6932 20.2233C2.3025 19.8326 2.08301 19.3027 2.08301 18.7502V4.16683C2.08301 3.6143 2.3025 3.08439 2.6932 2.69369C3.0839 2.30299 3.61381 2.0835 4.16634 2.0835ZM4.16634 15.6252V18.7502H9.03092C8.58301 17.8022 8.33301 16.7397 8.33301 15.6252H4.16634ZM4.16634 8.3335H10.4163V5.2085H4.16634V8.3335ZM18.7497 8.3335V5.2085H12.4997V8.3335H18.7497ZM4.16634 13.5418H8.63509C8.98926 12.3439 9.64551 11.271 10.5205 10.4168H4.16634V13.5418ZM15.6247 10.5731C14.2848 10.5731 12.9998 11.1054 12.0523 12.0528C11.1049 13.0002 10.5726 14.2853 10.5726 15.6252C10.5726 18.4168 12.833 20.6772 15.6247 20.6772C16.2881 20.6772 16.9451 20.5466 17.558 20.2927C18.171 20.0388 18.7279 19.6667 19.197 19.1975C19.6662 18.7284 20.0383 18.1715 20.2922 17.5585C20.5461 16.9456 20.6768 16.2886 20.6768 15.6252C20.6768 12.8335 18.4163 10.5731 15.6247 10.5731Z" :fill="isSelected == 0 ? '#0074BC': 'black'"/>
+			</svg>
+			<div class="btn-txt1" v-bind:class="{ active: !isSelected}">
+                Timetable
+            </div>
+			<input id="btn-timetable" type='submit' name="timetable" value="timetable">
+		</div>
+    </div>
+</form>
+
+<script>
+    Vue.createApp({
+      data() {
+        return {
+			roomid: '',
+		  	isSelected: 0,
+        }
+      },
+      delimiters: ['{[', ']}'],
+      methods: {
+        goRoom: function (event, roomid) {
+
+			console.log(event, roomid)
+            var form = document.getElementById("timetable");
+            var roomDiv = document.getElementById("roomId");
+
+            roomDiv.children[0].setAttribute('value', roomid);
+            console.log(roomDiv.children[0].value)
+            
+            form.submit();
+        },
+      }
+    }).mount('#timetable')    
+</script>
+
+{% endblock %}
+

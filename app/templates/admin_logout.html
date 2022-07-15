@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+  .text{
+      position: absolute;
+      width: 58vw;
+      height: 20vh;
+      top: 30vh;
+      left: 0vw;
+      transform: translateX(50%);
+      /* font-family: 'Comfortaa'; */
+      font-style: normal;
+      font-weight: 330;
+      font-size: 15vw;
+      line-height: 20vh;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      letter-spacing: -0.015em;
+      color: #000000;
+  }
+  .admin{
+      position: absolute;
+      width: 44vw;
+      height: 7vh;
+      top: 85vh;
+      left: 5vw;
+
+      background: #FFFFFF;
+      border: 0.5vw solid #0074BC;
+      border-radius: 1vw;
+      padding: 0 16vw;
+
+      /* font-family: 'Roboto'; */
+      font-style: normal;
+      font-weight: 900;
+      font-size: 3vw;
+      line-height: 8vh;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+
+      text-decoration: none;
+      color: #000000;
+}
+
+
+.user{
+      position: absolute;
+      width: 44vw;
+      height: 7vh;
+      top: 85vh;
+      left: 53vw;
+
+      background: #0074BC;
+      border-radius: 1vw;
+      padding: 0 18vw;
+
+      /* font-family: 'Roboto'; */
+      font-style: normal;
+      font-weight: 650;
+      font-size: 3vw;
+      line-height: 8vh;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+
+      text-decoration: none;
+      color: #FFFFFF;
+}
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<form method="post" id="admin-logout" enctype="multipart/form-data">
+    <div class="text">AVATA</div>
+    <!--<a class="admin" href="/authen/admin-login">ADMIN</a>
+    <a class="user" href="/authen/user-login">USER</a>-->
+    <a class="admin" href="/auth/admin-login">ADMIN</a>
+    <a class="user" href="/auth/user-login">USER</a>
+  </form>
+
+<script>
+    Vue.createApp({
+      data() {
+        return {
+        }
+      },
+      delimiters: ['{[', ']}'],
+      methods: {
+    
+      }
+    }).mount('#admin-logout')    
+</script>
+
+<script>
+   
+
+</script>
+{% endblock %}

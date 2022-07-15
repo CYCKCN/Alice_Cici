@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+	.bar {
+		/* overflow: hidden; */
+		background-color: #0074BC;
+		height: 3vh;
+		z-index: 100;
+		position: absolute;
+		width: 100vw;
+	}
+	.bar a {
+		text-decoration: none;
+		font-size: 1.5vh;
+		padding: 0.3vh 2vw;
+		text-align: center;
+		color: white;
+	}
+	.quit{
+		float: left;
+		
+	}
+	.user{
+		float: right;
+	}
+
+	
+
+	.per-dev{
+        position: fixed;
+        height: 5vh;
+        width: 5vh;
+        left: 85%;
+        top: 10%;
+    }
+
+	/* 彈窗CSS */
+    #overlay {
+        display: none;
+        position: absolute;
+        left: 16vw;
+        top: 27vh;
+        box-shadow: 2vw 2vw 2vw rgba(0, 0, 0, 0.25);
+    }
+    .person-device {
+        background:#f5f5f5;
+        width: 72vw;
+        height: 44vh;
+        z-index: 1;
+    }
+    .close{
+        width: 5vw;
+        height: 5vw;
+        position: relative;
+        top: 2vh;
+        left: 88%;
+    }
+    .perdev-question{
+        position: relative;
+        top: 5vh;
+        left: 8%;
+        font-size: 2.7vh;
+        font-weight: 700;
+    }
+    .pick{
+        transform: scale(5,5) translate(0.5vw, -0.1vh);
+    }
+    .text{
+        padding: 0 6vw;
+    }
+    .perdev-ans{
+        position: relative;
+        top: 7vh;
+        left: 14%;
+        padding: 0.8vh 0;
+        font-size: 2.3vh;
+    }
+    .subbtn{
+        position: relative;
+        top: 11vh;
+        left: 10%;
+    }
+    .subbtn input{
+        width: 50vw;
+        height: 6vh;
+        font-size: 2.5vh;
+        background-color: white;
+        border: 0.8vw solid #0074BC;
+        border-radius: 1vh;
+		margin-left: 4vw;
+    }
+	.emailBox {
+		margin: auto;
+		width: 70%;
+		height: 4vh;
+		padding: 0 0vw;
+		border: 0;
+		border-bottom: 0.5vw solid #000;
+		background: #ffffff00;
+		font-style: normal;
+		font-weight: 500;
+		font-size: 1.9vh;
+		color: #000000;
+		outline: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<form method="post">
+<div id="app">
+		<input type="submit" onclick="on(event);">
+		<svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<g clip-path="url(#clip0_382_1534)">
+			<circle cx="40" cy="39.5103" r="35" fill="white"/>
+			<path d="M25 3.125C19.22 3.19473 13.6965 5.5218 9.60914 9.60914C5.5218 13.6965 3.19473 19.22 3.125 25C3.19473 30.78 5.5218 36.3035 9.60914 40.3909C13.6965 44.4782 19.22 46.8053 25 46.875C30.78 46.8053 36.3035 44.4782 40.3909 40.3909C44.4782 36.3035 46.8053 30.78 46.875 25C46.8053 19.22 44.4782 13.6965 40.3909 9.60914C36.3035 5.5218 30.78 3.19473 25 3.125ZM37.5 26.5625H26.5625V37.5H23.4375V26.5625H12.5V23.4375H23.4375V12.5H26.5625V23.4375H37.5V26.5625Z" fill="#0074BC"/>
+			</g>
+			<defs>
+			<clipPath id="clip0_382_1534">
+			<rect width="50" height="50" fill="white"/>
+			</clipPath>
+			</defs>
+		</svg>
+		
+		<input type="submit" class="per-dev" name="delete" value="delete">
+		<svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M22.5 0C10.0736 0 0 10.0736 0 22.5C0 34.9264 10.0736 45 22.5 45C34.9264 45 45 34.9264 45 22.5C45 10.0736 34.9264 0 22.5 0ZM19.0091 8.41279H25.9909V10.5661H34.1318V14.5294H10.8682V10.5661H19.0091V8.41279ZM12.1179 17.5452H32.8821V36.5872H12.1179V17.5452Z" fill="#0074BC"/>
+		</svg>
+			
+	
+	<div id="app" class="bar">
+		<a class="quit" href="search">Quit</a>
+		<a class="user">{[userEmail]}</a>
+	</div>
+	
+</div>
+	<div id="overlay">
+		<div class="person-device">
+      		<a onclick="off()">
+        		<svg class="close" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+          			<path d="M14.0625 14.0625L0.9375 0.9375M0.9375 14.0625L14.0625 0.9375L0.9375 14.0625Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        		</svg>          
+      		</a>
+			<h2 class="perdev-question">Booking</h2>
+		    <div class="perdev-ans">
+				<input class="pick" type="checkbox" check="checked" id="one" name="mac" value="Macbook">
+				<label class="text" for="one">For Myself</label>
+			</div>
+			<div class="perdev-ans">
+				<input class="pick" type="checkbox" id="two" name="win" value="Windows">
+				<label class="text" for="two">Invite Guest</label>
+			</div>
+			<div class="perdev-ans">
+				<input class="emailBox" type="text" placeholder="Please enter guest's email" name="guestemail" v-model="guestemail"/>
+      		</div>
+      		<div class="subbtn">
+        		<input type="submit" class="enter" name="personal" value="Save">
+      		</div>
+		</div>
+	</div>	
+</form>
+<script>
+function on(event) {
+	event.preventDefault();
+  document.getElementById("overlay").style.display = "block";
+}
+  
+function off() {
+  document.getElementById("overlay").style.display = "none";
+}
+Vue.createApp({
+  data() {
+    return {
+		picked : [],
+		userEmail : "rose@gmail.com"
+    }
+  },
+  delimiters: ['{[', ']}'],
+  methods: {
+	submit : function () {
+		console.log(this.picked);				
+	}
+  }
+}).mount('#app')
+
+</script>
+{% endblock %}

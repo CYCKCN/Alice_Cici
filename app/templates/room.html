@@ -1,0 +1,194 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+	/* 弹窗的CSS */
+	#overlay {
+		position: fixed;
+		display: none;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: rgba(0,0,0,0.5);
+		z-index: 2;
+		cursor: pointer;
+	}
+	.confirmBox{
+		width: 70%;
+		height: 20%;
+		background-color: white;
+	}
+	.form-inline{
+		display: flex;
+		flex-flow: row wrap;
+	    align-items: center;
+	}
+	.form-inline a{
+		padding: 10px 12px;
+		background-color: #ED6E2C;
+		border-radius: 5px;
+		color: white;
+		text-decoration: none;
+	}
+	/* 页面的CSS:1.header部分 */
+	.bar {
+		position: absolute;
+		background-color: white;
+		height: 5vh;
+		z-index: 100;
+		width: 100vw;
+	}
+	.aclass {
+		text-decoration: none;
+		color: white;
+	}
+	.quit{
+		float: right;
+		height: 4vh;
+		width: 4vh;
+		margin-right: 2vw;
+	}
+	/* 页面的CSS:2.主要部分 */
+	#roommain{
+		position: absolute;
+		width: 100vw;
+		height: 95vh;
+		margin-top: 5vh;
+		overflow-x: hidden;
+		overflow-y: hidden;
+	}
+	.roomPic {
+		position: relative;
+		z-index: 0;
+		width: 100%;
+		height: 100%;
+	}
+	.roomNo {
+		position: relative;
+		font-size: 3vh;
+		bottom: 13%;
+		left: 7%;
+		color: white;
+	}
+	.roomLoc {
+		position: relative;
+		font-size: 2.2vh;
+		color: white;
+		font-weight: 400;
+		bottom: 12%;
+		left: 7%;
+	}
+	/* 页面的CSS:3.右下角按钮部分 */
+	.enter{
+		position: relative;
+		height: 5vh;
+		width: 5vh;
+		left: 85%;
+    	bottom: 30%;
+		border: 0;
+	}
+	.book{
+		position: relative;
+		height: 5vh;
+		width: 5vh;
+		right: 7%;
+		left: 85%;
+    	bottom: 28%;
+		border: 0;
+	}
+	.enter-txt{
+		position: relative;
+		font-size: 3vw;
+    	left: 87%;
+    	bottom: 30%;
+		color: white;
+	}
+	.book-txt{
+		position: relative;
+		font-size: 3vw;
+    	left: 87%;
+    	bottom: 28%;
+		color: white;
+	}
+	.enter-logo{
+		position: absolute;
+		height: 5vh;
+		width: 5vh;
+		left: 85%;
+		bottom: 17.5%;
+	}
+	.book-logo{
+		position: absolute;
+		height: 5vh;
+		width: 5vh;
+		left: 85%;
+		bottom: 8%;
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+<form method="post" id="room">
+	<div id="app" class="bar">
+		<a class="aclass" href="search">
+			<svg class="quit" width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M27.7087 32.0835H7.29199C6.90522 32.0835 6.53429 31.9299 6.2608 31.6564C5.9873 31.3829 5.83366 31.012 5.83366 30.6252V18.9585H2.91699L16.4678 5.40623C16.6033 5.27063 16.7641 5.16307 16.9411 5.08968C17.1182 5.01629 17.308 4.97852 17.4996 4.97852C17.6912 4.97852 17.881 5.01629 18.0581 5.08968C18.2351 5.16307 18.3959 5.27063 18.5314 5.40623L32.0837 18.9585H29.167V30.6252C29.167 31.012 29.0134 31.3829 28.7399 31.6564C28.4664 31.9299 28.0954 32.0835 27.7087 32.0835ZM14.5837 21.8752H20.417V29.1669H26.2503V17.2494L17.5003 8.49935L8.75033 17.2494V29.1669H14.5837V21.8752Z" fill="black"/>
+			</svg>
+		</a>
+	</div>
+	<!--
+	<div id="overlay">
+		<div class="confirmBox">
+			<h3>Do you want to quit the room?</h3>
+			<form class="form-inline">
+				<a onclick="off()">Cancel</a>
+				<a href="room">Confirm</a>
+			</form>
+		</div>
+	</div>-->	
+	<div id="roommain">
+		<img class="roomPic" src="{{url_for('static',filename='images/test/room5554/IMG5554_BIG.png')}}" />
+		<h2 class="roomNo">{{room_id}}</h2>
+		<h4 class="roomLoc">{{room_loc}}</h4>
+		<input class="enter" type="submit" name="enter" value=" " style="background: transparent; z-index: 100;">
+		<svg class="enter-logo" width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M16.875 22.5H2.8125V16.875H16.875V11.25L25.3125 19.6875L16.875 28.125V22.5ZM45 0V36.5625L28.125 45V36.5625H11.25V25.3125H14.0625V33.75H28.125V8.4375L39.375 2.8125H14.0625V14.0625H11.25V0H45Z" fill="white"/>
+		</svg>
+		<div class="enter-txt">Enter</div>
+		<input class="book" type="submit" name="book" value=" " style="background: transparent; z-index: 100;">
+		<svg class="book-logo" width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M7.5 3.75V15H3.75V3.75H7.5ZM3.75 41.25V30H7.5V41.25H3.75ZM9.375 22.5C9.375 24.5812 7.70625 26.25 5.625 26.25C4.88332 26.25 4.1583 26.0301 3.54161 25.618C2.92493 25.206 2.44428 24.6203 2.16045 23.9351C1.87662 23.2498 1.80236 22.4958 1.94706 21.7684C2.09175 21.041 2.4489 20.3728 2.97335 19.8484C3.4978 19.3239 4.16598 18.9667 4.89341 18.8221C5.62084 18.6774 6.37484 18.7516 7.06006 19.0355C7.74529 19.3193 8.33096 19.7999 8.74301 20.4166C9.15507 21.0333 9.375 21.7583 9.375 22.5ZM30 7.5C38.2875 7.5 45 14.2125 45 22.5C45 30.7875 38.2875 37.5 30 37.5C23.25 37.5 17.55 33.0375 15.6563 26.9062L11.25 22.5L15.6563 18.0937C17.55 11.9625 23.25 7.5 30 7.5ZM30 11.25C23.7938 11.25 18.75 16.2937 18.75 22.5C18.75 28.7062 23.7938 33.75 30 33.75C36.2062 33.75 41.25 28.7062 41.25 22.5C41.25 16.2937 36.2062 11.25 30 11.25ZM28.125 24.375V15H30.9375V22.875L36.5625 26.25L35.025 28.6125L28.125 24.375Z" fill="white"/>
+		</svg>				
+		<div class="book-txt">Book</div>
+	</div>
+</form>
+
+<script>
+Vue.createApp({
+  data() {
+    return {
+    }
+  },
+  delimiters: ['{[', ']}'],
+  methods: {
+
+  }
+}).mount('#app')
+
+Vue.createApp({
+  data() {
+    return {
+    }
+  },
+  delimiters: ['{[', ']}'],
+  methods: {
+
+  }
+}).mount('#room')
+</script>
+
+
+{% endblock %}

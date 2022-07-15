@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+<form id="login-code" method="post">
+    <div id="code">
+        <div id="code-txt">A verification code has sent to your email: {{userEmail}}</div>
+        <input id="input-code" v-model="userCode" name="code" placeholder="Please enter the verification code">
+        <input id="btn-sign" type='submit' name="sign" value="Sign In">
+    </div>
+</form>
+
+<script>
+
+Vue.createApp({
+  data() {
+    return {
+        userEmail: '',
+        userCode: ''
+    }
+  },
+  delimiters: ['{[', ']}'],  // Fix bug: Avoid Mustache syntax conflict in Vue and flask.jinjia2
+  methods: {
+  }
+}).mount('#login-code')
+</script>
+
+<style>
+#code{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100vw;
+    height: 35vh;
+    padding: 5vh 7vw;
+}
+
+#code-txt{
+    width: 100%;
+    height: 3vh;
+    font-size: 4vw;
+    font-weight: bold;
+}
+
+#input-code{
+    margin-top: 5vh;
+    width: 100%;
+    height: 3vh;
+    border: 0;
+    outline: 0;
+    font-size: 3vw;
+    border-bottom: solid 0.1vw gray;
+}
+
+#btn-sign{
+    margin-top: 5vh;
+    width: 100%;
+    height: 3vh;
+    border: solid 5px #ed6e2c;
+    background-color: #ed6e2c;
+    color: white;
+    font-size: 3vw;
+    border-radius: 1.5vh;
+}
+</style>
+{% endblock %}

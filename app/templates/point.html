@@ -1,0 +1,340 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+    #device-scroll{
+        position: absolute;
+        transform: translateX(-50%);
+        left: 50vw;
+        top: 6vh; /* up to 6% */
+        width: 90vw;
+        height: 86vh;
+        overflow-y: scroll;
+        overflow-x: scroll;
+        border-radius: 1vh 0.4vh 0.4vh 0.4vh;
+        border: 0.1vh solid #eee;
+    }
+
+    #device-objs{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    #device-div7{
+        position: absolute;
+        left: 5vw;
+        top: 2vh; /* up to 6% */
+        width: 5vw;
+        height: 5vw;
+    }
+
+    #device-button5{
+        position: absolute;
+        width: 5vw;
+        height: 5vw;
+        border: none;
+        background-color: rgba(255, 255, 255, 0);
+        z-index: 1;
+    }
+
+    #device-svg2{
+        position: absolute;
+        width: 5vw;
+        height: 5vw;
+    }
+
+    #device-div8{
+        position: absolute;
+        left: 12vw;
+        top: 2vh; /* up to 6% */
+        width: 5vw;
+        height: 5vw;
+    }
+
+    #device-button6{
+        position: absolute;
+        width: 5vw;
+        height: 5vw;
+        border: none;
+        background-color: rgba(255, 255, 255, 0);
+        z-index: 1;
+    }
+
+    #device-svg3{
+        position: absolute;
+        width: 5vw;
+        height: 5vw;
+    }
+
+    #point-menu{
+        width: 20vw;
+        height: 20vw;
+    }
+
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<form method="post" id="point">
+    <!-- Add point Button -->
+    <div id="device-div7">
+        <button id="device-button5" type="button"></button>
+        <svg id="device-svg2" width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M30 7.5C42.375 7.5 52.5 17.625 52.5 30C52.5 42.375 42.375 52.5 30 52.5C17.625 52.5 7.5 42.375 7.5 30C7.5 17.625 17.625 7.5 30 7.5ZM30 3.75C15.5625 3.75 3.75 15.5625 3.75 30C3.75 44.4375 15.5625 56.25 30 56.25C44.4375 56.25 56.25 44.4375 56.25 30C56.25 15.5625 44.4375 3.75 30 3.75Z" fill="#F59022"/>
+            <path d="M45 28.125H31.875V15H28.125V28.125H15V31.875H28.125V45H31.875V31.875H45V28.125Z" fill="#F59022"/>
+        </svg>               
+    </div>
+    <!-- Delete point Button -->
+    <div id="device-div8">
+        <button id="device-button6" type="button"></button>
+        <svg id="device-svg3" width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M30 7.5C42.375 7.5 52.5 17.625 52.5 30C52.5 42.375 42.375 52.5 30 52.5C17.625 52.5 7.5 42.375 7.5 30C7.5 17.625 17.625 7.5 30 7.5ZM30 3.75C15.5625 3.75 3.75 15.5625 3.75 30C3.75 44.4375 15.5625 56.25 30 56.25C44.4375 56.25 56.25 44.4375 56.25 30C56.25 15.5625 44.4375 3.75 30 3.75Z" fill="#F59022"/>
+            <path d="M45 28.125H31.875V15H15V31.875H28.125V45H31.875V31.875H45V28.125Z" fill="#F59022"/>
+        </svg>               
+    </div>
+
+    <div id="device-scroll">
+        <div id="device-objs"></div>
+        <div id="point-menu">
+            <div id="create-div3">
+                <p id="point-text1">Name: </p>
+                <input id="point-text11" type="text" name="p_name" value="microphone 1">
+            </div>
+            <div id="create-div6">
+                <p id="point-text2">Type: </p>
+                <!-- <input id="point-text22" type="text" name="p_type" value="microphone"> -->
+                <select id="point-text22" name="p_type" value="">
+                    <option value="Microphone">Microphone</option>
+                    <option value="Projector">Projector</option>
+                    <option value="Screener">Screener</option>
+                </select>
+            </div>
+            <div id="point-image0">
+                <!-- <input id="point-input1" type="file" name="point_pic" value="p" style="opacity: 0"> -->
+                <svg id="svg-pic" width="25" height="22" viewBox="0 0 50 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M30.3 5L34.875 10H45V40H5V10H15.125L19.7 5H30.3ZM32.5 0H17.5L12.925 5H5C2.25 5 0 7.25 0 10V40C0 42.75 2.25 45 5 45H45C47.75 45 50 42.75 50 40V10C50 7.25 47.75 5 45 5H37.075L32.5 0ZM25 17.5C29.125 17.5 32.5 20.875 32.5 25C32.5 29.125 29.125 32.5 25 32.5C20.875 32.5 17.5 29.125 17.5 25C17.5 20.875 20.875 17.5 25 17.5ZM25 12.5C18.1 12.5 12.5 18.1 12.5 25C12.5 31.9 18.1 37.5 25 37.5C31.9 37.5 37.5 31.9 37.5 25C37.5 18.1 31.9 12.5 25 12.5Z" fill="#F59022"/>
+                </svg>
+                <!-- <img id="device-small-image" src="../static/img/classroom.jpg"> -->
+            </div>    
+            <input id="point-input10" type="text" name="p_img" value="" style="display: none">   
+            <input id="point-input2" type="submit" name="point_edit" value="Save">
+            <input id="point-input3" type="submit" name="point_duplicate" value="Duplicate">
+            <input id="point-input4" type="submit" name="point_delete" value="Delete">
+            <input id="point-input5" type="submit" name="point_close" value="×">
+            <!-- auxiliary input field -->
+            <input id="point-input6" type="text" name="point_name" value="" style="display: none">
+            <input id="point-input7" type="text" name="dup_x" value="" style="display: none">
+            <input id="point-input8" type="text" name="dup_y" value="" style="display: none">
+            <input id="point-input9" type="text" name="uid" value="" style="display: none">
+        </div>
+    </div>
+</form>
+
+<script>
+    Vue.createApp({
+      data() {
+        return {
+        }
+      },
+      delimiters: ['{[', ']}'],
+      methods: {
+    
+      }
+    }).mount('#point')    
+</script>
+
+<script>
+    const point_menu=document.getElementById('point-menu')
+    let show_point=true
+    hidpointlist_once();
+    
+    function hidpointlist_once(){  // do not show at first
+        if(show_point){
+            point_menu.style.display='none';
+            show_point=false;
+        }
+    }
+
+    var objs = JSON.parse('{{ devices | tojson | safe}}')
+    var parenDiv=document.getElementById('device-objs')
+    var choose_obj = JSON.parse('{{ devices_choose | tojson | safe}}')
+    console.log(objs)
+    console.log(choose_obj)
+
+    for (let i = 0; i < Object.keys(objs).length; i++) {
+        var obj=objs[i]
+        let sonDiv=document.createElement("div") // ball
+        sonDiv.id='point_'+i
+        sonDiv.style.position='absolute'
+        sonDiv.style.top=obj.y+'vh'
+        sonDiv.style.left=obj.x+'vw'
+        sonDiv.style.transform='translate(-50%,-50%)'
+        sonDiv.style.border='3px solid #F59022'
+        sonDiv.style.height='10vw'
+        sonDiv.style.width='10vw'
+        sonDiv.style.borderRadius='50%'
+        sonDiv.style.backgroundColor='transparent'
+        sonDiv.style.zIndex='1'
+        
+        let grandsonDiv=document.createElement("div") // rectangular
+        grandsonDiv.innerHTML=obj.name
+        grandsonDiv.style.position='absolute'
+        grandsonDiv.style.height='10vh'
+        grandsonDiv.style.width='10vw'
+        // grandsonDiv.style.height='60px'
+        // grandsonDiv.style.width='100px'
+        grandsonDiv.style.border='3px solid #F59022'
+        grandsonDiv.style.borderRadius='10px'
+        grandsonDiv.style.transform='translate(10px,-18px)'
+        grandsonDiv.style.backgroundColor='rgba(255, 255, 255, 0.8)'
+        grandsonDiv.style.zIndex='0'
+        grandsonDiv.style.fontFamily='Junge'
+        grandsonDiv.style.fontStyle='normal'
+        grandsonDiv.style.fontWeight='bold'
+        grandsonDiv.style.color='#F59022'
+        grandsonDiv.style.textAlign='center'
+        grandsonDiv.style.paddingTop='65%'
+        grandsonDiv.style.paddingLeft='5px'
+        grandsonDiv.style.fontSize='90%'
+        //grandsonDiv.style.clipPath='polygen(100% 0%, 100% 100%, 0% 100%, 0% 70%, 9% 60%, 18% 50%, 9% 40%, 0% 30%, 0% 0%)'
+        //grandsonDiv.style.clipPath='polygon(100% 0%, 100% 100%, 0% 100%, 0% 75%,'+
+        //'5% 74%,9% 72%,11.7% 69.25%, 13% 66.5%, 15.5% 61%,'+'17% 50%,'+'15.5% 39%, 13% 33.5%, 11.7% 30.75%, 9% 28%,5% 26%,'+
+        //'0% 25.5%, 0% 0%)'
+        //w=[1,1,0,0,0.05,0.09,0.117,0.13,0.155,0.17,0.155,0.13,0.117,0.09,0.05,0,0]
+        //h=[0,1,1,0.75,0.74,0.72,0.6925,0.665,0.61,0.5,0.39,0.335,0.3075,0.28,0.26,0.255,0]
+        grandsonDiv.style.clipPath='polygon(100px 0px, 100px 60px, 0px 60px, 0px 45px,'+
+        '5px 44.4px,9px 43.2px,11.7px 41.55px, 13px 39.9px, 15.5px 36.6px,'+
+        '17px 30px,'+
+        '15.5px 23.4px, 13px 20.1px, 11.7px 18.45px, 9px 16.8px,5px 15.6px,'+
+        '0px 15.3px, 0px 0px)'
+
+        let grandsonInput=document.createElement("input") // content
+        grandsonInput.type='submit'
+        grandsonInput.name='devices_input_'+obj.name
+        grandsonInput.value=' '
+        grandsonInput.style.position='absolute'
+        grandsonInput.style.top='-2px'
+        grandsonInput.style.left='-2px'
+        grandsonInput.style.height='9vw'
+        grandsonInput.style.width='9vw'
+        grandsonInput.style.borderRadius='50%'
+        grandsonInput.style.border='none'
+
+        let menu_point = document.getElementById("point-menu")
+        if(choose_obj[i][1]==1){  // device[i] hits.
+            grandsonInput.style.backgroundColor='#F59022'
+            show_point=true
+            if(menu_point.style.display=='none')
+                menu_point.style.display='block';
+            menu_point.style.position='absolute'
+            menu_point.style.left = obj.x+'vw'
+            menu_point.style.top= eval(obj.y+5)+'vh'
+            menu_point.children[0].children[1].value=obj.name;  // Name
+            menu_point.children[1].children[1].value = obj.type;  // Type
+            // menu_point.children[2].children[2].setAttribute('src', obj.device_img);  // Device_img
+            menu_point.children[8].value=obj.name; // auxiliary field
+            menu_point.children[11].value=i;
+        }
+        else{
+            grandsonInput.style.backgroundColor='transparent'
+        }
+
+        sonDiv.appendChild(grandsonInput)
+        sonDiv.appendChild(grandsonDiv)
+        parenDiv.appendChild(sonDiv)
+    }
+</script>
+
+<script>//Add Point
+    let form = document.getElementById("point")
+    const slider = document.getElementById('device-scroll')
+    const add_btn = document.getElementById('device-button5')
+    const del_btn = document.getElementById('device-button6')
+    let point = document.getElementById("point-menu")
+    let isDown = false;
+    let isAddProcess = false;
+    let isDelProcess = false;
+    let startX,startY,x,y;
+    let scrollLeft,scrollTop;
+
+    window.addEventListener('click', (e) => {
+        if(e.target==del_btn && isDelProcess==false){
+            e.preventDefault();  // prevent the form be submitted
+            isDelProcess=true
+            console.log("delete process, choose the point")
+        }
+        else if(e.target==add_btn && isAddProcess==false){
+            e.preventDefault();  // prevent the form be submitted
+            isAddProcess=true
+            console.log("add process, choose the location")
+            point.children[8].setAttribute('value', "");  // Add default 'name'
+        }
+        else if(isAddProcess==true){
+            console.log("add process over")
+            isAddProcess=false
+            point.children[9].setAttribute('value', x);  // Add location x field
+            point.children[10].setAttribute('value', y);  // Add location y field
+            form.submit()
+            point.children[9].setAttribute('value', "");
+            point.children[10].setAttribute('value', "");
+        }
+        else if(isDelProcess==true){
+            console.log("delete process over")
+            // isDelProcess=false
+            // var objs = JSON.parse('{{ devices | tojson | safe}}')
+            // for (let i = 0; i < Object.keys(objs).length; i++) {
+            //     if(e.target == document.getElementById('point_'+i)){
+            //         e.preventDefault();  // prevent the form be submitted
+            //         point.children[4].setAttribute('value', "yes");  // Delete field
+            //         point.children[0].setAttribute('value', objs[i].name);
+            //         // form.submit()
+            //         point.children[4].setAttribute('value', "");
+            //         point.children[0].setAttribute('value', "");
+            //     }
+            // }
+        }
+    })
+
+
+    slider.addEventListener('mousedown', (e) => {
+        isDown = true;
+        slider.classList.add('active');
+        startX = e.pageX - slider.offsetLeft;
+        scrollLeft = slider.scrollLeft;
+        startY = e.pageY - slider.offsetTop;
+        scrollTop = slider.scrollTop;
+    });
+
+    slider.addEventListener('mouseleave', () => {
+        isDown = false;
+        slider.classList.remove('active');
+    });
+
+    slider.addEventListener('mouseup', () => {
+        isDown = false;
+        slider.classList.remove('active');
+    });
+
+    slider.addEventListener('mousemove', (e) => {
+        if(isDown){
+            e.preventDefault();
+            x = e.pageX - slider.offsetLeft;
+            const walkX = (x - startX) * 1.2; //scroll-fast
+            slider.scrollLeft = scrollLeft - walkX;
+            y = e.pageY - slider.offsetTop;
+            const walkY = (y - startY) * 1.2;
+            slider.scrollTop = scrollTop - walkY;
+        }
+        if(isAddProcess){
+            x = e.offsetX / document.body.clientWidth * 100;
+            y = e.offsetY / document.body.clientHeight * 100;
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+    /* 页面的CSS:1.header部分 */
+    .bar {
+        position: absolute;
+        background-color: white;
+        height: 5vh;
+        z-index: 100;
+        width: 100vw;
+    }
+    .roomname{
+        font-size: 3vh;
+        text-align: center;
+    }
+    .quit{
+        height: 4vh;
+        width: 4vh;
+        margin-right: 2vw;
+        position: absolute;
+        top: 0.2vh;
+        left: 90vw;
+    }
+    /* 页面的CSS:2.主要部分 */
+    .choose{
+        position: absolute;
+        width: 100%;
+        margin-top: 5vh;
+    }
+    .chooseimg{
+        height: 95vh;
+        z-index: 0;
+    }
+    /* 页面的CSS:2.1顺序设备控件 */
+    input{
+        z-index: 1;
+        height: 12vw;
+        width: 12vw;
+        border-radius: 50%;
+        background-color: #0074BC;
+        border-color: #0074BC;
+        border-width: 3px;
+        color: rgba(255, 255, 255, 0);
+        transform: translate(-50%, -50%);
+        -webkit-appearance: none;
+    }
+    .choose-txt{
+        color: white;
+        font-size: 6vw;
+        z-index: 2;
+        transform: translate(-50%, -50%);
+    }
+    .active{
+        background-color: #ccc;
+        border: none;
+    }
+    /* 页面的CSS:3.最下部提示文字的部分 */
+    .text{
+        width: 100%;
+        position: absolute;
+        bottom: 3%;
+        margin: 4vw;
+    }
+    .text span{
+        color: white;
+        font-size: 4vw;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<form method="post" class="full">
+    <div class="bar">
+        <div class="roomname">Room 5554</div>
+        <a class="aclass" href="search">
+                <svg class="quit" width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M27.7087 32.0835H7.29199C6.90522 32.0835 6.53429 31.9299 6.2608 31.6564C5.9873 31.3829 5.83366 31.012 5.83366 30.6252V18.9585H2.91699L16.4678 5.40623C16.6033 5.27063 16.7641 5.16307 16.9411 5.08968C17.1182 5.01629 17.308 4.97852 17.4996 4.97852C17.6912 4.97852 17.881 5.01629 18.0581 5.08968C18.2351 5.16307 18.3959 5.27063 18.5314 5.40623L32.0837 18.9585H29.167V30.6252C29.167 31.012 29.0134 31.3829 28.7399 31.6564C28.4664 31.9299 28.0954 32.0835 27.7087 32.0835ZM14.5837 21.8752H20.417V29.1669H26.2503V17.2494L17.5003 8.49935L8.75033 17.2494V29.1669H14.5837V21.8752Z" fill="black"/>
+                </svg>
+            </a>
+      </div>
+    <div class="choose">
+        <img class="chooseimg" src="{{image_path}}">
+        {% for i, d in dic.items() %}
+            {% if d.clicked == 'n' %}
+                <input is="locate-input" type='submit' name="input" value="{{d.name}}" top="{{d.v}}" left="{{d.u}}">
+            {% else %}
+                <input class="active" is="locate-input" type='submit' name="input" value="{{d.name}}" top="{{d.v}}" left="{{d.u}}">
+            {% endif %}
+            <div id="txt-{{d.name}}" class="choose-txt"  onclick="enlarge($(this))">{{d.name[-1]}}</div>
+        {% endfor %}
+        <div class="text">
+            <span>Please choose the devices in this order: {{order}}</span>
+        </div>
+    </div>
+</form>
+
+<script>
+function enlarge($t){
+  console.log($t)
+  console.log($t.prev())
+  $t.prev().click();
+}
+
+class LocateInput extends HTMLInputElement{
+    constructor(){
+    super();
+    }
+    connectedCallback(){
+        this.style.position="absolute";
+        this.style.top=this.getAttribute('top');
+        this.style.left=this.getAttribute('left');
+
+        var objs = JSON.parse('{{ dic | tojson | safe}}')
+        //console.log(objs)
+
+        for(let i = 0; i < Object.keys(objs).length; i++)
+        {
+            let obj = objs[i]
+            let txtDiv=document.getElementById("txt-" + obj.name)  // label
+            txtDiv.style.position='absolute'
+            txtDiv.style.top=obj.v;
+            txtDiv.style.left=obj.u;
+        }
+    }
+}
+customElements.define('locate-input', LocateInput, {extends: 'input'});
+</script>
+{% endblock %}
+
+
+

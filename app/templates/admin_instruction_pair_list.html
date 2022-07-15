@@ -1,0 +1,316 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+    #instructionPair{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        width: 100vw;
+        padding: 5vh 5vw;
+        padding-bottom: 2vh;
+    }
+
+    .line{
+        width: 100%;
+        height: 9vh;
+    }
+
+    .line1{
+        width: 100%;
+        height: 9vh;
+    }
+
+    .devicebox{
+        position: relative;
+        width: 40vw;
+		top: 3vh;
+		left: 5vw;
+		padding: 0.3vh 0;
+		font-size: 2vh;
+    }
+
+    .admin-txt{
+        float: left;
+
+        /* font-family: 'Comfortaa'; */
+        font-style: normal;
+        font-weight: 450;
+        font-size: 10vw;
+        line-height: 10vh;
+        display: flex;
+        align-items: center;
+        letter-spacing: -0.015em;
+
+        color: #000000;
+    }
+
+    .admin-small-txt{
+        float: left;
+        padding-left: 2vw;
+        padding-top: 3.6vh;
+
+        font-weight: 100;
+        font-size: 4vw;
+        line-height: 5vh;
+        /* identical to box height */
+
+        display: flex;
+        align-items: center;
+        letter-spacing: -0.015em;
+
+        color: #000000;
+
+        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    }
+
+    .admin-step-txt{
+        float: left;
+        padding-left: 2vw;
+        padding-top: 3.6vh;
+
+        font-weight: 100;
+        font-size: 4vw;
+        /* identical to box height */
+
+        display: flex;
+        align-items: center;
+        letter-spacing: -0.015em;
+
+        color: #000000;
+
+        margin-bottom: 4vh;
+    }
+
+    .admin-mid-txt{
+        float: left;
+        width: 90%;
+        margin-bottom: 4vh;
+
+        font-weight: 100;
+        font-size: 4vw;
+        line-height: 3vh;
+        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        /* identical to box height */
+
+        display: flex;
+        align-items: center;
+        letter-spacing: -0.015em;
+
+        color: #000000;
+    }
+
+    .deviceChoose{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: stretch;
+
+        margin-bottom: 5vh;
+    }
+
+    .device-checkbox{
+        transform: scale(5,5) translateX(50%);
+    }
+
+    .text{
+        margin: -2.7vh 0vw 0vh 8vw;
+
+        font-weight: inherit;
+        font-size: 4vw;
+
+        display: flex;
+        align-items: center;
+        letter-spacing: -0.015em;
+
+        color: #000000;
+        text-shadow: 0px 4px 4px rgb(0 0 0 / 25%);
+    }
+
+    /* step part */
+    .step-div{
+        width: 100%;
+        padding: 0 0 0 5vw;
+    }
+
+    .step-label{
+        float: left;
+        padding-top: 3vh;
+        padding-bottom: 1vh;
+
+        font-size: 1.8vh;
+        font-weight: 750;
+        text-transform: uppercase;
+    }
+    
+    .btn-edit{        
+        /*float: left;*/
+        float: right;
+        width: 12vw;
+        height: 7vh;
+        /*margin-left: 34vw;*/
+        margin-right: 3vw;
+        margin-top: 1vh;
+
+        font-size: 1.8vh;
+        font-weight: 500;
+
+        background: #FFFFFF;
+        border: 0.5vw solid #0074BC;
+        border-radius: 1vw;
+
+        font-style: normal;
+        font-weight: 700;
+        font-size: 2vh;
+
+        text-decoration: none;
+        color: #000000;
+        text-transform: uppercase;
+    }
+
+    .btn-delete{
+        /*float: left;*/
+        float: right;
+        width: 25vw;
+        height: 7vh;
+        /*margin-left: 3vw;
+        margin-right: 0;*/
+        margin-top: 1vh;
+
+        font-size: 1.8vh;
+        font-weight: 500;
+
+        background: #FFFFFF;
+        border: 0.5vw solid #0074BC;
+        border-radius: 1vw;
+
+        font-style: normal;
+        font-weight: 700;
+        font-size: 2vh;
+
+        text-decoration: none;
+        color: #000000;
+        text-transform: uppercase;
+    }
+
+    .empty-text{
+        font-weight: 700;
+        font-size: 3vw;
+        color: rgba(0, 0, 0, 0.3);
+        margin-top: 50vh;
+        margin-left: 15vw;
+        width: 60vw;
+        text-align: center;
+        text-transform: UPPERCASE;
+    }
+
+    /* button part */
+    #btn-add {
+        width: 100%;
+        height: 7vh;
+        margin: 12vh 0 2vh 0;
+        
+        background: #FFFFFF;
+        border: 0.5vw solid #0074BC;
+        border-radius: 1vw;
+
+        font-style: normal;
+        font-weight: 700;
+        font-size: 2vh;
+
+        text-decoration: none;
+        color: #000000;
+    }
+
+    #btn-confirm {
+        width: 100%;
+        height: 7vh;
+        margin: auto;
+        
+        background: #0074BC;
+        border: 2px solid #0074BC;
+        border-radius: 1vw;
+
+        font-style: normal;
+        font-weight: 500;
+        font-size: 2vh;
+        color: #FFFFFF;
+    }
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<form method="post" id="admin-instruction-pair" enctype="multipart/form-data">
+  <div id="instructionPair">  
+    <div class="line1">
+        <div class="admin-txt">Instruction</div>
+        <div class="admin-small-txt">- Pair - {{case_id}}</div>
+    </div>
+    <div class="step-label">DEVICE INVOLVED</div>
+    <div class="deviceChoose">
+        {% for k, v in device111.items() %}
+            <div class="devicebox">
+                <input class="device-checkbox" type='checkbox' name="Device_{{k}}" value="device {{k}}" id="{{k}}">
+                <label class="text" for="one">{{v.name}}</label>
+            </div>
+        {% endfor %}
+    </div>
+    <!-- step part -->
+    {% if steps|length==0 %}
+        <div class="empty-text">There is no step created so far, <br>please click “add step” to create new step for initial.</div>
+    {% else %}
+    <!--<div class="empty-text">Don't forget choose involved devices before you click confirm!</div>-->
+        {% for k, v in steps.items() %}
+            <div class="step-div">
+                <div class="line">
+                    <div class="step-label">{{k}}</div>
+                    <input class="btn-delete" type='submit' name="delete_{{k}}" value="delete">
+                    <input class="btn-edit" type='submit' name="edit_{{k}}" value="edit">
+                </div>
+                {% if v.text %}
+                    <div class="admin-step-txt">{{v.text}}</div>
+                {% else %}
+                    <div class="admin-step-txt">none</div> 
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% endif %}
+    <input id="btn-add" type='submit' name="add-step" value="ADD STEP">
+    <input id="btn-confirm" type='submit' name="confirm" value="CONFIRM">
+  </div>
+</form>
+
+<script>
+    Vue.createApp({
+      data() {
+        return {
+        }
+      },
+      delimiters: ['{[', ']}'],
+      methods: {
+    
+      }
+    }).mount('#admin-instruction-pair')    
+</script>
+
+<script>
+    var choose_devices = JSON.parse('{{ choose_dev | tojson | safe}}')
+    var all_devices = JSON.parse('{{ device111 | tojson | safe}}')
+    console.log(choose_devices)
+    for(all_id in all_devices){
+        var checkbox_device = document.getElementById(all_id)
+        checkbox_device.removeAttribute("checked", false)
+    }
+
+    for (choose_id in choose_devices) {
+        var checkbox_device = document.getElementById(choose_id)
+        checkbox_device.setAttribute("checked", true)
+        console.log(checkbox_device.getAttribute("checked"))
+    }
+</script>
+{% endblock %}

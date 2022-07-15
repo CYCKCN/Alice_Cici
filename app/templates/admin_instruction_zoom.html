@@ -1,0 +1,235 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+    #instructionInitial{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        width: 100vw;
+        /* height: 100vh; */
+        padding: 5vh 5vw;
+    }
+    
+    .line{
+        width: 100%;
+        height: 9vh;
+    }
+
+    .admin-txt{
+        float: left;
+
+        /* font-family: 'Comfortaa'; */
+        font-style: normal;
+        font-weight: 450;
+        font-size: 10vw;
+        line-height: 10vh;
+        display: flex;
+        align-items: center;
+        letter-spacing: -0.015em;
+
+        color: #000000;
+    }
+
+    .admin-small-txt{
+        float: left;
+        padding-left: 2vw;
+        padding-top: 3.6vh;
+
+        font-weight: 100;
+        font-size: 4vw;
+        line-height: 5vh;
+        /* identical to box height */
+
+        display: flex;
+        align-items: center;
+        letter-spacing: -0.015em;
+
+        color: #000000;
+
+        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    }
+
+    .admin-mid-txt{
+        float: left;
+        width: 90%;
+        margin-bottom: 3vh;
+
+        font-weight: 100;
+        font-size: 4vw;
+        line-height: 3vh;
+        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        /* identical to box height */
+
+        display: flex;
+        align-items: center;
+        letter-spacing: -0.015em;
+
+        color: #000000;
+    }
+
+    .roomsubhead{
+        font-size: 1.8vh;
+        font-weight: 750;
+
+        padding-top: 1vh;
+        padding-bottom: 1vh;
+        text-transform: uppercase;
+    }
+
+    .stepBox {
+        width: 100%;
+        height: 10vh;
+
+        font-size: 2vh;
+        margin: 1vh 0 2vh 0;
+        padding: 1vh 3vw;
+        border: 0.5vw solid #000;
+    }
+
+    .uploadWrap{
+      width: 100%;
+      height: 40vh;
+      margin: 1vh 0 2vh 0;
+  
+      background-color: #D9D9D9;
+    }
+
+    .roomImg{
+      width: 100%;
+      height: 100%;
+    }
+
+    .uploadBox{
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(100%);
+      padding: 1.7vh 7.5vw;
+      width: 30vw;
+      height: 7vh;
+
+      background: #FFFFFF;
+      border: 0.5vw solid #0074BC;
+      border-radius: 1vw;
+
+      font-style: normal;
+      font-weight: 700;
+      font-size: 2vh;
+      text-decoration: none;
+      color: #000000;
+    }
+
+    .roomUpload{
+      position: relative;
+      left: -8vw;
+      top: -5vh;
+      width: 30vw;
+      height: 7vh;
+      opacity: 0;
+        /* border-radius: 5vw 5vw 0 0; */
+    }
+
+    #btn-confirm {
+        width: 100%;
+        height: 7vh;
+        margin: 1vh 0;
+        
+        background: #0074BC;
+        border: 2px solid #0074BC;
+        border-radius: 1vw;
+
+        font-style: normal;
+        font-weight: 500;
+        font-size: 2vh;
+        color: #FFFFFF;
+    }
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<form method="post" id="admin-instruction-initial" enctype="multipart/form-data">
+  <div id="instructionInitial">  
+    <div class="line">
+        <div class="admin-txt">Instruction</div>
+        <div class="admin-small-txt">- Zoom - {{zoom_type}}</div>
+    </div>
+    <div class="admin-mid-txt">Please describe your new step in details with text, image or code according to the following guides.</div>
+    <!-- instruction content part -->
+    <div class="roomsubhead">{{step_id}}</div>
+	<textarea class="stepBox" type="text" placeholder="Please add text to describe this step." name="step_text" value="{{steps.get(step_id).text}}"></textarea>
+    <div class="uploadWrap">
+      {% if not steps.get(step_id).image=='' %}
+      <img id="room-photo" class="roomImg" src="../../static/images/test/room{{room_id}}/instruction/{{steps.get(step_id).image}}.png">
+      {% else %}
+      <img id="room-photo" class="roomImg" src="">
+      {% endif %}
+      <div class="uploadBox">UPLOAD
+        <input id="room-photo-uploader" class="roomUpload" type="file">
+      </div>
+    </div>
+    <input id="btn-confirm" type='submit' name="confirm" value="CONFIRM">
+  </div>
+   <!-- auxiliary input field -->
+   <input id="room-img1" type="text" name="imgSrc" value="" style="display: none">
+</form>
+
+<script>
+    Vue.createApp({
+      data() {
+        return {
+        }
+      },
+      delimiters: ['{[', ']}'],
+      methods: {
+    
+      }
+    }).mount('#admin-instruction-initial')    
+</script>
+
+<script>
+  const form = document.getElementById('admin-instruction-initial');
+  const fileUploader1 = document.getElementById('room-photo-uploader');
+  const imgSrc = document.getElementById('room-img1');
+  // 听更 change 件并读取元数据
+  fileUploader1.addEventListener('change', (event) => {
+      // 获取文件列表数组
+      const files1 = event.target.files;
+      if(files1.length > 1){
+          alert("请您上传1张图片")
+      }
+      const file1 = files1[0]
+  
+      const name1 = file1.name;
+      const type1 = file1.type ? file1.type: 'NA';
+      const size1 = file1.size;
+      const lastModified1 = file1.lastModified;
+  
+      var imageType1 = /^image\//; 
+      // 是否是图片 
+      if(!imageType1.test(type1)) { alert("请选择图片！"); return; }
+      //if(size > 40 * 1024 * 1024) {alert("发送的图片超过40MB！"); return;}
+  
+      console.log({ file1, name1, type1, size1, lastModified1 });
+  
+      // 判断是否支持FileReader 
+      if(window.FileReader) { 
+          const reader1 = new FileReader(); 
+          reader1.readAsDataURL(file1);
+          reader1.addEventListener('load', (event) => {
+              const img1 = document.getElementById('room-photo');
+              img1.src = event.target.result;
+              img1.alt = file1.name;
+              imgSrc.setAttribute('value', img1.src);
+              console.log(imgSrc.value)
+          });
+      } 
+      else { alert("您的设备不支持图片预览功能，如需该功能请升级您的设备！"); } 
+  
+  });
+</script>
+{% endblock %}

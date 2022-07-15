@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+    .btn{
+        height: 5vh;
+        width: 20vw;
+        font-size: 3vw;
+        border: 0.2vw solid #000;
+    }
+
+    .txtarea1{
+        position: absolute; 
+        width: 20vh; 
+        height: 20vh; 
+        top: 35vh; 
+        left: 0vh;
+        font-size: 5vw;
+        border: 0.2vw solid #000;
+    }
+
+    .txtarea2{
+        position: absolute; 
+        width: 20vh; 
+        height: 20vh; 
+        top: 60vh; 
+        left: 0vh;
+        font-size: 5vw;
+        border: 0.2vw solid #000;
+    }
+
+    .txtarea3{
+        position: absolute; 
+        width: 20vh; 
+        height: 20vh; 
+        top: 35vh; 
+        left: 50vh;
+        font-size: 5vw;
+        border: 0.2vw solid #000;
+    }
+
+    .txtarea4{
+        position: absolute; 
+        width: 20vh; 
+        height: 20vh; 
+        top: 60vh; 
+        left: 50vh;
+        font-size: 5vw;
+        border: 0.2vw solid #000;
+    }
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<form method="post" id="code" enctype="multipart/form-data">
+    <input class="btn" id="filename" type="file" name="image" accept="image/*" onchange="handleInputChange()">
+    <input class="btn" type="submit" name="submit" value="Submit">
+    <img id="img_u" style="position:absolute; width:20vh; height:20vh; top:10vh; left:0vh" src="{{url_for('static',filename='images/test/room5554/IMG5554_BIG.png')}}">
+    <input class="txtarea1" name="text" type="textarea">
+    <input class="txtarea2" name="code" type="textarea">
+
+</form>
+
+<script>
+    Vue.createApp({
+      data() {
+        return {
+        }
+      },
+      delimiters: ['{[', ']}'],
+      methods: {
+    
+      }
+    }).mount('#code')    
+</script>
+
+<script>
+    // https://juejin.cn/post/6844903670924984334
+function handleInputChange (e) {
+    var file = document.getElementById("filename").files[0];
+    console.log(file)
+    
+    var reads = new FileReader();
+    reads.readAsDataURL(file);
+    reads.onload=function(){
+        document.getElementById("img_u").src= this.result;
+    }
+}
+</script>
+{% endblock %}

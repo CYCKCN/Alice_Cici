@@ -1,0 +1,361 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+form{
+    position:fixed;
+    padding:0;
+    margin:0;
+
+    top:0;
+    left:0;
+
+	width: 100%;
+    height: 100%;
+    border: 0;
+}
+/* header */
+.header{
+    position: relative;
+    height: 6.5vh;
+    background-color: #F5F5F5;
+    text-align: center;
+    padding-top:1vh;
+}
+.header-name{
+    font-size: 2.8vh;
+	color: black;
+}
+.header-back{
+    position: absolute;
+    top:0;
+    height: 100%;
+    width: 6.5vh;
+}
+.header-back input{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color:rgba(0, 0, 0, 0);
+    border: 0;
+    z-index: 5;
+}
+.header-home{
+    position: absolute;
+    top:0;
+    right:0;
+    height: 100%;
+    width: 6.5vh;
+}
+.header-home input{
+    position: absolute;
+    top:0;
+    right:0;
+    width: 100%;
+    height: 100%;
+    background-color:rgba(0, 0, 0, 0);
+    border: 0;
+    z-index: 5;
+}
+/* date */
+.date{
+    position: relative;
+    height: 8vh;
+    background-color: #F5F5F5;
+    border-top: 2px solid black;
+}
+.date-ym{
+    position: absolute;
+    height: 100%;
+    width: 8vh;
+    text-align: center;
+    padding-top: 1vh;
+}
+.date-text1{
+    font-size: 1.7vh;
+	color: black;
+    z-index: 2;
+}
+.date-text2{
+    font-size: 2.2vh;
+	color: black;
+    z-index: 2;
+}
+.date-week{
+    position: absolute;
+    right:0;
+    height: 100%;
+    width: 80vw;
+    text-align: center;
+    padding-top: 1vh;
+
+}
+.date-week div{
+    position: relative;
+    display: inline-block;
+    height: 100%;
+    right: 2vw;
+    margin-left: 4vw;
+}
+.date-body{
+    position: absolute;
+    bottom: 0;
+    height: 85.5vh;
+    width: 100vw;
+    overflow-y: scroll;
+    border-top: 0.8vh solid #F5F5F5;
+}
+.date-time{
+    float: left;
+    width: 9vh;
+    border-top: 1px solid rgba(255, 255, 255, 0);
+    border-right: 2px solid gray;
+    text-align: center;
+}
+.date-time p{
+    margin-bottom: 2vh;
+}
+.date-choose{
+    float: left;
+    left: 0;
+    width: 80vw;
+    height: 132vh;
+}
+.unoccupy{
+    height: 100%;
+    width: 100%;
+    appearance: none;
+}
+.unoccupy:checked{
+    background-color:#FFD400;
+    opacity: 0.8;
+}
+.occupy{
+    height: 100%;
+    width: 100%;
+    appearance: none;
+    background-color:#cccccc;
+}
+th,td{
+    border: 0.5px solid rgb(197, 197, 197);
+}
+.book-img{
+    transform: scale(4);
+    position: absolute;
+    width:100%;
+    height: 100%;
+    z-index: 5;
+    margin: 9.7vh 0vw 0vh 20vw;
+}
+.book{
+    position: absolute;
+    width:12vw;
+    height:12vw;
+    right:10vw;
+    bottom: 10vw;
+    background-color:rgba(0, 0, 0, 0);
+    
+}
+.book input{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width:100%;
+    height: 100%;
+    appearance: none;
+    opacity: 0;
+    z-index: 100;
+    margin: 1.6vh 0vw 0vh 2.8vw;
+}
+
+.header img{
+    position: relative;
+    transform: translate(-55%,-55%);
+    top: 0;
+    top: 50%;
+    left: 50%;
+    width:80%;
+    height: 80%;
+    z-index: 1;
+}
+
+#overlay {
+    display: none;
+    position: absolute;
+    left: 16vw;
+    top: 27vh;
+    box-shadow: 2vw 2vw 2vw rgba(0, 0, 0, 0.25);
+}
+.person-device {
+    background:#f5f5f5;
+    width: 72vw;
+    height: 44vh;
+    z-index: 1;
+}
+.close{
+    width: 5vw;
+    height: 5vw;
+    position: relative;
+    top: 2vh;
+    left: 88%;
+}
+.perdev-question{
+    position: relative;
+    top: 5vh;
+    left: 8%;
+    font-size: 2.7vh;
+    font-weight: 700;
+}
+.pick{
+    transform: scale(5,5) translate(0.5vw, -0.1vh);
+}
+.text{
+    padding: 0 6vw;
+}
+.perdev-ans{
+    position: relative;
+    top: 7vh;
+    left: 14%;
+    padding: 0.8vh 0;
+    font-size: 2.3vh;
+}
+.subbtn{
+    position: relative;
+    top: 11vh;
+    left: 10%;
+}
+.subbtn input{
+    width: 50vw;
+    height: 6vh;
+    font-size: 2.5vh;
+    background-color: white;
+    border: 0.8vw solid #0074BC;
+    border-radius: 1vh;
+    margin-left: 4vw;
+}
+.emailBox {
+    margin: auto;
+    width: 70%;
+    height: 4vh;
+    padding: 0 0vw;
+    border: 0;
+    border-bottom: 0.5vw solid #000;
+    background: #ffffff00;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 1.9vh;
+    color: #000000;
+    outline: none;
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+<form method="post">
+    <div class="header">
+        <p class="header-name">Room {{room_id}}</p>
+        <div class="header-back">
+            <img src="{{url_for('static',filename='back.png')}}">
+            <input type="submit" name="back" value=" "> 
+        </div>
+        <div class="header-home">
+            <img src="{{url_for('static',filename='home.png')}}">
+            <input type="submit" name="home" value=" "> 
+        </div>
+    </div>
+    <div class="date">
+        <div class="date-ym">
+            <p class="date-text1">{{year}}</p>
+            <h1 class="date-text2"><b>{{month}}</b></h1>
+        </div>
+        <div class="date-week">
+        {% for w, d in week.items() %}
+            <div>
+                <p class="date-text1">{{w}}</p>
+                <h1 class="date-text2"><b>{{d}}</b></h1>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+
+    <div class="date-body">
+        <div class="date-time">
+        {% for t in time %}
+            <p class="date-text1">{{t}}</p>
+        {% endfor %}
+        </div>
+        <table class="date-choose">
+        {% for t in time %}
+            <tr>
+            {% for w, d in week.items() %}
+                <td>
+                    {% if occupy[t,d]=='n' %}
+                    <input type="checkbox" name="time-{{d}}-{{t}}" value=" " class="unoccupy">
+                    {% else %}
+                    <input type="checkbox" name="time-{{d}}-{{t}}" value=" " class="occupy" disabled>
+                    {% endif %}
+                </td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+    <div class="book">
+        <div class="book-img">
+            <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_382_1534)">
+                <circle cx="40" cy="39.5103" r="35" fill="white"/>
+                <path d="M25 3.125C19.22 3.19473 13.6965 5.5218 9.60914 9.60914C5.5218 13.6965 3.19473 19.22 3.125 25C3.19473 30.78 5.5218 36.3035 9.60914 40.3909C13.6965 44.4782 19.22 46.8053 25 46.875C30.78 46.8053 36.3035 44.4782 40.3909 40.3909C44.4782 36.3035 46.8053 30.78 46.875 25C46.8053 19.22 44.4782 13.6965 40.3909 9.60914C36.3035 5.5218 30.78 3.19473 25 3.125ZM37.5 26.5625H26.5625V37.5H23.4375V26.5625H12.5V23.4375H23.4375V12.5H26.5625V23.4375H37.5V26.5625Z" fill="#0074BC"/>
+                </g>
+                <defs>
+                <clipPath id="clip0_382_1534">
+                <rect width="50" height="50" fill="white"/>
+                </clipPath>
+                </defs>
+            </svg>
+        </div>
+        <input type="submit" onclick="on(event);" name="book" value=" ">
+    </div>
+    
+    <div id="overlay">
+		<div class="person-device">
+      		<a onclick="off()">
+        		<svg class="close" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+          			<path d="M14.0625 14.0625L0.9375 0.9375M0.9375 14.0625L14.0625 0.9375L0.9375 14.0625Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        		</svg>          
+      		</a>
+			<h2 class="perdev-question">Booking</h2>
+		    <div class="perdev-ans">
+				<input class="pick" type="checkbox" check="checked" id="one" name="myself" value="For Myself">
+				<label class="text" for="one">For Myself</label>
+			</div>
+			<div class="perdev-ans">
+				<input class="pick" type="checkbox" id="two" name="guest" value="Invite Guest">
+				<label class="text" for="two">Invite Guest</label>
+			</div>
+			<div class="perdev-ans">
+				<input class="emailBox" type="text" placeholder="Please enter guest's email" name="guestemail" v-model="guestemail"/>
+      		</div>
+      		<div class="subbtn">
+        		<input type="submit" class="enter" name="confirm" value="Confirm">
+      		</div>
+		</div>
+	</div>	
+</form>
+
+<script>
+function on(event) {
+    event.preventDefault();
+    document.getElementById("overlay").style.display = "block";
+}
+    
+function off() {
+    document.getElementById("overlay").style.display = "none";
+}
+
+</script>
+{% endblock %}
+

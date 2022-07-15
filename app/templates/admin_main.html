@@ -1,0 +1,284 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+    form{
+        /* position:fixed; */
+        padding:0;
+        margin:0;
+    }
+    #mainBody{
+        /* display: flex;
+        flex-direction: column;
+        align-items: flex-start; */
+        justify-content: center;
+        height: 100vh;
+        width: 100vw;
+        padding: 5vh 5vw;
+    }
+    .main-title{
+        width: 20vw;
+        height: 10vh;
+
+        /* font-family: 'Comfortaa'; */
+        font-style: normal;
+        font-weight: 360;
+        font-size: 8vw;
+        line-height:10vh;
+        display: flex;
+        align-items: center;
+        letter-spacing: -0.015em;
+        color: #000000;
+    }
+    .searchsubhead{
+        font-weight: 900;
+        font-size: 3vw;
+
+        /* padding-top: 1vh; */
+        padding-bottom: 1vh;
+        font-style: normal;
+        margin-top: 4vh;
+        line-height: 2vh;
+        display: flex;
+        align-items: center;
+        letter-spacing: -0.015em;
+        color: #000000;
+    }
+    .searchBox {
+        margin: auto;
+        width: 100%;
+        height: 6vh;
+        padding: 0 3vw;
+        border: 0.5vw solid #000;
+        background: #FFFFFF;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 2vh;
+        color: #000000;
+    }
+    .roomgroup{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: stretch;
+        padding: 0% 0% 20% 0%;
+    }
+    .room{
+        height: 25vh;
+        width: 41vw;
+        margin: 0vh 2vw 2vh 2vw;
+        border-radius: 1vw;
+        filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.25));
+        background-color: white;
+    }
+    .roomimg{
+        width: 100%;
+        height: 80%;
+        border-radius: 1vw 1vw 0 0;
+    }
+    .roomtext{
+        width: 100%;
+        height: 20%;
+        padding: 2% 6%;
+    }
+    .roomname{
+        font-size: 3.3vw;
+        font-weight: 500;
+    }
+    .roomlift{
+        font-size: 2.4vw;
+        font-weight: 300;
+    }
+    .roomelse{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        margin-left: auto;
+        align-items: flex-end;
+        position: relative;
+        bottom: 80%;
+    }
+    .roomdate{
+        position: relative;
+        font-size: 2.4vw;
+        font-weight: 300;
+    }
+    .roomtime{
+        position: relative;
+        font-size: 2.4vw;
+        font-weight: 300;
+    }
+    #mainFooter{
+        position: fixed;
+        z-index: 999;
+        width: 100vw;
+        height: 10vh;
+        bottom: 4vh;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        /* float: left;
+        z-index: 999;
+        width: 100vw;
+        height: 10vh;
+        bottom: 4vh;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center; */
+    }
+    .btnAdd{
+        position: relative;
+        margin-top: 6vh;
+        margin-bottom: 3vh;
+        /* padding-top:2vh; */
+        width: 90vw;
+        height: 7vh;
+        /* top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%); */
+        background: #0074BC;
+        border-radius: 1vh;
+        font-size: 4vh;
+        text-align: center;
+        color: white;
+    }
+    .error{
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5vh;
+        width: 100vw;
+        background: #ffeb99;
+        text-align: center;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 2vh;
+        padding-top: 1vh;
+    }
+    .room-empty{
+        margin: auto;
+        text-align: center;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 2vh;
+        padding-top: 5vh;
+    }
+    .img_profile{
+        transform: scale(10);
+        position: absolute;
+        margin: 14vh 0vw 0vh 86vw;
+        /* width: 5vw; */
+        height: 5vh;
+	}
+    #btn-profile {
+        opacity: 0;
+        margin: -8vh 0vw 0vh 83vw;
+        position:absolute;
+        z-index: 100;
+        width: 7vw;
+        height: 7vh;
+        /* background: #000000;
+        border: 2px solid #000000;
+        border-radius: 1vw; */
+        font-style: normal;
+        font-weight: 500;
+        font-size: 2vh;
+        color: #FFFFFF;
+    }
+
+    #main-title,#profile{
+        display: inline-block;
+    }
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<form method="post" id="admin-main" enctype="multipart/form-data">
+    {% if not error=='' %}
+    <div class="error">
+        {{error}}
+    </div>
+    {% endif %}
+    <div class="main">
+    <!-- body -->
+    <div id="mainBody">  
+        <div class="main-title">Rooms</div>
+        <div class="profile">
+            <input id="btn-profile" type='submit' name="profile" value="profile">
+            <div class="img_profile">
+                <svg width="20" height="20" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20.2174 20.4783C17.3359 20.4783 15 22.8142 15 25.6957V27H25.4348V25.6957C25.4348 22.8142 23.0989 20.4783 20.2174 20.4783Z" stroke="black"/>
+                    <ellipse cx="20.2175" cy="15.913" rx="3.91307" ry="3.91304" stroke="black" stroke-linecap="square"/>
+                </svg>
+            </div>
+        </div>
+        <div class="searchsubhead">SEARCH</div>
+            <input class="searchBox" type="text" placeholder="Search all rooms" name="room_id"/>
+        <div class="searchsubhead">BROWSE ALL</div>
+        <div class="roomgroup">
+            {% if roomInfo %}
+                {% for k, v in roomInfo.items() %}
+                <div class="room" v-on:click="goRoom($event, '{{v.name}}')">
+                    <img class="roomimg" src="../../static/images/test/room{{v.name}}/_basic_upload.png" />
+                    <div class="roomtext">
+                        <div class="roomname">Room {{v.name}}</div>
+                        <div class="roomlift">{{v.lift}}</div>
+                        <div class="roomelse">
+                            
+                            <!-- <div class="roomdate">{{v.date}}</div>
+                            <div class="roomtime">{{v.time}}</div> -->
+                           
+                            <div class="roomdate">TBA</div>
+                            <div class="roomtime">TBA</div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="room-empty">No room now! Please create one!</div>
+            {% endif %}
+            
+        </div>
+    
+        <!-- footer -->
+        <div id="mainFooter">
+            <input class="btnAdd" type="submit" name="add" value="+">
+        </div>
+    </div>
+  </div>
+  <!-- auxiliary field: not show in frontend, deal with form submit to send RoomId -->
+  <div id="roomId" style="display:none">
+    <input id="children0" type="text" name="roomid" value="" style="display:none">
+  </div>
+</form>
+
+<script>
+    Vue.createApp({
+      data() {
+        return {
+        }
+      },
+      delimiters: ['{[', ']}'],
+      methods: {
+        goRoom: function (event, roomid) {
+            console.log(roomid)
+            var form = document.getElementById("admin-main");
+            var roomDiv = document.getElementById("roomId");
+
+            roomDiv.children[0].setAttribute('value', roomid);
+            console.log(roomDiv.children[0].value)
+            
+            form.submit();
+        },
+      }
+    }).mount('#admin-main')    
+</script>
+
+<script>
+   
+
+</script>
+{% endblock %}

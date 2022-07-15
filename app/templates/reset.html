@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+    input:-webkit-autofill {
+        box-shadow: 0 0 0 32vh #fff inset;;
+        -webkit-box-shadow: 0 0 0 32vh #fff inset; /**通过边框阴影遮挡住背景*/
+        -webkit-text-fill-color: #000; /*自动填充内容的文本颜色*/
+    } 
+    .reset{
+        justify-content: center;
+        width: 100vw;
+        height: 100vh;
+        padding: 5vh 5vw;
+    }
+    .reset-title{
+        font-style: normal;
+        font-weight: 360;
+        font-size: 8vw;
+        line-height: 10vh;
+        display: flex;
+        align-items: center;
+        letter-spacing: -0.015em;
+
+        color: #000000;
+    }
+    .reset-input{
+        margin: auto;
+        width: 100%;
+        height: 6vh;
+        
+        background: #FFFFFF;
+        border: 0.5vw solid #000000;
+        padding: 0 3vw;
+
+        font-style: normal;
+        font-weight: 500;
+        font-size: 2vh;
+        color: #000000;
+    }
+    .reset-txt{
+        margin-top: 4vh;
+        font-style: normal;
+        font-weight: 900;
+        font-size: 3vw;
+        line-height: 2vh;
+        display: flex;
+        align-items: center;
+        letter-spacing: -0.015em;
+
+        color: #000000;
+    }
+    .reset-btn{
+        margin-top: 2vh;
+        width: 100%;
+        height: 7vh;
+        padding-top:2vh;
+        
+        background: #000000;
+        border: 2px solid #000000;
+        border-radius: 1vw;
+
+        font-style: normal;
+        font-weight: 900;
+        font-size: 3vw;
+        color: #FFFFFF;
+
+        text-align: center;
+    }
+    .reset-submit{
+        margin-top: 8vh;
+        width: 100%;
+        height: 7vh;
+        
+        background: #000000;
+        border: 2px solid #000000;
+        border-radius: 1vw;
+
+        font-style: normal;
+        font-weight: 900;
+        font-size: 3vw;
+        color: #FFFFFF;
+    }
+    .reset-btn a {
+        text-decoration: none;
+        font-style: normal;
+        font-weight: 900;
+        font-size: 3vw;
+        color: #FFFFFF;
+    }
+    .reset-error{
+        margin-top:2vh;
+        font-style: normal;
+        font-weight: 360;
+        font-size: 4.5vw;
+        line-height: 4.5vh;
+        color: #000000;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<form method="post">
+    <!-- 
+        NOTES:
+        If you want to change the style or add class attribute of eg. {{ form.username }} , 
+        you can directly think "username" as id="username".
+        Thus, just use id to styling this tag:
+        #username{
+            ...
+        }
+        -by shaun
+     -->
+    <div class="reset">
+        <p class="reset-title">Reset Password</p>
+        <p class="reset-txt">EMAIL</p>
+        {{ form.email(class_='reset-input') }}
+        <p class="reset-txt">OLD PASSWORD</p>
+        {{ form.oldpassword(class_='reset-input') }}
+        <p class="reset-txt">NEW PASSWORD</p>
+        {{ form.newpassword(class_='reset-input') }}
+        {{ form.hidden_tag() }}
+        <br><input class="reset-submit" name="submit" type="submit" value="SUBMIT">
+        {% if exist %}
+            <p class="reset-error">User not exists! Please register.</p>
+        {% endif %}
+        {% if repeat %}
+            <p class="reset-error">Repeated password is different.</p>
+        {% endif %}
+    </div>
+</form>
+{% endblock %}

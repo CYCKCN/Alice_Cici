@@ -1,0 +1,337 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+    /* 页面的CSS:1.header部分 */
+    .bar {
+        position: absolute;
+        background-color: white;
+        height: 5vh;
+        z-index: 100;
+        width: 100vw;
+    }
+    .roomname{
+        font-size: 3vh;
+        text-align: center;
+    }
+    .quit{
+        height: 4vh;
+        width: 4vh;
+        margin-right: 2vw;
+        position: absolute;
+        top: 0.2vh;
+        left: 90vw;
+    }
+    /* 页面的CSS:2.主要部分 */
+    #el-ckb{
+        transform: translateY(-255%) scale(5, 5);
+        margin: 0 0 0 5%;
+    }
+    #el-text{
+        font-size: 4vw;
+        transform: translateY(-21%);
+        padding: 0 0 0 10%;
+    }
+    /* 页面的CSS:3.右侧按钮部分 */
+    .per-dev{
+        position: fixed;
+        height: 5vh;
+        width: 5vh;
+        left: 85%;
+        top: 10%;
+    }
+    .confirm{
+        position: fixed;
+        height: 5vh;
+        width: 5vh;
+        right: 7%;
+        left: 85%;
+        bottom: 7%;
+        opacity: 0;
+    }
+    .per-dev-txt{
+        position: fixed;
+        font-size: 2.8vw;
+        left: 83%;
+        width: 10vw;
+        line-height: 1.8vh;
+        top: 16%;
+        color: white;
+        text-align: center;
+        margin-left: 2.2vw;
+    }
+    .confirm-txt{
+        position: fixed;
+        font-size: 3vw;
+        left: 84.5%;
+        bottom: 4.5%;
+        color: white;
+        margin-left: 0.7vw;
+    }
+    .logo{
+        height: 5vh;
+        width: 5vh;
+    }
+    .confirm-logo{
+        height: 5vh;
+        width: 5vh;
+        top: 88%;
+        left: 85%;
+        position: fixed;
+    }
+    /* 彈窗CSS */
+    #overlay {
+        display: none;
+        position: absolute;
+        left: 16vw;
+        top: 27vh;
+        box-shadow: 2vw 2vw 2vw rgba(0, 0, 0, 0.25);
+    }
+    .person-device {
+        background:#f5f5f5;
+        width: 72vw;
+        height: 44vh;
+        z-index: 1;
+        overflow: auto;
+    }
+    .close{
+        width: 5vw;
+        height: 5vw;
+        position: relative;
+        top: 2vh;
+        left: 88%;
+    }
+    .perdev-question{
+        position: relative;
+        top: 5vh;
+        left: 8%;
+        font-size: 2.7vh;
+        font-weight: 700;
+    }
+    .pick{
+        transform: scale(5,5) translate(0.5vw, -0.1vh);
+    }
+    .text{
+        padding: 0 6vw;
+    }
+    .perdev-ans{
+        position: relative;
+        top: 7vh;
+        left: 14%;
+        padding: 0.8vh 0;
+        font-size: 2.3vh;
+    }
+    .subbtn{
+        position: relative;
+        top: 11vh;
+        left: 10%;
+    }
+    .subbtn input{
+        width: 50vw;
+        height: 6vh;
+        font-size: 2.5vh;
+        background-color: white;
+        border: 0.8vw solid #0074BC;
+        border-radius: 1vh;
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+<form id="app" method="post">
+  <!-- 标题栏 -->
+  <div class="bar">
+    <div class="roomname">Room {{room_id}}</div>
+    <a class="aclass" href="/user/search">
+			<svg class="quit" width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M27.7087 32.0835H7.29199C6.90522 32.0835 6.53429 31.9299 6.2608 31.6564C5.9873 31.3829 5.83366 31.012 5.83366 30.6252V18.9585H2.91699L16.4678 5.40623C16.6033 5.27063 16.7641 5.16307 16.9411 5.08968C17.1182 5.01629 17.308 4.97852 17.4996 4.97852C17.6912 4.97852 17.881 5.01629 18.0581 5.08968C18.2351 5.16307 18.3959 5.27063 18.5314 5.40623L32.0837 18.9585H29.167V30.6252C29.167 31.012 29.0134 31.3829 28.7399 31.6564C28.4664 31.9299 28.0954 32.0835 27.7087 32.0835ZM14.5837 21.8752H20.417V29.1669H26.2503V17.2494L17.5003 8.49935L8.75033 17.2494V29.1669H14.5837V21.8752Z" fill="black"/>
+			</svg>
+		</a>
+  </div>
+  <div id="long-img" style='position:absolute; top:5vh; left:0; background-color:gray; height: 95%; width: 100%; overflow-y: scroll; overflow-x: scroll;' @mousedown="move($event)">
+      <!-- 选择Device组件 -->
+      <img style='position:absolute;height:100%;' src="{{img}}" id="image">
+      {% for i, d in dic.items() %}
+      <div id="el-device-{{d.name}}" class="device" onclick="enlarge($(this))">
+        <input id="el-ckb" onclick="stopPropagation(event)" is="locate-input" type='checkbox' name="{{d.name}}" value="{{d.name}}" v-model="device_name" top="{{d.v}}" left="{{d.u}}">
+        <label id="el-text" for="{{d.name}}">{{d.name}}</label>
+      </div>
+      {% endfor %}
+      <!-- 右侧按钮组件 -->
+      <a class="per-dev" onclick="on();">
+      <!-- <a class="per-dev" :onclick="change2()"> -->
+        <svg class="logo" width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21.5625 40.3125H40.3125V4.6875H13.125V14.0625" stroke="white" stroke-width="4" stroke-linejoin="round"/>
+          <path d="M4.6875 14.0625H21.5625V40.3125H4.6875V14.0625Z" stroke="white" stroke-width="4" stroke-linejoin="round"/>
+          <path d="M26.25 34.6875H28.125M12.1875 34.6875H14.0625H12.1875Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>  
+      </a>
+      <div class="per-dev-txt">Personal Device</div>
+      <input class="confirm" type="submit" name="confirm" value="Confirm" style="background: transparent; z-index: 100;">
+      <svg class="confirm-logo" width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2.8125 22.5C2.8125 26.3938 3.96715 30.2002 6.13044 33.4378C8.29373 36.6754 11.3685 39.1988 14.9659 40.6889C18.5633 42.179 22.5218 42.5689 26.3408 41.8092C30.1598 41.0496 33.6678 39.1745 36.4212 36.4212C39.1745 33.6678 41.0496 30.1598 41.8092 26.3408C42.5689 22.5218 42.179 18.5633 40.6889 14.9659C39.1988 11.3685 36.6754 8.29373 33.4378 6.13044C30.2002 3.96715 26.3938 2.8125 22.5 2.8125C17.2786 2.8125 12.271 4.88671 8.57884 8.57884C4.88671 12.271 2.8125 17.2786 2.8125 22.5ZM11.25 21.0938H28.3359L20.4891 13.2089L22.5 11.25L33.75 22.5L22.5 33.75L20.4891 31.7433L28.3359 23.9062H11.25V21.0938Z" fill="white"/>
+      </svg>                
+      </a>
+      <div class="confirm-txt">Confirm</div>
+  </div>
+  <!-- <input class="btn" type="submit" name="previous" value="Previous" style="position: absolute; left: 10%; bottom: 8%;">
+  <input class="btn" type="submit" name="confirm" value="Upload" style="position: absolute; right: 10%; bottom: 8%;"> -->
+  
+  <!-- 弹窗组件 -->
+  <!-- <form class="form-inline">
+    <a onclick="off()">Cancel</a>
+    <a href="room">Confirm</a>
+  </form> -->
+	<div id="overlay">
+		<div class="person-device">
+      <a onclick="off()">
+        <svg class="close" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M14.0625 14.0625L0.9375 0.9375M0.9375 14.0625L14.0625 0.9375L0.9375 14.0625Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>          
+      </a>
+			<h2 class="perdev-question">What device do you bring?</h2>
+		    <div class="perdev-ans">
+				<input class="pick" type="checkbox" check="checked" id="one" name="mac" value="Macbook">
+				<label class="text" for="one">Macbook</label>
+			</div>
+			<div class="perdev-ans">
+				<input class="pick" type="checkbox" id="two" name="win" value="Windows">
+				<label class="text" for="two">Windows laptop</label>
+			</div>
+			<div class="perdev-ans">
+				<input class="pick" type="checkbox" id="three" name="none" value="None">
+				<label class="text" for="three">None</label>
+      </div>
+      <div class="subbtn">
+        <input type="submit" class="enter" name="personal" value="Save">
+      </div>
+		</div>
+	</div>	
+</form>
+
+<script>
+function enlarge($t){
+  $t.children("input").click();
+}
+function stopPropagation(event){
+  event.stopPropagation();
+}
+function on() {
+  document.getElementById("overlay").style.display = "block";
+}
+  
+function off() {
+  document.getElementById("overlay").style.display = "none";
+}
+Vue.createApp({
+  data() {
+    return {
+      device_name: [],
+      isSelected: 1,
+      headerEmail: 'rose@gmail.com',
+      isOverlayOpen: 0
+    }
+  },
+  delimiters: ['{[', ']}'],  // Fix bug: Avoid Mustache syntax conflict in Vue and flask.jinjia2
+  methods: {
+    change1(){
+        // console.log(this.isSelected)
+        this.isSelected = 1 - this.isSelected;
+    },
+    change2(){
+        console.log(this.isOverlayOpen)
+        this.isOverlayOpen = 1 - this.isOverlayOpen;
+    },
+    move(e){
+      let obj = e.target;  // 获取目标元素
+      // console.log(obj)
+      var devices = JSON.parse('{{ dic | tojson | safe}}')
+
+      //算出鼠标相对元素的位置
+      let startX = e.pageX - obj.offsetLeft;
+      let startY = e.pageY - obj.offsetTop;
+
+      document.onmousemove = (e)=>{       // 鼠标按下并移动的事件
+          // 用鼠标的位置减去鼠标相对元素的位置，得到元素的位置
+          e.preventDefault()
+          let left = e.pageX - startX;    
+          let top = e.pageY - startY;
+
+          // 移动当前元素
+          left = left < 0 ? left : 0;
+          top = top < 0 ? top : 0;
+
+          // left = left < -3080 ? -3080 : left;  // 5000图片大小 - 1920屏幕分辨率
+          // top = top > -880 ? 880 : top;  // 720 - 1600
+
+          obj.style.left = left + 'px';
+          obj.style.top = top + 'px';
+
+          for(let i = 0; i < Object.keys(devices).length; i++)
+          {
+            let div=document.getElementById("el-device-" + devices[i].name)  // device
+            div.style.left = left + devices[i].u;
+            div.style.top = top + devices[i].v;
+          }
+      };
+
+      document.onmouseup = () => {
+          document.onmousemove = null;
+          document.onmouseup = null;
+      };
+    }
+  }
+}).mount('#app')
+</script>
+<script>
+class LocateInput extends HTMLInputElement{
+  constructor(){
+    super();
+  }
+  connectedCallback(){
+    var objs = JSON.parse('{{ dic | tojson | safe}}');
+    console.log(objs);
+
+    for(let i = 0; i < Object.keys(objs).length; i++)
+    {
+      let obj = objs[i];
+      let parentDiv=document.getElementById("el-device-" + obj.name) ; // label
+
+      let img=document.getElementById('image');
+      var img_u=img.offsetWidth;
+      var img_v=img.offsetHeight
+      var u=parseInt((obj.u).replace('%',''))/100*img_u+'px';
+      var v=parseInt((obj.v).replace('%',''))/100*img_v+'px';
+
+      parentDiv.style.position='absolute';
+      //parentDiv.style.top=obj.v;
+      //parentDiv.style.left=obj.u;
+      parentDiv.style.top=v;
+      parentDiv.style.left=u;
+      parentDiv.style.width='400px';
+      parentDiv.style.height='100px';
+      parentDiv.style.padding='10px 20px';
+      parentDiv.style.border='7px solid #0074BC' ;
+      parentDiv.style.borderRadius='1vh';
+      parentDiv.style.backgroundColor='#F5F5F5';
+      parentDiv.style.fontSize='4em';
+    }
+  
+
+    // this.style.position="absolute";
+    // this.style.height="30px";
+    // this.style.width="30px";
+    // this.style.top=this.getAttribute('top');
+    // this.style.left=this.getAttribute('left');
+
+    // this.style.border="3px";
+    // this.style.borderColor='red';
+    // this.style.borderRadius='10%';
+    // this.style.textIndent='10%';
+    // this.style.backgroundColor='azure';
+  }
+}
+customElements.define('locate-input', LocateInput, {extends: 'input'});
+</script>
+{% endblock %}

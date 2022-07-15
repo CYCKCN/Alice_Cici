@@ -1,0 +1,170 @@
+<style>
+    #mainBody{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        width: 100vw;
+        padding: 5vh 5vw;
+    }
+
+    .main-txt{
+        width: 20vw;
+        height: 10vh;
+
+        /* font-family: 'Comfortaa'; */
+		text-align: center;
+        font-style: normal;
+        font-weight: 360;
+        font-size: 8vw;
+        line-height: 10vh;
+        display: flex;
+        align-items: center;
+        letter-spacing: -0.015em;
+
+        color: #000000;
+    }
+	
+	.btn{
+		align-items: flex-start;
+		justify-content: center;
+        margin: 30vh 0vw 0vh 9vw;
+	}
+
+    .img_profile{
+        transform: scale(5);
+        position:absolute;
+        margin: 20vh 0vw 0vh 96vw;
+        width: 5vw;
+        height: 5vh;
+	}
+
+
+    #btn-logout {
+        margin: auto;
+        width: 100%;
+        height: 7vh;
+        
+        background: #000000;
+        border: 2px solid #000000;
+        border-radius: 1vw;
+
+        font-style: normal;
+        font-weight: 500;
+        font-size: 2vh;
+        color: #FFFFFF;
+    }
+
+    #btn-profile {
+        opacity: 0;
+        margin: 13vh 0vw 0vh 93vw;
+        position:absolute;
+        z-index: 100;
+        width: 7vw;
+        height: 7vh;
+
+        
+        background: #000000;
+        border: 2px solid #000000;
+        border-radius: 1vw;
+
+        font-style: normal;
+        font-weight: 500;
+        font-size: 2vh;
+        color: #FFFFFF;
+    }
+	
+	.admin-logo{
+	    margin: auto;
+	    align-items: center;
+	}
+	
+	.admin-role{
+	    margin: auto;
+	    text-align: center;
+	    font-style: normal;
+	    font-weight: 800;
+	    font-size: 2vh;
+	    padding-top: 5vh;
+	}
+	
+    .admin-email{
+        margin: auto;
+        text-align: center;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 2vh;
+        padding-top: 5vh;
+    }
+
+    .back{
+        margin: 4vh 0vw 0vh -84vw;
+    }
+
+    .img_back{
+        transform: scale(4);
+        position: absolute;
+        margin: 5vh 0vw 0vh 92vw;
+        width: 5vw;
+        height: 5vh;
+	}
+
+    #btn-back {
+        opacity: 0;
+        margin: -3vh 0vw 0vh 85vw;
+        position:absolute;
+        z-index: 100;
+        width: 7vw;
+        height: 7vh;
+
+        
+        background: #000000;
+        border: 2px solid #000000;
+        border-radius: 1vw;
+
+        font-style: normal;
+        font-weight: 500;
+        font-size: 2vh;
+        color: #FFFFFF;
+    }
+
+
+</style>
+
+
+<form method="post" id="admin-profile" enctype="multipart/form-data">
+    <div class="main">
+		<div class="back">
+            <input id="btn-back" type='submit' name="back" value="back">
+            <div class="img_back">
+                <svg width="19.5" height="18" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M1.91421 4.35355L4.56066 7L3.85355 7.70711L0.353553 4.20711L0 3.85355L0.353553 3.5L3.85355 0L4.56066 0.707107L1.91421 3.35355L5.70711 3.35355C9.28325 3.35355 12.2071 6.27741 12.2071 9.85355L12.2071 11.3536H11.2071L11.2071 9.85355C11.2071 6.8297 8.73096 4.35355 5.70711 4.35355H1.91421Z" fill="black" fill-opacity="0.8"/>
+                    <ellipse cx="20.2175" cy="15.913" rx="3.91307" ry="3.91304" stroke="black" stroke-linecap="square"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+    <!-- body -->
+    <div id="mainBody"> 
+	 
+        <div class="main-txt">Profile</div>
+		<div class="admin-logo">
+			<svg width="200" height="200" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path fill-rule="evenodd" clip-rule="evenodd" d="M50.0002 87.5C70.7106 87.5 87.5002 70.7104 87.5002 50C87.5002 29.2896 70.7106 12.5 50.0002 12.5C29.2897 12.5 12.5002 29.2896 12.5002 50C12.5002 70.7104 29.2897 87.5 50.0002 87.5ZM50.0002 91.6667C73.0127 91.6667 91.6668 73.0125 91.6668 50C91.6668 26.9875 73.0127 8.33331 50.0002 8.33331C26.9877 8.33331 8.3335 26.9875 8.3335 50C8.3335 73.0125 26.9877 91.6667 50.0002 91.6667Z" fill="black"/>
+			<path d="M25 74.2292C25 72.0771 26.6083 70.2583 28.75 70.0208C44.8229 68.2417 55.25 68.4021 71.2875 70.0604C72.0884 70.1445 72.8474 70.46 73.4719 70.9684C74.0964 71.4768 74.5593 72.156 74.8041 72.9232C75.0489 73.6903 75.065 74.5122 74.8505 75.2883C74.6359 76.0645 74.1999 76.7613 73.5958 77.2938C54.6687 93.7917 43.8521 93.5646 26.3333 77.3104C25.4792 76.5188 25 75.3938 25 74.2313V74.2292Z" fill="black"/>
+			<path fill-rule="evenodd" clip-rule="evenodd" d="M71.0733 72.1312C55.1628 70.4854 44.8858 70.3312 28.9774 72.0916C28.4538 72.1527 27.971 72.4047 27.6216 72.7995C27.2722 73.1942 27.0806 73.704 27.0837 74.2312C27.0837 74.8271 27.3316 75.3916 27.7503 75.7833C36.4337 83.8375 43.0128 87.4771 49.4441 87.5C55.8983 87.5229 62.8316 83.9125 72.2274 75.725C72.5259 75.4593 72.7408 75.1126 72.846 74.7271C72.9511 74.3416 72.942 73.9338 72.8198 73.5533C72.6975 73.1729 72.4674 72.8362 72.1573 72.5841C71.8473 72.332 71.4706 72.1754 71.0733 72.1333V72.1312ZM28.5212 67.95C44.7628 66.1521 55.342 66.3145 71.5045 67.9875C72.7093 68.1132 73.8513 68.5875 74.7907 69.3523C75.7301 70.1171 76.4261 71.1392 76.7935 72.2935C77.1609 73.4477 77.1839 74.6841 76.8595 75.8512C76.5351 77.0183 75.8774 78.0655 74.967 78.8646C65.4358 87.1729 57.4983 91.6979 49.4316 91.6666C41.342 91.6375 33.7545 87.0354 24.9191 78.8375C24.2865 78.2482 23.7822 77.5349 23.4377 76.742C23.0932 75.9491 22.916 75.0936 22.917 74.2291C22.914 72.6759 23.4841 71.1761 24.5182 70.0171C25.5523 68.858 26.9776 68.1213 28.5212 67.9479V67.95Z" fill="black"/>
+			<path d="M66.6668 41.6667C66.6668 46.0869 64.9109 50.3262 61.7853 53.4518C58.6597 56.5774 54.4204 58.3333 50.0002 58.3333C45.5799 58.3333 41.3407 56.5774 38.215 53.4518C35.0894 50.3262 33.3335 46.0869 33.3335 41.6667C33.3335 37.2464 35.0894 33.0072 38.215 29.8816C41.3407 26.7559 45.5799 25 50.0002 25C54.4204 25 58.6597 26.7559 61.7853 29.8816C64.9109 33.0072 66.6668 37.2464 66.6668 41.6667V41.6667Z" fill="black"/>
+			<path fill-rule="evenodd" clip-rule="evenodd" d="M50.0002 54.1667C53.3154 54.1667 56.4948 52.8497 58.839 50.5055C61.1832 48.1613 62.5002 44.9819 62.5002 41.6667C62.5002 38.3515 61.1832 35.172 58.839 32.8278C56.4948 30.4836 53.3154 29.1667 50.0002 29.1667C46.685 29.1667 43.5055 30.4836 41.1613 32.8278C38.8171 35.172 37.5002 38.3515 37.5002 41.6667C37.5002 44.9819 38.8171 48.1613 41.1613 50.5055C43.5055 52.8497 46.685 54.1667 50.0002 54.1667V54.1667ZM50.0002 58.3333C54.4204 58.3333 58.6597 56.5774 61.7853 53.4518C64.9109 50.3262 66.6668 46.0869 66.6668 41.6667C66.6668 37.2464 64.9109 33.0072 61.7853 29.8816C58.6597 26.7559 54.4204 25 50.0002 25C45.5799 25 41.3407 26.7559 38.215 29.8816C35.0894 33.0072 33.3335 37.2464 33.3335 41.6667C33.3335 46.0869 35.0894 50.3262 38.215 53.4518C41.3407 56.5774 45.5799 58.3333 50.0002 58.3333V58.3333Z" fill="black"/>
+			</svg>
+			
+		</div>
+        <div class="admin-role">USER</div>
+        <div class="admin-email">user@ust.hk</div>
+
+    </div>
+	
+	<div class="btn">
+		<input id="btn-logout" type='submit' name="logout" value="LOG OUT">
+    </div>
+
+</form>

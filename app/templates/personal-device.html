@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+	.bar {
+		/* overflow: hidden; */
+		background-color: #0074BC;
+		height: 3vh;
+		z-index: 100;
+		position: absolute;
+		width: 100vw;
+	}
+	.bar a {
+		text-decoration: none;
+		font-size: 1.5vh;
+		padding: 0.3vh 2vw;
+		text-align: center;
+		color: white;
+	}
+	.quit{
+		float: left;
+		
+	}
+	.user{
+		float: right;
+	}
+
+	.person-device{
+		position: absolute;
+		top: 30vh;
+		left: 10vw;
+		width: 80vw;
+		height: 25vh;
+	}
+	.perdev-question{
+		position: relative;
+		top: 1vh;
+		left: 0;
+		font-size: 3vh;
+	}
+	.pick{
+		transform: scale(5,5) translate(0.5vw, -0.1vh);
+	}
+	.text{
+		padding: 0 6vw;
+	}
+	.perdev-ans{
+		position: relative;
+		top: 3vh;
+		left: 0;
+		padding: 0.3vh 0;
+		font-size: 2vh;
+	}
+	.picked {
+		position: relative;
+		top: 5vh;
+		left: 0;
+		font-size: 2vh;
+	}
+
+	.subbtn input{
+		position: absolute;
+		top: 60vh;
+		right: 10vw;
+		width: 15vw;
+		height: 3vh;
+		font-size: 1.5vh;
+		background-color: #0074BC;
+		border: none;
+		border-radius: 1vw;
+		color: white;
+	}
+	.subbtn a{
+		color: white;
+		padding: 10px 12px;
+		text-decoration: none;
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+<form method="post">
+<div id="app">
+	<div id="app" class="bar">
+		<a class="quit" href="search">Quit</a>
+		<a class="user">{[userEmail]}</a>
+	</div>
+	<div id="example-1">
+		<div class="person-device" style="margin-top:20px;">
+			<h2 class="perdev-question">What device do you bring?</h2>
+		    <div class="perdev-ans">
+				<input class="pick" type="checkbox" check="checked" id="one" name="mac" value="Macbook" v-model="picked">
+				<label class="text" for="one">Macbook</label>
+			</div>
+			<div class="perdev-ans">
+				<input class="pick" type="checkbox" id="two" name="win" value="Windows" v-model="picked">
+				<label class="text" for="two">Windows laptop</label>
+			</div>
+			<div class="perdev-ans">
+				<input class="pick" type="checkbox" id="three" name="none" value="None" v-model="picked">
+				<label class="text" for="three">None</label>
+			</div>
+			<span class="picked">Picked: {[ picked ]}</span>
+		</div>
+		<br />
+		<div class="subbtn">
+			<!--
+			<button @click="submit">
+				<a href="device">Next</a>
+			</button>
+			-->
+			<input type="submit"  class="enter" name="input" value="Next">
+		</div>
+		
+	</div>
+</div>
+</form>
+<script>
+Vue.createApp({
+  data() {
+    return {
+		picked : [],
+		userEmail : "rose@gmail.com"
+    }
+  },
+  delimiters: ['{[', ']}'],
+  methods: {
+	submit : function () {
+		console.log(this.picked);				
+	}
+  }
+}).mount('#app')
+
+</script>
+{% endblock %}

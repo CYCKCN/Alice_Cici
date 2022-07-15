@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>       
+    input:-webkit-autofill {
+        box-shadow: 0 0 0 32vh #fff inset;;
+        -webkit-box-shadow: 0 0 0 32vh #fff inset; /**通过边框阴影遮挡住背景*/
+        -webkit-text-fill-color: #000; /*自动填充内容的文本颜色*/
+    } 
+    .register{
+        /*
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        */
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+
+        justify-content: center;
+        width: 100vw;
+        height: 100vh;
+        padding: 5vh 5vw;
+    }
+    .register-title{
+        font-style: normal;
+        font-weight: 360;
+        font-size: 8vw;
+        line-height: 10vh;
+        display: flex;
+        align-items: center;
+        letter-spacing: -0.015em;
+
+        color: #000000;
+    }
+    .register-txt{
+        margin-top: 4vh;
+        font-style: normal;
+        font-weight: 900;
+        font-size: 3vw;
+        line-height: 2vh;
+        display: flex;
+        align-items: center;
+        letter-spacing: -0.015em;
+        color: #000000;
+    }
+    .register-input{
+        margin: auto;
+        width: 100%;
+        height: 6vh;
+        
+        background: #FFFFFF;
+        border: 0.5vw solid #000000;
+        padding: 0 3vw;
+
+        font-style: normal;
+        font-weight: 500;
+        font-size: 2vh;
+        color: #000000;
+    }
+    input[type="radio"] {
+        -webkit-appearance: none;
+        appearance: none;
+    }
+    .register-radio{
+        margin-left: 5vw;
+        margin-right: 3vw;
+        height: 6vw;
+        width: 6vw;
+        background-color: #ffffff;
+        border: 0.5vw solid #000000;
+    }
+    .register-radio:checked{
+        background-color: #000000;
+    }
+    .register-label{
+        margin-right: 8vw;
+
+        font-style: normal;
+        font-weight: 360;
+        font-size: 6vw;
+        line-height: 6vh;
+        align-items: center;
+        letter-spacing: -0.015em;
+
+        color: #000000;
+    }
+    .register-submit{
+        margin-top: 8vh;
+        width: 100%;
+        height: 7vh;
+        
+        background: #000000;
+        border: 2px solid #000000;
+        border-radius: 1vw;
+
+        font-style: normal;
+        font-weight: 900;
+        font-size: 3vw;
+        color: #FFFFFF;
+    }
+    .register-login{
+        margin-top: 2vh;
+        width: 100%;
+        height: 7vh;
+        padding-top:2vh;
+        
+        background: #000000;
+        border: 2px solid #000000;
+        border-radius: 1vw;
+
+        text-align: center;
+    }
+    .register-login a{
+        text-decoration: none;
+        font-style: normal;
+        font-weight: 900;
+        font-size: 3vw;
+        color: #FFFFFF;
+    }
+    .placehold{
+        width: 100%;
+        height: 7vh;
+        background: #ffffff;
+    }
+    .register-error{
+        margin-top:2vh;
+        font-style: normal;
+        font-weight: 360;
+        font-size: 4.5vw;
+        line-height: 4.5vh;
+        color: #000000;
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+<form method="post">
+    <div class="register">
+        <p class="register-title">Register</p>
+        <p class="register-txt">EMAIL</p>
+        {{ form.email(class_='register-input') }}
+        <p class="register-txt">PASSWORD</p>
+        {{ form.password(class_='register-input') }}
+        {{ form.hidden_tag() }}
+        <p class="register-txt">REPEAT PASSWORD</p>
+        {{ form.passwordRepeat(class_='register-input') }}
+
+        <br><input class="register-submit" name="submit" type="submit" value="SUBMIT">
+        
+        {% if exist %}
+            <p class="register-error">User has registered, please login.</p>
+        {% endif %}
+        {% if repeat %}
+            <p class="register-error">Repeated password is different.</p>
+        {% endif %}
+
+        <div class="placehold"></div>
+    </div>
+
+    
+
+</form>
+{% endblock %}

@@ -1,0 +1,248 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+    #instructionPair{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        width: 100vw;
+        padding: 5vh 5vw;
+        padding-bottom: 2vh;
+    }
+
+    .line{
+        width: 100%;
+        height: 9vh;
+    }
+
+    .admin-txt{
+        float: left;
+
+        /* font-family: 'Comfortaa'; */
+        font-style: normal;
+        font-weight: 450;
+        font-size: 10vw;
+        line-height: 10vh;
+        display: flex;
+        align-items: center;
+        letter-spacing: -0.015em;
+
+        color: #000000;
+    }
+
+    .admin-small-txt{
+        float: left;
+        padding-left: 2vw;
+        padding-top: 3.6vh;
+
+        font-weight: 100;
+        font-size: 4vw;
+        line-height: 5vh;
+        /* identical to box height */
+
+        display: flex;
+        align-items: center;
+        letter-spacing: -0.015em;
+
+        color: #000000;
+
+        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    }
+
+    .admin-mid-txt{
+        float: left;
+        width: 90%;
+        margin-bottom: 4vh;
+
+        font-weight: 100;
+        font-size: 4vw;
+        line-height: 3vh;
+        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        /* identical to box height */
+
+        display: flex;
+        align-items: center;
+        letter-spacing: -0.015em;
+
+        color: #000000;
+    }
+
+    /* step part */
+    .step-div{
+        width: 100%;
+        padding: 0 0 0 5vw;
+    }
+
+    .step-label{
+        float: left;
+        padding-top: 3vh;
+        padding-bottom: 1vh;
+
+        font-size: 1.8vh;
+        font-weight: 750;
+        text-transform: uppercase;
+    }
+    
+    .btn-edit{        
+        /*float: left;*/
+        float: right;
+        width: 12vw;
+        height: 7vh;
+        /*margin-left: 34vw;*/
+        margin-right: 3vw;
+        margin-top: 1vh;
+
+        font-size: 1.8vh;
+        font-weight: 500;
+
+        background: #FFFFFF;
+        border: 0.5vw solid #0074BC;
+        border-radius: 1vw;
+
+        font-style: normal;
+        font-weight: 700;
+        font-size: 2vh;
+
+        text-decoration: none;
+        color: #000000;
+        text-transform: uppercase;
+    }
+
+    .btn-edit1{        
+        /*float: left;*/
+        float: right;
+        width: 12vw;
+        height: 7vh;
+        /*margin-left: 34vw;*/
+        margin-right: 3vw;
+        margin-top: 1vh;
+
+        font-size: 1.8vh;
+        font-weight: 500;
+
+        background: #FFFFFF;
+        border: 0.5vw solid #0074BC;
+        border-radius: 1vw;
+
+        font-style: normal;
+        font-weight: 700;
+        font-size: 2vh;
+
+        text-decoration: none;
+        color: #000000;
+        text-transform: uppercase;
+    }
+
+    .empty-text{
+        font-weight: 700;
+        font-size: 3vw;
+        color: rgba(0, 0, 0, 0.3);
+        margin-top: 40vh;
+        margin-left: 15vw;
+        width: 60vw;
+        text-align: center;
+        text-transform: UPPERCASE;
+    }
+
+    .back{
+        margin: 4vh 0vw 0vh -84vw;
+    }
+
+    .img_back{
+        transform: scale(4);
+        position: absolute;
+        margin: 1vh 0vw 0vh 89vw;
+        width: 5vw;
+        height: 5vh;
+	}
+
+    #btn-back {
+        opacity: 0;
+        margin: -8vh 0vw 0vh 81vw;
+        position:absolute;
+        z-index: 100;
+        width: 7vw;
+        height: 7vh;
+
+        
+        background: #000000;
+        border: 2px solid #000000;
+        border-radius: 1vw;
+
+        font-style: normal;
+        font-weight: 500;
+        font-size: 2vh;
+        color: #FFFFFF;
+    }
+
+    /* button part */
+    #btn-confirm {
+        width: 100%;
+        height: 7vh;
+        margin-top: 43vh;
+        
+        background: #0074BC;
+        border: 2px solid #0074BC;
+        border-radius: 1vw;
+
+        font-style: normal;
+        font-weight: 500;
+        font-size: 2vh;
+        color: #FFFFFF;
+    }
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<form method="post" id="admin-instruction-pair" enctype="multipart/form-data">
+  <div id="instructionPair">
+    <div class="back">
+		<input id="btn-back" type='submit' name="back" value="back">
+        <div class="img_back">
+            <svg width="18.5" height="19" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M1.91421 4.35355L4.56066 7L3.85355 7.70711L0.353553 4.20711L0 3.85355L0.353553 3.5L3.85355 0L4.56066 0.707107L1.91421 3.35355L5.70711 3.35355C9.28325 3.35355 12.2071 6.27741 12.2071 9.85355L12.2071 11.3536H11.2071L11.2071 9.85355C11.2071 6.8297 8.73096 4.35355 5.70711 4.35355H1.91421Z" fill="black" fill-opacity="0.8"/>
+                <ellipse cx="20.2175" cy="15.913" rx="3.91307" ry="3.91304" stroke="black" stroke-linecap="square"/>
+            </svg>
+        </div>
+    </div>  
+    <div class="line">
+        <div class="admin-txt">Instruction</div>
+        <div class="admin-small-txt">- Zoom</div>
+    </div>
+    <div class="admin-mid-txt">Zoom stage is to get all steps required for zoom meetings ready. Please describe all steps clearly in both video and audio settings.</div>
+    <!-- step part -->
+    <div class="step-div">
+        <div class="line">
+            <div class="step-label">VIDEO</div>
+            <input class="btn-edit" type='submit' name="edit_VIDEO" value="edit">
+        </div>
+        <div class="line">
+            <div class="step-label">AUDIO</div>
+            <input class="btn-edit1" type='submit' name="edit_AUDIO" value="edit">
+        </div>
+    </div>
+    <input id="btn-confirm" type='submit' name="confirm" value="CONFIRM">
+  </div>
+</form>
+
+<script>
+    Vue.createApp({
+      data() {
+        return {
+        }
+      },
+      delimiters: ['{[', ']}'],
+      methods: {
+    
+      }
+    }).mount('#admin-instruction-pair')    
+</script>
+
+<script>
+</script>
+{% endblock %}
