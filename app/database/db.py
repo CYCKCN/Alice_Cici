@@ -197,6 +197,16 @@ class RoomDB():
             room["chooseDeviceIDList"].append(deviceID)
             self.db.update_one({"roomName": roomName}, {'$set': {'chooseDeviceIDList': room["chooseDeviceIDList"]}})
     
+    def getChooseDeviceList(self, roomName):
+        room = self.db.find_one({"roomName": roomName})
+        chooseDeviceList = {}
+        for i in range(len(room["deviceNameList"])):
+            if str(i) in room["chooseDeviceIDList"]:
+                chooseDeviceList[i] = [room["deviceNameList"][str(i)], 1]
+            else:
+                chooseDeviceList[i] = [room["deviceNameList"][str(i)], 0]
+        return chooseDeviceList
+    
     def getroomInfo(self):
         roomInfo = {}
         index = 0
@@ -338,6 +348,14 @@ class RoomDB():
             
         return deviceInfo
 
+    def getDeviceTypeList(self, roomName):
+        room = self.db.find({"roomName": roomName})
+        deviceTypeList = []
+        for deviceType in room["deviceTypeList"].values():
+            if deviceType not in deviceTypeList:
+                deviceTypeList.append(deviceType)
+        return deviceTypeList
+
     def addRoom(self, roomName, roomLoc, controlSystem):
         room = self.db.find_one({"roomName": roomName})
         if not room:
@@ -354,9 +372,11 @@ class RoomDB():
         elif self.getroom(newRoomLoc):
             return "Err: Rename Invalid!"            
         else:
+            if newRoomName: room["roomName"] = newRoomName
+            if newRoomLoc: room["roomLoc"] = newRoomLoc
+            if newControlSystem: room["controlSystem"] = newControlSystem
             self.db.update_one({"_id": room["_id"]}, {'$set': {"roomName": newRoomName, "roomLoc": newRoomLoc, "controlSystem": newControlSystem}})
             return "Info: Edit Room Successfully!"
-
 
     def delRoom(self, roomName):
         room = self.db.find_one({"roomName": roomName})
@@ -583,8 +603,6 @@ class SystemDB():
         for i in range(int(stepID) + 1, len(insCases[caseID])): insCases[caseID][str(i - 1)] = insCases[caseID].pop(str(i))
         self.db.update_one({"controlSystem": controlSystem}, {'$set': {"insCases": insCases}})
         return "Info: Delete Successfully!"
-
-    
 
     
 db = connection("test")
