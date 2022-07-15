@@ -233,6 +233,72 @@
         color: #FFFFFF;
     }
 
+    #overlay {
+        display: none;
+        position: absolute;
+        left: 16vw;
+        top: 27vh;
+        box-shadow: 2vw 2vw 2vw rgba(0, 0, 0, 0.25);
+    }
+    .person-device {
+        background:#F5F5F5;
+        width: 72vw;
+        height: 44vh;
+        z-index: 1;
+        overflow: auto;
+    }
+    .close{
+        width: 5vw;
+        height: 5vw;
+        position: relative;
+        top: 2vh;
+        left: 88%;
+    }
+    .perdev-question{
+        position: relative;
+        top: 5vh;
+        left: 4%;
+        font-size: 2.7vh;
+        font-weight: 700;
+    }
+    .text{
+        padding: 0 6vw;
+    }
+    .perdev-ans{
+        position: relative;
+        top: 7vh;
+        left: 14%;
+        padding: 0.8vh 0;
+        font-size: 2.3vh;
+    }
+    .subbtn{
+        position: relative;
+        top: 11vh;
+        left: 10%;
+    }
+    .subbtn input{
+        width: 50vw;
+        height: 6vh;
+        font-size: 2.5vh;
+        background-color: white;
+        border: 0.8vw solid #0074BC;
+        border-radius: 1vh;
+    }
+    .emailBox {
+    margin: auto;
+    width: 70%;
+    height: 4vh;
+    padding: 0 0vw;
+    border: 0;
+    border-bottom: 0.5vw solid #000;
+    background: #ffffff00;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 1.9vh;
+    color: #000000;
+    outline: none;
+}
+
 </style>
 
 {% endblock %}
@@ -251,35 +317,58 @@
         </div>
     </div>  
     <div class="line">
-        <div class="admin-txt">Instruction</div>
-        <div class="admin-small-txt">- Initial</div>
+        <div class="admin-txt">{{system_id}}</div>
+        <div class="admin-small-txt">- Device Type List</div>
     </div>
-    <div class="admin-mid-txt">Initial stage is to get all steps required before turning on the devices ready, e.g. how to turn on the control box. If there is no such step, please directly click “CONFIRM”.</div>
-    <!-- step part -->
-    {% if steps|length==0 %}
-        <div class="empty-text">There is no step created so far, <br>please click “add step” to create new step for initial.</div>
+    <div class="admin-mid-txt">Here store all of the device types involved in this control system. Please notice that the same input type but different model, such as cable microhpne and wireless microphone, should be stored separately as they have different operations.</div>
+    {% if type_dict|length==0 %}
+        <div class="empty-text">There is no device type created so far, <br>please click “ADD TYPE” to create new.</div>
     {% else %}
-        {% for k, v in steps.items() %}
+        {% for k, v in type_dict.items() %}
             <div class="step-div">
                 <div class="line">
                     <div class="step-label">{{k}}</div>
                     <input class="btn-delete" type='submit' name="delete_{{k}}" value="delete">
-                    <input class="btn-edit" type='submit' name="edit_{{k}}" value="edit">
                 </div>
-                {% if v.text %}
-                    <div class="admin-step-txt">{{v.text}}</div>
-                {% else %}
-                    <div class="admin-step-txt">none</div> 
-                {% endif %}
             </div>
         {% endfor %}
     {% endif %}
-    <input id="btn-add" type='submit' name="add-step" value="ADD STEP">
+    <input id="btn-add" name="add-type" value="ADD TYPE" type="button" onclick="on();">
     <input id="btn-confirm" type='submit' name="confirm" value="CONFIRM">
   </div>
+
+  <div id="overlay">
+    <div class="person-device">
+        <a onclick="off()">
+            <svg class="close" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14.0625 14.0625L0.9375 0.9375M0.9375 14.0625L14.0625 0.9375L0.9375 14.0625Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>          
+        </a>
+        <h2 class="perdev-question">The name of the device type:</h2>
+        <div class="perdev-ans">
+            <input class="emailBox" type="text" name="device-type" v-model="device-type"/>
+          </div>
+        <div class="subbtn">
+            <input type="submit" class="enter" name="Save" value="Save">
+        </div>
+    </div>
 </form>
 
 <script>
+        function enlarge($t){
+    $t.children("input").click();
+    }
+    function stopPropagation(event){
+    event.stopPropagation();
+    }
+    function on() {
+    document.getElementById("overlay").style.display = "block";
+    }
+    
+    function off() {
+    document.getElementById("overlay").style.display = "none";
+    }
+
     Vue.createApp({
       data() {
         return {

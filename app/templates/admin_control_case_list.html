@@ -251,30 +251,25 @@
         </div>
     </div>  
     <div class="line">
-        <div class="admin-txt">Instruction</div>
-        <div class="admin-small-txt">- Initial</div>
+        <div class="admin-txt">{{system_id}}</div>
+        <div class="admin-small-txt">- Case</div>
     </div>
-    <div class="admin-mid-txt">Initial stage is to get all steps required before turning on the devices ready, e.g. how to turn on the control box. If there is no such step, please directly click “CONFIRM”.</div>
+    <div class="admin-mid-txt">Here store a whole set of instructions involving all the device types in this control system. Each case, including a sequence of instructions, should be specified to a certain combination of devices types that are targeted in this case.</div>
     <!-- step part -->
-    {% if steps|length==0 %}
-        <div class="empty-text">There is no step created so far, <br>please click “add step” to create new step for initial.</div>
+    {% if type_dict|length==0 %}
+        <div class="empty-text">There is no instruction created so far, <br>please click “ADD CASE” to create new case for initial.</div>
     {% else %}
-        {% for k, v in steps.items() %}
+        {% for k, v in type_dict.items() %}
             <div class="step-div">
                 <div class="line">
-                    <div class="step-label">{{k}}</div>
-                    <input class="btn-delete" type='submit' name="delete_{{k}}" value="delete">
-                    <input class="btn-edit" type='submit' name="edit_{{k}}" value="edit">
+                    <div class="step-label">{{device-involved}}</div>
+                    <input class="btn-delete" type='submit' name="delete_{{device-involved}}" value="delete">
+                    <input class="btn-edit" type='submit' name="edit_{{device-involved}}" value="edit">
                 </div>
-                {% if v.text %}
-                    <div class="admin-step-txt">{{v.text}}</div>
-                {% else %}
-                    <div class="admin-step-txt">none</div> 
-                {% endif %}
             </div>
         {% endfor %}
     {% endif %}
-    <input id="btn-add" type='submit' name="add-step" value="ADD STEP">
+    <input id="btn-add" type='submit' name="add-case" value="ADD CASE">
     <input id="btn-confirm" type='submit' name="confirm" value="CONFIRM">
   </div>
 </form>

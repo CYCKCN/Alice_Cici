@@ -249,20 +249,20 @@
   <div id="instructionPair">  
     <div class="line1">
         <div class="admin-txt">Instruction</div>
-        <div class="admin-small-txt">- Pair - {{case_id}}</div>
+        <div class="admin-small-txt">- Case</div>
     </div>
     <div class="step-label">DEVICE INVOLVED</div>
     <div class="deviceChoose">
-        {% for k, v in device111.items() %}
+        {% for k, v in type_dict.items() %}
             <div class="devicebox">
-                <input class="device-checkbox" type='checkbox' name="Device_{{k}}" value="device {{k}}" id="{{k}}">
+                <input class="device-checkbox" type='checkbox' name="{{k}}" value="{{k}}" id="{{k}}">
                 <label class="text" for="one">{{v.name}}</label>
             </div>
         {% endfor %}
     </div>
     <!-- step part -->
     {% if steps|length==0 %}
-        <div class="empty-text">There is no step created so far, <br>please click “add step” to create new step for initial.</div>
+        <div class="empty-text">There is no step created so far, <br>please click “ADD STEP” to create new step for initial.</div>
     {% else %}
     <!--<div class="empty-text">Don't forget choose involved devices before you click confirm!</div>-->
         {% for k, v in steps.items() %}

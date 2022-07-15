@@ -176,11 +176,10 @@
   <div id="instructionInitial">  
     <div class="line">
         <div class="admin-txt">Instruction</div>
-        <div class="admin-small-txt">- Initial</div>
+        <div class="admin-small-txt">- {{step_id}}</div>
     </div>
-    <div class="admin-mid-txt">Please describe your new step in details with text, image or code according to the following guides.</div>
+    <div class="admin-mid-txt">Please describe your new step in details with text and image according to the following guides.</div>
     <!-- instruction content part -->
-    <div class="roomsubhead">{{step_id}}</div>
 
   <textarea class="stepBox" type="text" placeholder="Please add text to describe this step." name="step_text" value="{{steps.get(step_id).text}}"></textarea>
   <div class="uploadWrap">
@@ -194,8 +193,6 @@
         <input id="room-photo-uploader" class="roomUpload" type="file">
       </div>
     </div>
-    <textarea class="stepCommand" type="text" placeholder="//Start your code here&#13;&#10;func(){&#13;&#10;}" name="step_command" value="{{steps.get(step_id).command}}"></textarea>
-    <textarea class="stepHelp" type="text" placeholder="If there is any substitutive method or solution when the above step doesn't work, please add here." name="step_help" value="{{steps.get(step_id).help}}"></textarea>
     <input id="btn-confirm" type='submit' name="confirm" value="CONFIRM">
   </div>
    <!-- auxiliary input field -->
