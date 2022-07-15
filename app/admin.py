@@ -331,10 +331,38 @@ steps={
 @admin_blue.route("/control", methods=['GET', 'POST'])
 @check_admin
 def control():
+    type_dict={0: "AMX", 1: "Crestrion"}
+    return render_template('admin_control_list.html', type_dict=type_dict)
+
+@admin_blue.route("/control", methods=['GET', 'POST'])
+@check_admin
+def control():
     room_id = request.args.get('room_id')
     return render_template('admin_control_list.html',room_id=room_id,steps=steps)
 
+@admin_blue.route("/control_device", methods=['GET', 'POST'])
+@check_admin
+def control_device():
+    room_id = request.args.get('room_id')
+    return render_template('admin_control_device_list.html',room_id=room_id,steps=steps)
 
+@admin_blue.route("/control_case", methods=['GET', 'POST'])
+@check_admin
+def control_case():
+    room_id = request.args.get('room_id')
+    return render_template('admin_control_case_list.html',room_id=room_id,steps=steps)
+
+@admin_blue.route("/control_case_instruction", methods=['GET', 'POST'])
+@check_admin
+def control_case_instruction():
+    room_id = request.args.get('room_id')
+    return render_template('admin_control_case_instruction.html',room_id=room_id,steps=steps)
+
+@admin_blue.route("/control_case_steps", methods=['GET', 'POST'])
+@check_admin
+def control_case_steps():
+    room_id = request.args.get('room_id')
+    return render_template('admin_control_case_steps.html',room_id=room_id,steps=steps)
 
 # '''
 # steps={
