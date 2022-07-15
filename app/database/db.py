@@ -1,5 +1,6 @@
 import os
 import shutil
+import base64
 from pymongo.mongo_client import MongoClient
 from .utils import Account, Room, System, time, compare_date_and_time, sort_bookInfo_list
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -20,6 +21,20 @@ def path_exist_or_mkdir(path:str):
     if not os.path.exists(path):
         os.makedirs(path)
     return True
+
+# def image_encoder(image_path: str):
+#     img = open(image_path,"rb")
+#     img_encode = base64.b64encode(img.read())
+#     img.close()
+#     img_string = img_encode.decode('utf-8')
+#     return img_string
+
+def image_decoder(encoded_image: str, save_path: str = "write.png"): #decode string from encoder
+    img_encode = encoded_image.encode('utf-8')
+    img = base64.b64decode(img_encode)
+    out = open(save_path,"wb")
+    out.write(img)
+    out.close()
 
 # def generateDeviceTypeList(devicetype):
 #     deviceTypeList = []
@@ -172,6 +187,13 @@ class RoomDB():
     def getroom(self, roomName):
         room = self.db.find_one({"roomName": roomName})
         return room
+
+    def clearChooseDeviceIDList(self, roomName):
+        self.db.update_one({"roomName": roomName}, {'$set': {'chooseDeviceIDList': []}})
+
+    def chooseDevice(self, roomName, deviceID):
+        room = self.db.find_one({"roomName": roomName})
+        
     
     def getroomInfo(self):
         roomInfo = {}
@@ -270,18 +292,20 @@ class RoomDB():
             roomInfo_list.append(roomInfo)
         return Convert(roomInfo_list)
 
-    def addDevice(self, roomName, deviceID, deviceName, deviceType, deviceIP, deviceLocX, deviceLocY):
+    def addDevice(self, roomName, deviceID, deviceName, deviceType, deviceIP, deviceLocX=-1, deviceLocY=-1):
         room = self.db.find_one({"roomName": roomName})
+        if deviceID == "-1": deviceID = str(len(room["deviceNameList"]))
         room["deviceNameList"][deviceID] = deviceName
         room["deviceTypeList"][deviceID] = deviceType
         room["deviceIPList"][deviceID] = deviceIP
-        room["deviceLocXList"][deviceID] = deviceLocX
-        room["deviceLocYList"][deviceID] = deviceLocY
+        if deviceLocX != -1: room["deviceLocXList"][deviceID] = deviceLocX
+        if deviceLocY != -1: room["deviceLocYList"][deviceID] = deviceLocY
         self.db.update_one({"roomName": roomName}, \
             {'$set': {"deviceNameList": room["deviceNameList"], "deviceTypeList": room["deviceTypeList"], "deviceIPList": room["deviceIPList"], "deviceLocXList": room["deviceLocXList"], "deviceLocYList": room["deviceLocYList"]}})
     
     def delDevice(self, roomName, deviceID):
         room = self.db.find_one({"roomName": roomName})
+        if deviceID == "-1": return "Err: Invalid Devive!"
         for i in range(int(deviceID) + 1, len(room["deviceNameList"])): room["deviceNameList"][str(i - 1)] = room["deviceNameList"].pop(str(i))
         for i in range(int(deviceID) + 1, len(room["deviceTypeList"])): room["deviceTypeList"][str(i - 1)] = room["deviceTypeList"].pop(str(i))
         for i in range(int(deviceID) + 1, len(room["deviceIPList"])): room["deviceIPList"][str(i - 1)] = room["deviceIPList"].pop(str(i))
@@ -290,16 +314,47 @@ class RoomDB():
         self.db.update_one({"roomName": roomName}, \
             {'$set': {"deviceNameList": room["deviceNameList"], "deviceTypeList": room["deviceTypeList"], "deviceIPList": room["deviceIPList"], "deviceLocXList": room["deviceLocXList"], "deviceLocYList": room["deviceLocYList"]}})
 
+    def getDeviceID(self, roomName, deviceName):
+        deviceID = "-1"
+        room = self.db.find_one({"roomName": roomName})
+        for k, v in room["deviceNameList"].items():
+            if v == deviceName: return deviceID
+        return deviceID
+
+    def getDeviceInfo(self, roomName):
+        deviceInfo = {}
+        room = self.db.find_one({"roomName": roomName})
+        if not room: return deviceInfo
+        for i in range(len(room["deviceNameList"])):
+            deviceInfo[i] = {
+                'name': room['deviceNameList'][str(i)],
+                'type': room['deviceTypeList'][str(i)],
+                'ip'  : room['deviceIPList'][str(i)],
+                'x'   : room['deviceLocXList'][str(i)],
+                'y'   : room['deviceLocYList'][str(i)],
+            }
+            
+        return deviceInfo
+
     def addRoom(self, roomName, roomLoc, controlSystem):
         room = self.db.find_one({"roomName": roomName})
-
-        if room:
-            self.db.update_one({"_id": room["_id"]}, {'$set': {"roomName": roomName, "roomImg": roomImg, "roomLoc": roomLoc, "controlSystem": controlSystem}})
-            return "Info: Edit Room Successfully!"
-        else:
+        if not room:
             newRoom = Room(roomName, roomLoc, controlSystem)
             self.db.insert_one(newRoom.__dict__)
             return "Info: Add Room Successfully!"
+        else:
+            return "Err: Room Exist!"
+
+    def editRoom(self, roomName, newRoomName, newRoomLoc, newControlSystem):
+        room = self.db.find_one({"roomName": roomName})
+        if not room:
+            return "Err: Room Exist!"
+        elif self.getroom(newRoomLoc):
+            return "Err: Rename Invalid!"            
+        else:
+            self.db.update_one({"_id": room["_id"]}, {'$set': {"roomName": newRoomName, "roomLoc": newRoomLoc, "controlSystem": newControlSystem}})
+            return "Info: Edit Room Successfully!"
+
 
     def delRoom(self, roomName):
         room = self.db.find_one({"roomName": roomName})
@@ -311,6 +366,13 @@ class RoomDB():
         shutil.rmtree(path)
 
         return "Info: Delete Successfully!"
+    
+    def uploadImage(self, roomName, roomImg, imgType):
+        if not roomImg: return "Err: Invalid Image!"
+        exist=f'app/static/images/test/room{roomName}'
+        path_exist_or_mkdir(exist)
+        path=f'app/static/images/test/room{roomName}/{imgType}'
+        image_decoder(roomImg,path)
 
     # def upload360Img(self, roomName, room360Img):
     #     self.db.update_one({"roomName": roomName}, {"room360Img": room360Img})

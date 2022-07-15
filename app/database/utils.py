@@ -125,8 +125,9 @@ class Room(object):
         self.deviceNameList = {"0": "personal windows", "1": "personal apple", "2": "zoom", "3": "additional iPad"} # "project-1"
         self.deviceTypeList = {"0": "win", "1": "apple", "2": "zoom", "3": "additional iPad"} # "projector & screen"
         self.deviceIPList = {"0": "-1", "1": "-1", "2": "-1", "3": "-1"} # "000.00.000.000:0000"
-        self.deviceLocXList = {"0": "-1", "1": "-1", "2": "-1", "3": "-1"} # 1
-        self.deviceLocYList = {"0": "-1", "1": "-1", "2": "-1", "3": "-1"} # 2
+        self.deviceLocXList = {"0": -1, "1": -1, "2": -1, "3": -1} # 1
+        self.deviceLocYList = {"0": -1, "1": -1, "2": -1, "3": -1} # 2
+        self.chooseDeviceIDList = []
 
         # maximum instruction for room
         self.roomInsDevice = {} # {0: [], 1: ["projector & screen"], 2: ["win", "projector & screen"], ...}
