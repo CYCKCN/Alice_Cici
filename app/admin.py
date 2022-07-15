@@ -78,7 +78,7 @@ def room(room_id):
             return redirect(url_for('admin.main'))
     room = roomdb.getroom(room_id)
     #utils.download_room_basic_image_with_name(room_id)
-    return render_template('admin_room.html', room_id=room_id, room_loc=room["roomLoc"], error=error if error else '')
+    return render_template('admin_room.html', room_id=room_id, room_loc=room["roomLoc"], room_cs=room["controlSystem"], error=error if error else '')
 
 @admin_blue.route("/basic_info", methods=['POST','GET'])
 @check_login 
@@ -107,7 +107,8 @@ def basic_info():
 
             #roomLoc
             roomLoc=request.form.get('room_loc')
-            controlSystem = "AMX" # need to be changed
+            controlSystem=request.form.get('p_type')
+            # controlSystem = "AMX" # need to be changed
             roomdb.addRoom(roomName, roomLoc, controlSystem)
             roomdb.uploadImage(roomName, roomImage, "_basic_upload.png")
             # utils.create_room_with_name_image_loc(roomName, roomImage, roomLoc)
@@ -116,7 +117,7 @@ def basic_info():
         if is_editRoom and continue_:
             roomName = request.form.get('room_id') if request.form.get('room_id') else None
             roomLoc = request.form.get('room_loc') if request.form.get('room_loc') else None
-            roomControlSystem = "AMX" # need to changed
+            roomControlSystem = request.form.get('p_type') if request.form.get('room_loc') else None
             
             img_base64=request.form.get('imgSrc')
             roomImage=(img_base64.split(','))[-1] if img_base64 else None
