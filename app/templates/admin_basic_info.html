@@ -216,13 +216,12 @@
       <option value="10">游戏/数码</option>
       
     </select> -->
-    
+
     <div id="create-div6">
       <p id="point-text2" class="menu-label" >Type: </p>
       <select class="menu-input" id="point-text21" name="p_type">
-          <option class="opt_value" value="none" >None</option>
           {% for k, v in type_dict.items() %}
-              <option class="opt_value" value="{{v.name}}">{{v.name}}</option>
+              <option class="opt_value" value="{{v}}">{{v}}</option>
           {% endfor %}
       </select>
     </div>
