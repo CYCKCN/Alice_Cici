@@ -391,9 +391,10 @@ cases={
 }
 
 @admin_blue.route("/control", methods=['GET', 'POST'])
-@check_admin
+# @check_admin
 def control():
-    type_dict={0: "AMX", 1: "Crestrion"}
+    type_dict=systemdb.getSystemList()
+    print(type_dict)
     return render_template('admin_control_list.html', type_dict=type_dict)
 
 @admin_blue.route("/control_device", methods=['GET', 'POST'])

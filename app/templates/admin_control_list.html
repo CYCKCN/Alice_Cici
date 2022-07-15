@@ -256,13 +256,13 @@
     </div>
     <div class="admin-mid-txt">Start to store operation templates for different control systems.</div>
     <!-- step part -->
-    {% if steps|length==0 %}
+    {% if type_dict|length==0 %}
         <div class="empty-text">There is no control system created so far, <br>please click “ADD SYSTEM” to create new.</div>
     {% else %}
         {% for k, v in type_dict.items() %}
             <div class="step-div">
                 <div class="line">
-                    <div class="step-label">{{k}}</div>
+                    <div class="step-label">{{v}}</div>
                     <input class="btn-delete" type='submit' name="delete_{{k}}" value="delete">
                     <input class="btn-edit" type='submit' name="edit_{{k}}" value="edit">
                 </div>
