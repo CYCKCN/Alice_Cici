@@ -187,6 +187,13 @@ class RoomDB():
     def getroom(self, roomName):
         room = self.db.find_one({"roomName": roomName})
         return room
+
+    def clearChooseDeviceIDList(self, roomName):
+        self.db.update_one({"roomName": roomName}, {'$set': {'chooseDeviceIDList': []}})
+
+    def chooseDevice(self, roomName, deviceID):
+        room = self.db.find_one({"roomName": roomName})
+        
     
     def getroomInfo(self):
         roomInfo = {}
@@ -285,18 +292,20 @@ class RoomDB():
             roomInfo_list.append(roomInfo)
         return Convert(roomInfo_list)
 
-    def addDevice(self, roomName, deviceID, deviceName, deviceType, deviceIP, deviceLocX, deviceLocY):
+    def addDevice(self, roomName, deviceID, deviceName, deviceType, deviceIP, deviceLocX=-1, deviceLocY=-1):
         room = self.db.find_one({"roomName": roomName})
+        if deviceID == "-1": deviceID = str(len(room["deviceNameList"]))
         room["deviceNameList"][deviceID] = deviceName
         room["deviceTypeList"][deviceID] = deviceType
         room["deviceIPList"][deviceID] = deviceIP
-        room["deviceLocXList"][deviceID] = deviceLocX
-        room["deviceLocYList"][deviceID] = deviceLocY
+        if deviceLocX != -1: room["deviceLocXList"][deviceID] = deviceLocX
+        if deviceLocY != -1: room["deviceLocYList"][deviceID] = deviceLocY
         self.db.update_one({"roomName": roomName}, \
             {'$set': {"deviceNameList": room["deviceNameList"], "deviceTypeList": room["deviceTypeList"], "deviceIPList": room["deviceIPList"], "deviceLocXList": room["deviceLocXList"], "deviceLocYList": room["deviceLocYList"]}})
     
     def delDevice(self, roomName, deviceID):
         room = self.db.find_one({"roomName": roomName})
+        if deviceID == "-1": return "Err: Invalid Devive!"
         for i in range(int(deviceID) + 1, len(room["deviceNameList"])): room["deviceNameList"][str(i - 1)] = room["deviceNameList"].pop(str(i))
         for i in range(int(deviceID) + 1, len(room["deviceTypeList"])): room["deviceTypeList"][str(i - 1)] = room["deviceTypeList"].pop(str(i))
         for i in range(int(deviceID) + 1, len(room["deviceIPList"])): room["deviceIPList"][str(i - 1)] = room["deviceIPList"].pop(str(i))
@@ -305,13 +314,31 @@ class RoomDB():
         self.db.update_one({"roomName": roomName}, \
             {'$set': {"deviceNameList": room["deviceNameList"], "deviceTypeList": room["deviceTypeList"], "deviceIPList": room["deviceIPList"], "deviceLocXList": room["deviceLocXList"], "deviceLocYList": room["deviceLocYList"]}})
 
+    def getDeviceID(self, roomName, deviceName):
+        deviceID = "-1"
+        room = self.db.find_one({"roomName": roomName})
+        for k, v in room["deviceNameList"].items():
+            if v == deviceName: return deviceID
+        return deviceID
+
+    def getDeviceInfo(self, roomName):
+        deviceInfo = {}
+        room = self.db.find_one({"roomName": roomName})
+        if not room: return deviceInfo
+        for i in range(len(room["deviceNameList"])):
+            deviceInfo[i] = {
+                'name': room['deviceNameList'][str(i)],
+                'type': room['deviceTypeList'][str(i)],
+                'ip'  : room['deviceIPList'][str(i)],
+                'x'   : room['deviceLocXList'][str(i)],
+                'y'   : room['deviceLocYList'][str(i)],
+            }
+            
+        return deviceInfo
+
     def addRoom(self, roomName, roomLoc, controlSystem):
         room = self.db.find_one({"roomName": roomName})
-
         if not room:
-            # self.db.update_one({"_id": room["_id"]}, {'$set': {"roomName": roomName, "roomLoc": roomLoc, "controlSystem": controlSystem}})
-            # return "Info: Edit Room Successfully!"
-        # else:
             newRoom = Room(roomName, roomLoc, controlSystem)
             self.db.insert_one(newRoom.__dict__)
             return "Info: Add Room Successfully!"
