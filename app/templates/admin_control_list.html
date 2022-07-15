@@ -251,30 +251,25 @@
         </div>
     </div>  
     <div class="line">
-        <div class="admin-txt">Instruction</div>
-        <div class="admin-small-txt">- Initial</div>
+        <div class="admin-txt">Database</div>
+        <div class="admin-small-txt">- Control System</div>
     </div>
-    <div class="admin-mid-txt">Initial stage is to get all steps required before turning on the devices ready, e.g. how to turn on the control box. If there is no such step, please directly click “CONFIRM”.</div>
+    <div class="admin-mid-txt">Start to store operation templates for different control systems.</div>
     <!-- step part -->
     {% if steps|length==0 %}
-        <div class="empty-text">There is no step created so far, <br>please click “add step” to create new step for initial.</div>
+        <div class="empty-text">There is no control system created so far, <br>please click “ADD SYSTEM” to create new.</div>
     {% else %}
-        {% for k, v in steps.items() %}
+        {% for k, v in type_dict.items() %}
             <div class="step-div">
                 <div class="line">
                     <div class="step-label">{{k}}</div>
                     <input class="btn-delete" type='submit' name="delete_{{k}}" value="delete">
                     <input class="btn-edit" type='submit' name="edit_{{k}}" value="edit">
                 </div>
-                {% if v.text %}
-                    <div class="admin-step-txt">{{v.text}}</div>
-                {% else %}
-                    <div class="admin-step-txt">none</div> 
-                {% endif %}
             </div>
         {% endfor %}
     {% endif %}
-    <input id="btn-add" type='submit' name="add-step" value="ADD STEP">
+    <input id="btn-add" type='submit' name="add-system" value="ADD SYSTEM">
     <input id="btn-confirm" type='submit' name="confirm" value="CONFIRM">
   </div>
 </form>
