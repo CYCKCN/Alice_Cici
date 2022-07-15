@@ -117,7 +117,7 @@ def basic_info():
         if is_editRoom and continue_:
             roomName = request.form.get('room_id') if request.form.get('room_id') else None
             roomLoc = request.form.get('room_loc') if request.form.get('room_loc') else None
-            roomControlSystem = request.form.get('p_type') if request.form.get('room_loc') else None
+            roomControlSystem = request.form.get('p_type') if request.form.get('p_type') else None
             
             img_base64=request.form.get('imgSrc')
             roomImage=(img_base64.split(','))[-1] if img_base64 else None
