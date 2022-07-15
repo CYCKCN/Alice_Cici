@@ -95,12 +95,15 @@ def basic_info():
         if is_addRoom and continue_:
             #roomName
             roomName=request.form.get('room_id')
+            print(roomName)
             room = roomdb.getroom(roomName)
             if room:
                 return redirect(url_for('admin.room',room_id=roomName,is_editRoom=True,error='Room exists, please edit the room.'))
 
             #roomImage
             img_base64=request.form.get('imgSrc')
+            # print(request.form.get('imgUpload'))
+            # print(img_base64)
             roomImage=(img_base64.split(','))[-1]
             if len(roomImage)==0:
                 return redirect(url_for('admin.basic_info',is_addRoom=True))
