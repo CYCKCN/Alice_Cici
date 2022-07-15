@@ -193,7 +193,8 @@ class RoomDB():
 
     def chooseDevice(self, roomName, deviceID):
         room = self.db.find_one({"roomName": roomName})
-        
+        if deviceID not in room["chooseDeviceIDList"]: 
+            room["chooseDeviceIDList"].append(deviceID)
     
     def getroomInfo(self):
         roomInfo = {}

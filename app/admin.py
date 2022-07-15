@@ -199,93 +199,93 @@ def photo_360():
 #     2:{'name':'Screener'},
 # }
 
-# @admin_blue.route("/device_info", methods=['POST','GET'])
-# @check_login 
-# def device_info():
-#     room_id = request.args.get('room_id')
-#     #global devices_test_admin  # Three point initalization
-#     #devices_dict[room_id] = devices_test_admin
+@admin_blue.route("/device_info", methods=['POST','GET'])
+@check_login 
+def device_info():
+    room_id = request.args.get('room_id')
+    #global devices_test_admin  # Three point initalization
+    #devices_dict[room_id] = devices_test_admin
 
-#     if request.method == "POST":
-#         continue_=request.form.get('continue')
-#         checklist=request.form.get('checkList')
-#         if continue_:
-#             return redirect(url_for('admin.room_instruction_preview',room_id=room_id))
-#         if checklist:
-#             return redirect(url_for('admin.device_list',room_id=room_id))
-#         back=request.form.get('back')
-#         if back:
-#             return redirect(url_for('admin.photo_360',room_id=room_id))
+    if request.method == "POST":
+        continue_=request.form.get('continue')
+        checklist=request.form.get('checkList')
+        if continue_:
+            return redirect(url_for('admin.room_instruction_preview',room_id=room_id))
+        if checklist:
+            return redirect(url_for('admin.device_list',room_id=room_id))
+        back=request.form.get('back')
+        if back:
+            return redirect(url_for('admin.photo_360',room_id=room_id))
         
-#         #update_from_admin_request(devices_dict[room_id])
+        #update_from_admin_request(devices_dict[room_id])
         
-#         point_delete=request.form.get('point_delete')
-#         point_edit=request.form.get('point_edit')
-#         point_close=request.form.get('point_close')
+        point_delete=request.form.get('point_delete')
+        point_edit=request.form.get('point_edit')
+        point_close=request.form.get('point_close')
 
-#         #deviceID=request.form.get('uid')
-#         deviceName_old=request.form.get('point_name') 
-#         deviceName=request.form.get('p_name')
-#         deviceType=request.form.get('p_type')
-#         deviceIP=request.form.get('p_ip')
-#         deviceLocX=request.form.get('dup_x')
-#         deviceLocY=request.form.get('dup_y')
-#         # print(deviceName_old,deviceName,deviceType,deviceIP,deviceLocX,deviceLocY)
-#         print(deviceType)
+        #deviceID=request.form.get('uid')
+        deviceName_old=request.form.get('point_name') 
+        deviceName=request.form.get('p_name')
+        deviceType=request.form.get('p_type')
+        deviceIP=request.form.get('p_ip')
+        deviceLocX=request.form.get('dup_x')
+        deviceLocY=request.form.get('dup_y')
+        # print(deviceName_old,deviceName,deviceType,deviceIP,deviceLocX,deviceLocY)
+        print(deviceType)
 
-#         #save
-#         #print(point_edit, deviceName, deviceType, deviceIP)
-#         #print(point_edit and deviceName and deviceType and deviceIP)
-#         if point_edit and deviceName and deviceType and deviceIP:
-#             deviceID = roomdb.getDeviceID(room_id, deviceName_old)
-#             roomdb.addDevice(room_id, deviceID, deviceName, deviceType, deviceID)
-#             roomdb.clearChooseDeviceIDList(room_id)
-#             # utils.udpate_device_with_name_type_ip(
-#             #     room=room_id,
-#             #     old_name=deviceName_old,
-#             #     new_name=deviceName,
-#             #     type=deviceType,
-#             #     ip=deviceIP
-#             # )
-#             # utils.clean_chosen_device(room_id)
+        #save
+        #print(point_edit, deviceName, deviceType, deviceIP)
+        #print(point_edit and deviceName and deviceType and deviceIP)
+        if point_edit and deviceName and deviceType and deviceIP:
+            deviceID = roomdb.getDeviceID(room_id, deviceName_old)
+            roomdb.addDevice(room_id, deviceID, deviceName, deviceType, deviceID)
+            roomdb.clearChooseDeviceIDList(room_id)
+            # utils.udpate_device_with_name_type_ip(
+            #     room=room_id,
+            #     old_name=deviceName_old,
+            #     new_name=deviceName,
+            #     type=deviceType,
+            #     ip=deviceIP
+            # )
+            # utils.clean_chosen_device(room_id)
         
-#         #delete
-#         if point_delete and deviceName:
-#             deviceID = roomdb.getDeviceID(room_id, deviceName)
-#             roomdb.delDevice(room_id, deviceID)
-#             # utils.delete_device_with_name(room_id, deviceName)
+        #delete
+        if point_delete and deviceName:
+            deviceID = roomdb.getDeviceID(room_id, deviceName)
+            roomdb.delDevice(room_id, deviceID)
+            # utils.delete_device_with_name(room_id, deviceName)
 
-#         #create
-#         if deviceLocX and deviceLocY:
-#             roomdb.addDevice(room_id, "-1", deviceName, deviceType, deviceIP, round(float(deviceLocX),1), round(float(deviceLocY),1))
-#             deviceID = roomdb.getDeviceID(room_id, deviceName)
-#             roomdb.chooseDeviceName(room_id, deviceID)
-#             # utils.create_device_with_name_type_ip(
-#             #     room=room_id,
-#             #     name=deviceName,
-#             #     type=deviceType,
-#             #     ip=deviceIP,
-#             #     x=round(float(deviceLocX),1),
-#             #     y=round(float(deviceLocY),1)
-#             # )
-#             utils.choose_device_with_name(room_id, deviceName)
+        #create
+        if deviceLocX and deviceLocY:
+            roomdb.addDevice(room_id, "-1", deviceName, deviceType, deviceIP, round(float(deviceLocX),1), round(float(deviceLocY),1))
+            deviceID = roomdb.getDeviceID(room_id, deviceName)
+            roomdb.chooseDevice(room_id, deviceID)
+            # utils.create_device_with_name_type_ip(
+            #     room=room_id,
+            #     name=deviceName,
+            #     type=deviceType,
+            #     ip=deviceIP,
+            #     x=round(float(deviceLocX),1),
+            #     y=round(float(deviceLocY),1)
+            # )
+            utils.choose_device_with_name(room_id, deviceName)
 
-#         #choose
-#         choose=utils.get_choose_device_with_room(room_id)
-#         for _, c in choose.items():
-#             d=request.form.get('devices_input_'+c[0])
-#             if d==' ': 
-#                 utils.clean_chosen_device(room_id)
-#                 utils.choose_device_with_name(room_id, c[0])
+        #choose
+        choose=utils.get_choose_device_with_room(room_id)
+        for _, c in choose.items():
+            d=request.form.get('devices_input_'+c[0])
+            if d==' ': 
+                utils.clean_chosen_device(room_id)
+                utils.choose_device_with_name(room_id, c[0])
 
-#         #close
-#         if point_close: utils.clean_chosen_device(room_id)
+        #close
+        if point_close: utils.clean_chosen_device(room_id)
         
-#     devices, devices_choose=utils.get_devices_and_chosen_devices(room_id)
-#     #print(devices)
-#     #print(devices_choose)
-#     #return render_template('admin_device_info.html',room_id=room_id,devices=devices_dict[room_id].getJson(),devices_choose=devices_dict[room_id].chooseDevice())
-#     return render_template('admin_device_info.html',room_id=room_id,devices=devices,devices_choose=devices_choose,type_dict=type_dict)
+    devices, devices_choose=utils.get_devices_and_chosen_devices(room_id)
+    #print(devices)
+    #print(devices_choose)
+    #return render_template('admin_device_info.html',room_id=room_id,devices=devices_dict[room_id].getJson(),devices_choose=devices_dict[room_id].chooseDevice())
+    return render_template('admin_device_info.html',room_id=room_id,devices=devices,devices_choose=devices_choose,type_dict=type_dict)
 
 @admin_blue.route("/device_list", methods=['GET','POST'])
 def device_list():
