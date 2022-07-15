@@ -233,15 +233,19 @@
         <div id="point-menu">
             <div id="create-div3">
                 <p class="menu-label" id="point-text1">Name: </p>
-                <input class="menu-input" id="point-text11" type="text" name="p_name" value="microphone 1">
+                <input class="menu-input" id="point-text11" type="text" name="p_name" value="device {{type_dict|length}}">
             </div>
             <div id="create-div6">
                 <p id="point-text2" class="menu-label" >Type: </p>
+                <!-- <input class="menu-input" id="point-text21" type="text" name="p_type" value="none"> -->
                 <select class="menu-input" id="point-text21" name="p_type">
                     <option class="opt_value" value="none" >None</option>
                     {% for k, v in type_dict.items() %}
-                        <option class="opt_value" value="{{v.name}}">{{v.name}}</option>
+                        <option class="opt_value" value="{{v}}">{{v}}</option>
                     {% endfor %}
+                    <!-- <option class="opt_value" value="Microphone">Microphone</option>
+                    <option class="opt_value" value="Projector">Projector</option>
+                    <option class="opt_value" value="Screener">Screener</option> -->
                 </select>
             </div>
             <div id="point-image0">
@@ -349,7 +353,6 @@
             menu_point.children[8].value=obj.name; // auxiliary field
             menu_point.children[11].value=i;
         }
-
         else{
             grandsonInput.style.backgroundColor='transparent'
         }

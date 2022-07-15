@@ -104,7 +104,7 @@ addDeviceNameList = ["projector-1", "projector-2", "Speaker", "Microphone", "Vis
 addDeviceTypeList = ["projector-screen", "projector-screen", "speaker", "mic4me", "visualizer", "pc"]
 
 if __name__ == '__main__':
-    systemdb.cleardb()
+    # systemdb.cleardb()
     # systemdb.createSystem("AMX")
     # deviceTypeList = ["speaker", "projector-screen", "mic4me", "hand-held mic", "table mic", "webcam", "visualizer", "pc", "display TV"]
     # for deviceType in deviceTypeList:
@@ -118,10 +118,10 @@ if __name__ == '__main__':
     # systemdb.delCaseStep("AMX", "7", "4")
     # systemdb.deleteCase("AMX", "15")
     roomdb.cleardb()
-    # # devicedb.cleardb()
-    # roomdb.addRoom("4504", "Academic Building, 4F, Lift 25-26", "AMX")
-    # for i in range(len(addDeviceNameList)):
-    #     roomdb.addDevice("4504", str(i + 4), addDeviceNameList[i], addDeviceTypeList[i], "", i + 4, i + 4)
+    # devicedb.cleardb()
+    roomdb.addRoom("4504", "Academic Building, 4F, Lift 25-26", "AMX")
+    for i in range(len(addDeviceNameList)):
+        roomdb.addDevice("4504", str(i + 4), addDeviceNameList[i], addDeviceTypeList[i], "", i + 4, i + 4)
 
     # room = roomdb.getroom("4504")
     # system = systemdb.getsystem("AMX")

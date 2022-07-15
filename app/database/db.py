@@ -193,18 +193,18 @@ class RoomDB():
 
     def chooseDevice(self, roomName, deviceID):
         room = self.db.find_one({"roomName": roomName})
-        if deviceID not in room["chooseDeviceIDList"]: 
-            room["chooseDeviceIDList"].append(deviceID)
-            self.db.update_one({"roomName": roomName}, {'$set': {'chooseDeviceIDList': room["chooseDeviceIDList"]}})
+        if deviceID not in room["chooseDeviceIDList"]: room["chooseDeviceIDList"].append(deviceID)
+        # print(room["chooseDeviceIDList"])
+        self.db.update_one({"roomName": roomName}, {'$set': {'chooseDeviceIDList': room["chooseDeviceIDList"]}})
     
     def getChooseDeviceList(self, roomName):
         room = self.db.find_one({"roomName": roomName})
         chooseDeviceList = {}
-        for i in range(len(room["deviceNameList"])):
+        for i in range(4, len(room["deviceNameList"])):
             if str(i) in room["chooseDeviceIDList"]:
-                chooseDeviceList[i] = [room["deviceNameList"][str(i)], 1]
+                chooseDeviceList[i - 4] = [room["deviceNameList"][str(i)], 1]
             else:
-                chooseDeviceList[i] = [room["deviceNameList"][str(i)], 0]
+                chooseDeviceList[i - 4] = [room["deviceNameList"][str(i)], 0]
         return chooseDeviceList
     
     def getroomInfo(self):
@@ -218,7 +218,7 @@ class RoomDB():
         return roomInfo
 
     def checkRoomAvailable(self, roomName, date=None, extend_access_date=None, get_occupy=False):
-        print(roomName)
+        # print(roomName)
         room = self.db.find_one({"roomName": roomName})
         bookTime = room["bookTime"]
         if date:
@@ -287,7 +287,7 @@ class RoomDB():
         return Convert(bookInfo_list)
 
     def checkSearchRoom(self, roomName, accountEmail):
-        print(roomName)
+        # print(roomName)
         room_list = self.db.find({"roomName": {'$regex': roomName}})
         roomInfo_list = []
         for room in room_list:
@@ -306,7 +306,9 @@ class RoomDB():
 
     def addDevice(self, roomName, deviceID, deviceName, deviceType, deviceIP, deviceLocX=-1, deviceLocY=-1):
         room = self.db.find_one({"roomName": roomName})
+        # print(deviceID)
         if deviceID == "-1": deviceID = str(len(room["deviceNameList"]))
+        # print(deviceID)
         room["deviceNameList"][deviceID] = deviceName
         room["deviceTypeList"][deviceID] = deviceType
         room["deviceIPList"][deviceID] = deviceIP
@@ -330,15 +332,15 @@ class RoomDB():
         deviceID = "-1"
         room = self.db.find_one({"roomName": roomName})
         for k, v in room["deviceNameList"].items():
-            if v == deviceName: return deviceID
+            if v == deviceName: return k
         return deviceID
 
     def getDeviceInfo(self, roomName):
         deviceInfo = {}
         room = self.db.find_one({"roomName": roomName})
         if not room: return deviceInfo
-        for i in range(len(room["deviceNameList"])):
-            deviceInfo[i] = {
+        for i in range(4, len(room["deviceNameList"])):
+            deviceInfo[i - 4] = {
                 'name': room['deviceNameList'][str(i)],
                 'type': room['deviceTypeList'][str(i)],
                 'ip'  : room['deviceIPList'][str(i)],
@@ -349,11 +351,11 @@ class RoomDB():
         return deviceInfo
 
     def getDeviceTypeList(self, roomName):
-        room = self.db.find({"roomName": roomName})
-        deviceTypeList = []
+        room = self.db.find_one({"roomName": roomName})
+        deviceTypeList = {}
         for deviceType in room["deviceTypeList"].values():
-            if deviceType not in deviceTypeList:
-                deviceTypeList.append(deviceType)
+            if deviceType not in deviceTypeList.values():
+                deviceTypeList[len(deviceTypeList)] = deviceType
         return deviceTypeList
 
     def addRoom(self, roomName, roomLoc, controlSystem):
@@ -368,14 +370,14 @@ class RoomDB():
     def editRoom(self, roomName, newRoomName, newRoomLoc, newControlSystem):
         room = self.db.find_one({"roomName": roomName})
         if not room:
-            return "Err: Room Exist!"
-        elif self.getroom(newRoomLoc):
+            return "Err: Room Not Exist!"
+        elif self.getroom(newRoomName):
             return "Err: Rename Invalid!"            
         else:
             if newRoomName: room["roomName"] = newRoomName
             if newRoomLoc: room["roomLoc"] = newRoomLoc
             if newControlSystem: room["controlSystem"] = newControlSystem
-            self.db.update_one({"_id": room["_id"]}, {'$set': {"roomName": newRoomName, "roomLoc": newRoomLoc, "controlSystem": newControlSystem}})
+            self.db.update_one({"_id": room["_id"]}, {'$set': {"roomName": room["roomName"], "roomLoc": room["roomLoc"] , "controlSystem": room["controlSystem"]}})
             return "Info: Edit Room Successfully!"
 
     def delRoom(self, roomName):
@@ -524,6 +526,13 @@ class SystemDB():
         system = self.db.find_one({"controlSystem": controlSystem})
         return system
 
+    def getSystemList(self):
+        systemList = self.db.find({})
+        systemListInfo = {}
+        for system in systemList:
+            systemListInfo[len(systemListInfo)] = system["controlSystem"]
+        return systemListInfo
+
     def createSystem(self, controlSystem):
         system = self.db.find_one({"controlSystem": controlSystem})
 
@@ -603,6 +612,14 @@ class SystemDB():
         for i in range(int(stepID) + 1, len(insCases[caseID])): insCases[caseID][str(i - 1)] = insCases[caseID].pop(str(i))
         self.db.update_one({"controlSystem": controlSystem}, {'$set': {"insCases": insCases}})
         return "Info: Delete Successfully!"
+
+    def getDeviceTypeList(self, controlSystem):
+        system = self.db.find_one({"controlSystem": controlSystem})
+        deviceTypeList = {}
+        for deviceType in system["deviceTypeList"]:
+            if deviceType not in deviceTypeList.values():
+                deviceTypeList[len(deviceTypeList)] = deviceType
+        return deviceTypeList
 
     
 db = connection("test")

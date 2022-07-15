@@ -200,16 +200,19 @@
     {% if is_addRoom %}
     <input class="roomBox" type="text" placeholder="Academic Building" name="room_loc" v-model="roomloc"/>
     {% else %}
-		<input class="roomBox" type="text" placeholder="Academic Building" name="room_loc" v-model="roomloc"/>
+		<input class="roomBox" type="text" placeholder="{{room_loc}}" name="room_loc" v-model="roomloc"/>
     {% endif %}
 
     <div class="roomsubhead">ROOM Control System</div>
 
     <div id="create-div6">
       <select class="menu-input" id="point-text21" name="p_type">
-      {% for k, v in type_dict.items() %}
-          <option class="opt_value" value="{{v}}">{{v}}</option>
-      {% endfor %}
+        <option class="opt_value" value="{{room_system}}" >{{room_system}}</option>
+        {% for k, v in type_dict.items() %}
+          {% if v != room_system%}
+            <option class="opt_value" value="{{v}}">{{v}}</option>
+          {% endif %}
+        {% endfor %}
       </select>
     </div>
     

@@ -124,7 +124,7 @@ def basic_info():
         if is_editRoom and continue_:
             roomName = request.form.get('room_id') if request.form.get('room_id') else None
             roomLoc = request.form.get('room_loc') if request.form.get('room_loc') else None
-            roomControlSystem = request.form.get('p_type') if request.form.get('p_type') else None
+            roomControlSystem = request.form.get('p_type') if request.form.get('p_type') != "None" else None
             
             img_base64=request.form.get('imgSrc')
             roomImage=(img_base64.split(','))[-1] if img_base64 else None
@@ -134,10 +134,10 @@ def basic_info():
             # has_udpate=utils.update_room_with_name_image_loc(room_id, roomName, roomImage, roomLoc)
 
             if "Err" in dbInfo:
+                return redirect(url_for('admin.room', room_id=roomName if roomName else room_id, is_editRoom=True, error='Invalid room name or empty submit!'))
+            else:
                 roomdb.uploadImage(roomName, roomImage, "_basic_upload.png")
                 return redirect(url_for('admin.photo_360', room_id=roomName if roomName else room_id, is_editRoom=True))
-            else:
-                return redirect(url_for('admin.room',room_id=roomName,is_editRoom=True,error='Invalid room name or empty submit!'))
        
         back=request.form.get('back')
         if back:
@@ -146,12 +146,16 @@ def basic_info():
 
         #if continue_:
         #    return redirect(url_for('admin.photo_360',room_id=room_id))
-    
+    room = roomdb.getroom(room_id)
+    type_dict = systemdb.getSystemList()
+    # print(room)
     return render_template('admin_basic_info.html',
     room_id=room_id,
+    room_loc="Academic Building" if not room else room['roomLoc'],
     is_addRoom=True if is_addRoom else False,
     is_editRoom=True if is_editRoom else False, 
-    type_dict={0:"AMX", 1:"Crestron"})
+    type_dict=type_dict,
+    room_system = "None" if not room else room["controlSystem"])
 
 @admin_blue.route("/photo_360", methods=['POST','GET'])
 @check_login 
@@ -180,7 +184,7 @@ def photo_360():
 
         back=request.form.get('back')
         if back:
-            return redirect(url_for('admin.basic_info',room_id=room_id))
+            return redirect(url_for('admin.basic_info',room_id=room_id, is_editRoom=True))
 
 
         '''
@@ -223,7 +227,7 @@ def device_info():
             return redirect(url_for('admin.device_list',room_id=room_id))
         back=request.form.get('back')
         if back:
-            return redirect(url_for('admin.photo_360',room_id=room_id))
+            return redirect(url_for('admin.photo_360',room_id=room_id, is_editRoom=True))
         
         #update_from_admin_request(devices_dict[room_id])
         
@@ -266,7 +270,10 @@ def device_info():
         #create
         if deviceLocX and deviceLocY:
             roomdb.addDevice(room_id, "-1", deviceName, deviceType, deviceIP, round(float(deviceLocX),1), round(float(deviceLocY),1))
+            print(deviceName)
             deviceID = roomdb.getDeviceID(room_id, deviceName)
+            print("DDDD")
+            print(deviceID)
             roomdb.chooseDevice(room_id, deviceID)
             # utils.create_device_with_name_type_ip(
             #     room=room_id,
@@ -285,7 +292,9 @@ def device_info():
             d = request.form.get('devices_input_' + c[0])
             if d == ' ':
                 roomdb.clearChooseDeviceIDList(room_id)
+                print(c[0])
                 deviceID = roomdb.getDeviceID(room_id, c[0])
+                print(deviceID)
                 roomdb.chooseDevice(room_id, deviceID)
                 # utils.clean_chosen_device(room_id)
                 # utils.choose_device_with_name(room_id, c[0])
@@ -293,12 +302,14 @@ def device_info():
         #close
         if point_close: roomdb.clearChooseDeviceIDList(room_id)
             # utils.clean_chosen_device(room_id)
+    room = roomdb.getroom(room_id)
     devices = roomdb.getDeviceInfo(room_id)
     devices_choose = roomdb.getChooseDeviceList(room_id)
-    type_dict = roomdb.getDeviceTypeList(room_id)
+    type_dict = systemdb.getDeviceTypeList(room["controlSystem"])
+    # print(type_dict)
     # devices, devices_choose=utils.get_devices_and_chosen_devices(room_id)
-    #print(devices)
-    #print(devices_choose)
+    print(devices)
+    print(devices_choose)
     #return render_template('admin_device_info.html',room_id=room_id,devices=devices_dict[room_id].getJson(),devices_choose=devices_dict[room_id].chooseDevice())
     return render_template('admin_device_info.html',room_id=room_id,devices=devices,devices_choose=devices_choose,type_dict=type_dict)
 
