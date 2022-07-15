@@ -23,7 +23,7 @@ def enter():
 #     return render_template('admin_login.html')
 
 @admin_blue.route("/main", methods=['POST','GET'])
-# @check_admin
+@check_admin
 def main():
     '''
     roomInfo={
@@ -57,88 +57,84 @@ def main():
     roomInfo = roomdb.getroomInfo()
     # roomInfo=utils.get_all_room_basic()
     #print(roomInfo)
-    return render_template('admin_main.html',
-    roomInfo=roomInfo,
-    error=error if error else '')
+    return render_template('admin_main.html', roomInfo=roomInfo, error=error if error else '')
 
-# @admin_blue.route("/room/<room_id>", methods=['POST','GET'])
-# #@check_login 
-# def room(room_id):
-#     error=request.args.get('error')
+@admin_blue.route("/room/<room_id>", methods=['POST','GET'])
+@check_admin
+def room(room_id):
+    error=request.args.get('error')
     
-#     if request.method == "POST":
-#         edit=request.form.get('edit')
-#         if edit:
-#             return redirect(url_for('admin.basic_info',room_id=room_id,is_editRoom=True))
-#         delete=request.form.get('delete')
-#         if delete:
-#             utils.delete_room_with_name(room_id)
-#             return redirect(url_for('admin.main'))
-#         back=request.form.get('back')
-#         if back:
-#             return redirect(url_for('admin.main'))
-    
-#     #utils.download_room_basic_image_with_name(room_id)
-#     return render_template('admin_room.html',
-#     room_id=room_id,
-#     room_loc=utils.get_room_location_with_name(room_id),
-#     error=error if error else '')
+    if request.method == "POST":
+        edit=request.form.get('edit')
+        if edit:
+            return redirect(url_for('admin.basic_info',room_id=room_id,is_editRoom=True))
+        delete=request.form.get('delete')
+        if delete:
+            roomdb.delRoom(room_id)
+            # utils.delete_room_with_name(room_id)
+            return redirect(url_for('admin.main'))
+        back=request.form.get('back')
+        if back:
+            return redirect(url_for('admin.main'))
+    room = roomdb.getroom(room_id)
+    #utils.download_room_basic_image_with_name(room_id)
+    return render_template('admin_room.html', room_id=room_id, room_loc=room["roomLoc"], error=error if error else '')
 
-# @admin_blue.route("/basic_info", methods=['POST','GET'])
-# @check_login 
-# def basic_info():
-#     room_id = request.args.get('room_id')
-#     is_addRoom = request.args.get('is_addRoom')
-#     is_editRoom = request.args.get('is_editRoom')
+@admin_blue.route("/basic_info", methods=['POST','GET'])
+@check_login 
+def basic_info():
+    room_id = request.args.get('room_id')
+    is_addRoom = request.args.get('is_addRoom')
+    is_editRoom = request.args.get('is_editRoom')
 
-#     #if is_editRoom:
-#         #utils.download_room_basic_image_with_name(room_id)
+    #if is_editRoom:
+        #utils.download_room_basic_image_with_name(room_id)
 
-#     if request.method == "POST":
-#         continue_=request.form.get('continue')
-#         if is_addRoom and continue_:
-#             #roomName
-#             roomName=request.form.get('room_id')
-#             if utils.room_is_exist(roomName):
-#                 return redirect(url_for('admin.room',room_id=roomName,is_editRoom=True,error='Room exists, please edit the room.'))
+    if request.method == "POST":
+        continue_=request.form.get('continue')
+        if is_addRoom and continue_:
+            #roomName
+            roomName=request.form.get('room_id')
+            if utils.room_is_exist(roomName):
+                return redirect(url_for('admin.room',room_id=roomName,is_editRoom=True,error='Room exists, please edit the room.'))
 
-#             #roomImage
-#             img_base64=request.form.get('imgSrc')
-#             roomImage=(img_base64.split(','))[-1]
-#             if len(roomImage)==0:
-#                 return redirect(url_for('admin.basic_info',is_addRoom=True))
+            #roomImage
+            img_base64=request.form.get('imgSrc')
+            roomImage=(img_base64.split(','))[-1]
+            if len(roomImage)==0:
+                return redirect(url_for('admin.basic_info',is_addRoom=True))
 
-#             #roomLoc
-#             roomLoc=request.form.get('room_loc')
-#             utils.create_room_with_name_image_loc(roomName, roomImage, roomLoc)
-#             return redirect(url_for('admin.photo_360',room_id=roomName,is_addRoom=True))
+            #roomLoc
+            roomLoc=request.form.get('room_loc')
+            utils.create_room_with_name_image_loc(roomName, roomImage, roomLoc)
+            return redirect(url_for('admin.photo_360',room_id=roomName,is_addRoom=True))
         
-#         if is_editRoom and continue_:
-#             roomName = request.form.get('room_id') if request.form.get('room_id') else None
-#             roomLoc = request.form.get('room_loc') if request.form.get('room_loc') else None
+        if is_editRoom and continue_:
+            roomName = request.form.get('room_id') if request.form.get('room_id') else None
+            roomLoc = request.form.get('room_loc') if request.form.get('room_loc') else None
             
-#             img_base64=request.form.get('imgSrc')
-#             roomImage=(img_base64.split(','))[-1] if img_base64 else None
-#             has_udpate=utils.update_room_with_name_image_loc(room_id, roomName, roomImage, roomLoc)
+            img_base64=request.form.get('imgSrc')
+            roomImage=(img_base64.split(','))[-1] if img_base64 else None
+            has_udpate=utils.update_room_with_name_image_loc(room_id, roomName, roomImage, roomLoc)
 
-#             if has_udpate:
-#                 return redirect(url_for('admin.photo_360',
-#                 room_id=roomName if roomName else room_id,
-#                 is_editRoom=True))
-#             else:
-#                 return redirect(url_for('admin.room',room_id=roomName,is_editRoom=True,error='Invalid room name or empty submit!'))
-#         back=request.form.get('back')
-#         if back:
-#             return redirect(url_for('admin.room',room_id=room_id))
+            if has_udpate:
+                return redirect(url_for('admin.photo_360',
+                room_id=roomName if roomName else room_id,
+                is_editRoom=True))
+            else:
+                return redirect(url_for('admin.room',room_id=roomName,is_editRoom=True,error='Invalid room name or empty submit!'))
+        back=request.form.get('back')
+        if back:
+            return redirect(url_for('admin.room',room_id=room_id))
             
 
-#         #if continue_:
-#         #    return redirect(url_for('admin.photo_360',room_id=room_id))
+        #if continue_:
+        #    return redirect(url_for('admin.photo_360',room_id=room_id))
     
-#     return render_template('admin_basic_info.html',
-#     room_id=room_id if is_editRoom else '1234',
-#     is_addRoom=True if is_addRoom else False,
-#     is_editRoom=True if is_editRoom else False)
+    return render_template('admin_basic_info.html',
+    room_id=room_id if is_editRoom else '1234',
+    is_addRoom=True if is_addRoom else False,
+    is_editRoom=True if is_editRoom else False)
 
 # @admin_blue.route("/photo_360", methods=['POST','GET'])
 # def photo_360():

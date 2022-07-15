@@ -75,11 +75,10 @@ def get_booking_week():
     return booking, access_date
 
 class User(UserMixin):
-    def __init__(self, email, identity="", room="", personal="", dev=[]):
+    def __init__(self, email, identity="", room="", deviceIDList=[]):
         self.email = email
         self.room = room
-        self.personal = personal
-        self.dev = dev
+        self.deviceIDList = deviceIDList
         self.identity = identity
 
     @staticmethod
@@ -115,12 +114,10 @@ class Device(object):
         self.deviceLocY = deviceLocY # 2
 
 class Room(object):
-    def __init__(self, roomName, roomImg, roomLoc, controlSystem):
+    def __init__(self, roomName, roomLoc, controlSystem):
         self.roomName = roomName # "IEDA Conference Room, Room 5554"
-        self.roomImg = roomImg # ""
         self.roomLoc = roomLoc # "Academic Building"
         self.controlSystem = controlSystem
-        self.room360Img = ""
         self.bookBy = {}
         self.bookTime = {}
 

@@ -1,3 +1,5 @@
+import os
+import shutil
 from pymongo.mongo_client import MongoClient
 from .utils import Account, Room, System, time, compare_date_and_time, sort_bookInfo_list
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -13,6 +15,11 @@ def connection(dbname):
 def Convert(lst):
     res_dct = { str(i) : lst[i] for i in range(0, len(lst)) }
     return res_dct
+
+def path_exist_or_mkdir(path:str):
+    if not os.path.exists(path):
+        os.makedirs(path)
+    return True
 
 # def generateDeviceTypeList(devicetype):
 #     deviceTypeList = []
@@ -283,14 +290,14 @@ class RoomDB():
         self.db.update_one({"roomName": roomName}, \
             {'$set': {"deviceNameList": room["deviceNameList"], "deviceTypeList": room["deviceTypeList"], "deviceIPList": room["deviceIPList"], "deviceLocXList": room["deviceLocXList"], "deviceLocYList": room["deviceLocYList"]}})
 
-    def addRoom(self, roomName, roomImg, roomLoc, controlSystem):
+    def addRoom(self, roomName, roomLoc, controlSystem):
         room = self.db.find_one({"roomName": roomName})
 
         if room:
             self.db.update_one({"_id": room["_id"]}, {'$set': {"roomName": roomName, "roomImg": roomImg, "roomLoc": roomLoc, "controlSystem": controlSystem}})
             return "Info: Edit Room Successfully!"
         else:
-            newRoom = Room(roomName, roomImg, roomLoc, controlSystem)
+            newRoom = Room(roomName, roomLoc, controlSystem)
             self.db.insert_one(newRoom.__dict__)
             return "Info: Add Room Successfully!"
 
@@ -298,6 +305,11 @@ class RoomDB():
         room = self.db.find_one({"roomName": roomName})
         if room is None: return "Err: Room Invalid!"
         self.db.delete_one({"_id": room["_id"]})
+
+        path=f'app/static/images/test/room{roomName}'
+        path_exist_or_mkdir(path)
+        shutil.rmtree(path)
+
         return "Info: Delete Successfully!"
 
     # def upload360Img(self, roomName, room360Img):
