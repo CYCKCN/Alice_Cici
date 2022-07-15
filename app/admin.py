@@ -95,12 +95,15 @@ def basic_info():
         if is_addRoom and continue_:
             #roomName
             roomName=request.form.get('room_id')
+            print(roomName)
             room = roomdb.getroom(roomName)
             if room:
                 return redirect(url_for('admin.room',room_id=roomName,is_editRoom=True,error='Room exists, please edit the room.'))
 
             #roomImage
             img_base64=request.form.get('imgSrc')
+            # print(request.form.get('imgUpload'))
+            # print(img_base64)
             roomImage=(img_base64.split(','))[-1]
             if len(roomImage)==0:
                 return redirect(url_for('admin.basic_info',is_addRoom=True))
@@ -269,20 +272,27 @@ def device_info():
             #     x=round(float(deviceLocX),1),
             #     y=round(float(deviceLocY),1)
             # )
-            utils.choose_device_with_name(room_id, deviceName)
+            # utils.choose_device_with_name(room_id, deviceName)
 
         #choose
-        choose=utils.get_choose_device_with_room(room_id)
+        choose = roomdb.getChooseDeviceList(room_id)
+        # choose=utils.get_choose_device_with_room(room_id)
         for _, c in choose.items():
-            d=request.form.get('devices_input_'+c[0])
-            if d==' ': 
-                utils.clean_chosen_device(room_id)
-                utils.choose_device_with_name(room_id, c[0])
+            d = request.form.get('devices_input_' + c[0])
+            if d == ' ':
+                roomdb.clearChooseDeviceIDList(room_id)
+                deviceID = roomdb.getDeviceID(room_id, c[0])
+                roomdb.chooseDevice(room_id, deviceID)
+                # utils.clean_chosen_device(room_id)
+                # utils.choose_device_with_name(room_id, c[0])
 
         #close
-        if point_close: utils.clean_chosen_device(room_id)
-        
-    devices, devices_choose=utils.get_devices_and_chosen_devices(room_id)
+        if point_close: roomdb.clearChooseDeviceIDList(room_id)
+            # utils.clean_chosen_device(room_id)
+    devices = roomdb.getDeviceInfo(room_id)
+    devices_choose = roomdb.getChooseDeviceList(room_id)
+    type_dict = roomdb.getDeviceTypeList(room_id)
+    # devices, devices_choose=utils.get_devices_and_chosen_devices(room_id)
     #print(devices)
     #print(devices_choose)
     #return render_template('admin_device_info.html',room_id=room_id,devices=devices_dict[room_id].getJson(),devices_choose=devices_dict[room_id].chooseDevice())
@@ -816,20 +826,20 @@ def room_instruction_preview():
 #     steps=utils.get_instruction_pair_case_step(room_id,case_id)
 #     return render_template('admin_instruction_pair.html',case_id=case_id,room_id=room_id,step_id=step_id,steps=steps)
 
-# @admin_blue.route("/profile", methods=['POST','GET'])
-# def profile():
-#     if request.method == "POST":
-#         btn_profile=request.form.get('profile')
-#         if btn_profile:
-#             return redirect(url_for('admin.main'))
-#         logout=request.form.get('logout')
-#         if logout:
-#             return redirect(url_for('admin.logout'))
-#         back=request.form.get('back')
-#         if back:
-#             return redirect(url_for('admin.main'))
+@admin_blue.route("/profile", methods=['POST','GET'])
+def profile():
+    if request.method == "POST":
+        btn_profile=request.form.get('profile')
+        if btn_profile:
+            return redirect(url_for('admin.main'))
+        logout=request.form.get('logout')
+        if logout:
+            return redirect(url_for('admin.logout'))
+        back=request.form.get('back')
+        if back:
+            return redirect(url_for('admin.main'))
     
-#     return render_template('admin_profile.html')
+    return render_template('admin_profile.html')
 
 # @admin_blue.route("/guest-invite", methods=['POST','GET'])
 # def guest_invite():
