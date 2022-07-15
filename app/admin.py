@@ -328,6 +328,57 @@ steps={
     'step 5':{'text':'', 'image':'', 'command':'', 'help':''},
 }
 
+device111={
+    'Device 1':{'name':'device 1'},
+    'Device 2':{'name':'device 2'},
+    'Device 3':{'name':'device 3'},
+    'Device 4':{'name':'device 4'},
+    'Device 5':{'name':'device 5'},
+    'Apple':{'name':'Apple'},
+    'Windows':{'name':'Windows'},
+}
+
+cases={
+    'Case 1':{
+        'devices':{
+            'device 1':{'name':'device 1'},
+            'device 3':{'name':'device 3'},
+            'device 5':{'name':'device 5'},
+        },
+        'steps':{
+            'step 1':{'text':'', 'image':'', 'command':'', 'help':''},
+            'step 2':{'text':'', 'image':'', 'command':'', 'help':''},
+            'step 3':{'text':'', 'image':'', 'command':'', 'help':''},
+            'step 4':{'text':'', 'image':'', 'command':'', 'help':''},
+            'step 5':{'text':'', 'image':'', 'command':'', 'help':''},
+        }
+    },
+    'Case 2':{
+        'devices':{
+            'device 2':{'name':'device 2'},
+            'device 4':{'name':'device 4'},
+        },
+        'steps':{
+            'step 1':{'text':'', 'image':'', 'command':'', 'help':''},
+            'step 2':{'text':'', 'image':'', 'command':'', 'help':''},
+            'step 3':{'text':'', 'image':'', 'command':'', 'help':''},
+            'step 4':{'text':'', 'image':'', 'command':'', 'help':''},
+            'step 5':{'text':'', 'image':'', 'command':'', 'help':''},
+        }
+    },
+    'Case 3':{
+        'devices':{
+        },
+        'steps':{
+            'step 1':{'text':'', 'image':'', 'command':'', 'help':''},
+            'step 2':{'text':'', 'image':'', 'command':'', 'help':''},
+            'step 3':{'text':'', 'image':'', 'command':'', 'help':''},
+            'step 4':{'text':'', 'image':'', 'command':'', 'help':''},
+            'step 5':{'text':'', 'image':'', 'command':'', 'help':''},
+        }
+    }
+}
+
 @admin_blue.route("/control", methods=['GET', 'POST'])
 @check_admin
 def control():
@@ -350,7 +401,12 @@ def control_case():
 @check_admin
 def control_case_instruction():
     room_id = request.args.get('room_id')
-    return render_template('admin_control_case_instruction.html',room_id=room_id,steps=steps)
+    return render_template('admin_control_case_instruction.html',
+                            case_id="Case 1",
+                            room_id=room_id,
+                            steps=steps,
+                            device111=device111,
+                            choose_dev=cases['Case 1']['devices'])
 
 @admin_blue.route("/control_case_steps", methods=['GET', 'POST'])
 @check_admin
@@ -694,15 +750,7 @@ def control_case_steps():
 #         }
 #     }
 # }
-# device111={
-#     'Device 1':{'name':'device 1'},
-#     'Device 2':{'name':'device 2'},
-#     'Device 3':{'name':'device 3'},
-#     'Device 4':{'name':'device 4'},
-#     'Device 5':{'name':'device 5'},
-#     'Apple':{'name':'Apple'},
-#     'Windows':{'name':'Windows'},
-# }
+
 # '''
 # @admin_blue.route("/instruction_pair_main", methods=['POST','GET'])
 # def instruction_pair_main():
