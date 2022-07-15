@@ -393,24 +393,60 @@ cases={
 @admin_blue.route("/control", methods=['GET', 'POST'])
 # @check_admin
 def control():
+
     type_dict=systemdb.getSystemList()
-    print(type_dict)
+
+    if request.method == "POST":
+        cs_name=request.form.get('cs-name')
+        if cs_name and cs_name != "":
+            systemdb.createSystem(cs_name)
+
+        for cs_id in type_dict.keys():
+            # edit
+            if request.form.get(f'edit_{cs_id}'):
+                #print("edit", step_id)
+                return redirect(url_for('admin.control_device', cs_name=type_dict[cs_id]))
+            # delete
+            if request.form.get(f'delete_{cs_id}'):
+                #print("delete", step_id)
+                systemdb.delSystem(type_dict[cs_id])
+                return redirect(url_for('admin.control'))
+
     return render_template('admin_control_list.html', type_dict=type_dict)
 
 @admin_blue.route("/control_device", methods=['GET', 'POST'])
-@check_admin
+# @check_admin
 def control_device():
-    room_id = request.args.get('room_id')
-    return render_template('admin_control_device_list.html',room_id=room_id,steps=steps)
+    system_id = request.args.get('cs_name')
+    type_dict = systemdb.getDeviceTypeList(system_id)
+    if request.method == "POST":
+        deviceType = request.form.get('device-type')
+        print(deviceType)
+        if deviceType and deviceType != "":
+            systemdb.addDeviceType(system_id, deviceType)
+
+        confirm = request.form.get('confirm')
+        if confirm:
+            return redirect(url_for('admin.control_case', cs_name=system_id))
+
+        for type_id in type_dict.keys():
+            # delete
+            if request.form.get(f'delete_{type_id}'):
+                #print("delete", step_id)
+                systemdb.delDeviceType(system_id, type_dict[type_id])
+                return redirect(url_for('admin.control_device', cs_name=system_id))
+    return render_template('admin_control_device_list.html',system_id=system_id, type_dict=type_dict)
 
 @admin_blue.route("/control_case", methods=['GET', 'POST'])
-@check_admin
+# @check_admin
 def control_case():
-    room_id = request.args.get('room_id')
-    return render_template('admin_control_case_list.html',room_id=room_id,steps=steps)
+    system_id = request.args.get('cs_name')
+    type_dict = systemdb.getInsDeviceList(system_id)
+    print(type_dict)
+    return render_template('admin_control_case_list.html',system_id=system_id, type_dict=type_dict)
 
 @admin_blue.route("/control_case_instruction", methods=['GET', 'POST'])
-@check_admin
+# @check_admin
 def control_case_instruction():
     room_id = request.args.get('room_id')
     return render_template('admin_control_case_instruction.html',
@@ -421,7 +457,7 @@ def control_case_instruction():
                             choose_dev=cases['Case 1']['devices'])
 
 @admin_blue.route("/control_case_steps", methods=['GET', 'POST'])
-@check_admin
+# @check_admin
 def control_case_steps():
     room_id = request.args.get('room_id')
     return render_template('admin_control_case_steps.html',room_id=room_id,steps=steps)

@@ -541,6 +541,12 @@ class SystemDB():
             newSystem = System(controlSystem)
             self.db.insert_one(newSystem.__dict__)
             return "Info: Add System Successfully!"
+        
+    def delSystem(self, controlSystem):
+        system = self.db.find_one({"controlSystem": controlSystem})
+        if system is None: return "Err: System Invalid!"
+        self.db.delete_one({"_id": system["_id"]})
+        return "Info: Delete Successfully!"
     
     def addDeviceType(self, controlSystem, deviceType):
         system = self.db.find_one({"controlSystem": controlSystem})
@@ -620,6 +626,13 @@ class SystemDB():
             if deviceType not in deviceTypeList.values():
                 deviceTypeList[len(deviceTypeList)] = deviceType
         return deviceTypeList
+    
+    def getInsDeviceList(self, controlSystem):
+        system = self.db.find_one({"controlSystem": controlSystem})
+        insDeviceList = {}
+        for insDevice in system["insDevice"].values():
+            insDeviceList[len(insDeviceList)] = insDevice
+        return insDeviceList
 
     
 db = connection("test")

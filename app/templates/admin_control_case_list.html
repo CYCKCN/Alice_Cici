@@ -262,9 +262,9 @@
         {% for k, v in type_dict.items() %}
             <div class="step-div">
                 <div class="line">
-                    <div class="step-label">{{device-involved}}</div>
-                    <input class="btn-delete" type='submit' name="delete_{{device-involved}}" value="delete">
-                    <input class="btn-edit" type='submit' name="edit_{{device-involved}}" value="edit">
+                    <div class="step-label">{{v}}</div>
+                    <input class="btn-delete" type='submit' name="delete_{{k}}" value="delete">
+                    <input class="btn-edit" type='submit' name="edit_{{k}}" value="edit">
                 </div>
             </div>
         {% endfor %}
