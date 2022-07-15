@@ -207,6 +207,18 @@
     #main-title,#profile{
         display: inline-block;
     }
+
+    #database{
+        height: 10vh;
+        float: left;
+        align-items: center;
+    }
+
+    /* #add{
+
+    } */
+
+
 </style>
 
 {% endblock %}
@@ -263,7 +275,7 @@
         <!-- footer -->
 
         <div id="mainFooter">
-            <div class="profile">
+            <div id="database">
                 <input id="btn-database" type='submit' name="database" value="database">
                 <div class="img_profile">
                     <svg width="10" height="10" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -273,7 +285,7 @@
                     </svg> 
                 </div>
             </div>
-            <div>
+            <div id="add">
                 <input class="btnAdd" type="submit" name="add" value="+">
             </div>
         </div>

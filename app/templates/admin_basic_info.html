@@ -259,9 +259,7 @@
       //if(size > 40 * 1024 * 1024) {alert("发送的图片超过40MB！"); return;}
   
       console.log({ file1, name1, type1, size1, lastModified1 });
-      console.log(obj.type);
-		    $("#point-text21").val(obj.type);//第二步：把拿到的回显的数据传入到回显函数进行显示。
-  
+
       // 判断是否支持FileReader 
       if(window.FileReader) { 
           const reader1 = new FileReader(); 
