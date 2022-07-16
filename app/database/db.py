@@ -272,6 +272,21 @@ class RoomDB():
         self.db.update_one({"roomName": roomName}, {'$set': {'bookBy': bookBy}})
         return "Info: Book Successully!"
 
+    def cancelRoomBookByUser(self, roomName, date, accountEmail, ft, tt):
+        # self.checkRoomAvailable(roomName, date)
+        room = self.db.find_one({"roomName": roomName})
+        bookTime = room["bookTime"]
+        # ft, tt, user = map(str, input("from time & to time & use id: 0800 0900 ust.hk\n").split())
+        for i in range(time.index(ft), time.index(tt)):
+            if time[i] in bookTime[date]: 
+                bookTime[date].remove(time[i])
+        self.db.update_one({"roomName": roomName}, {'$set': {'bookTime': bookTime}})
+        bookBy = room['bookBy']
+        if bookBy.get(accountEmail):
+            bookBy[accountEmail].remove([date, ft, tt])
+        self.db.update_one({"roomName": roomName}, {'$set': {'bookBy': bookBy}})
+        return "Info: Book Successully!"
+
     def checkUserBooking(self, accountEmail):
         room_list = self.db.find({})
         bookInfo_list = []

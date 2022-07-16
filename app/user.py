@@ -281,6 +281,19 @@ def timetable():
         if request.form.get('profile'):
             return redirect(url_for('user.profile'))
         if request.form.get('delete'):
-            pass
-    
+            booking_period = []
+            room = None
+            for k, v in occupy.items():
+                t,d=k
+                if v=='y': continue
+                if request.form.get(f"time-{d}-{t}"):
+                    room = request.form.get(f"time-{d}-{t}")
+                    time_data="{:d}/{:0>2d}/{:0>2d}".format(today_date[0],today_date[1],d)
+                    clock=t.replace(' : ','')
+                    booking_period.append(clock)
+                    # print(clock)
+            booking_period.append(time[time.index(booking_period[-1]) + 1])
+            if room: roomdb.cancelRoomBookByUser(room, time_data, current_user.email, booking_period[0], booking_period[-1])
+            return redirect(url_for('user.timetable')) 
+
     return render_template('timetable.html', time=time_list,week=week,month=month,year=year,occupy=occupy)
