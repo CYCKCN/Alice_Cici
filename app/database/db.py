@@ -1,4 +1,5 @@
 import os
+import uuid
 import shutil
 import base64
 from pymongo.mongo_client import MongoClient
@@ -589,23 +590,44 @@ class SystemDB():
         insDevice = system["insDevice"]
         # print(insDevice)
         # insDevice.pop(caseID)
-        for i in range(int(caseID) + 1, len(insDevice)): insDevice[str(i - 1)] = insDevice.pop(str(i))
+        # print(caseID, len(insDevice))
+        if caseID == len(insDevice) - 1: insDevice.pop(str(caseID))
+        else:
+            for i in range(caseID + 1, len(insDevice)): insDevice[str(i - 1)] = insDevice.pop(str(i))
         self.db.update_one({"controlSystem": controlSystem}, {'$set': {"insDevice": insDevice}})
         insCases = system["insCases"]
         # insCases.pop(caseID)
-        for i in range(int(caseID) + 1, len(insCases)): insCases[str(i - 1)] = insCases.pop(str(i))
+        if caseID == len(insCases) - 1: insCases.pop(str(caseID))
+        else:
+            for i in range(caseID + 1, len(insCases)): insCases[str(i - 1)] = insCases.pop(str(i))
         self.db.update_one({"controlSystem": controlSystem}, {'$set': {"insCases": insCases}})
         return "Info: Delete Successfully!"
 
-    def addCaseStep(self, controlSystem, caseID, stepID, text="", image="", command=""):
+    def addCaseStep(self, controlSystem, caseID, stepID, text="", image=""):
         system = self.db.find_one({"controlSystem": controlSystem})
         if not system: return "Err: System Not Exist!"
         insCases = system["insCases"]
         if caseID not in insCases: insCases[caseID] = {}
-        if stepID not in insCases[caseID]: insCases[caseID][stepID] = {}
+        if stepID not in insCases[caseID]: insCases[caseID][stepID] = {"text": "", "image": ""}
         insCases[caseID][stepID]["text"] = text
-        insCases[caseID][stepID]["image"] = image
-        insCases[caseID][stepID]["command"] = command
+        # insCases[caseID][stepID]["image"] = image
+        if image != "": 
+            # img_hex = uuid.uuid4().hex
+            # img_hex_old = insCases[caseID][stepID]["image"]
+            # if not img_hex_old == '':
+            #     remove=f'app/static/images/test/system{controlSystem}/instruction/{img_hex_old}.png'
+            #     os.remove(remove)
+
+            # insCases[caseID][stepID]["image"] = f'app/static/images/test/system{controlSystem}/instruction/{img_hex_old}.png'
+            exist=f'app/static/images/test/system{controlSystem}/instruction'
+            path_exist_or_mkdir(exist)
+            image_name = "case" + caseID + "_step" + stepID + ".png"
+            path=f'app/static/images/test/system{controlSystem}/instruction/{image_name}'
+            image_decoder(image,path)
+
+            insCases[caseID][stepID]["image"] = image_name
+        # print(insCases)
+            
         self.db.update_one({"controlSystem": controlSystem}, {'$set': {"insCases": insCases}})
         return "Info: Edit Successfully!"
 
@@ -615,7 +637,17 @@ class SystemDB():
         insCases = system["insCases"]
         if caseID not in insCases: return "Err"
         # insCases[caseID].pop(stepID)
-        for i in range(int(stepID) + 1, len(insCases[caseID])): insCases[caseID][str(i - 1)] = insCases[caseID].pop(str(i))
+        if stepID == len(insCases[caseID]) - 1: insCases[caseID].pop(str(stepID))
+        else:
+            for i in range(int(stepID) + 1, len(insCases[caseID])): 
+                old_name = insCases[caseID][str(i)]['image']
+                new_name = insCases[caseID][str(i - 1)]['image']
+                os.remove(f'app/static/images/test/system{controlSystem}/instruction/{new_name}')
+                os.rename(f'app/static/images/test/system{controlSystem}/instruction/{old_name}', \
+                        f'app/static/images/test/system{controlSystem}/instruction/{new_name}')
+                        
+                insCases[caseID][str(i - 1)] = insCases[caseID].pop(str(i))
+        
         self.db.update_one({"controlSystem": controlSystem}, {'$set': {"insCases": insCases}})
         return "Info: Delete Successfully!"
 
@@ -629,10 +661,21 @@ class SystemDB():
     
     def getInsDeviceList(self, controlSystem):
         system = self.db.find_one({"controlSystem": controlSystem})
+        # print(controlSystem)
         insDeviceList = {}
         for insDevice in system["insDevice"].values():
             insDeviceList[len(insDeviceList)] = insDevice
         return insDeviceList
+    
+    def getInsCaseSteps(self, controlSystem, caseID):
+        system = self.db.find_one({"controlSystem": controlSystem})
+        # print(controlSystem)
+        insCaseSteps = {}
+        if caseID not in system["insCases"]: return insCaseSteps
+        for step in system["insCases"][str(caseID)].values():
+            insCaseSteps[len(insCaseSteps)] = step
+        return insCaseSteps
+
 
     
 db = connection("test")

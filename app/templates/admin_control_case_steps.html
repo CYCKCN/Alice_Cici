@@ -176,7 +176,7 @@
   <div id="instructionInitial">  
     <div class="line">
         <div class="admin-txt">Instruction</div>
-        <div class="admin-small-txt">- {{step_id}}</div>
+        <div class="admin-small-txt">- Step {{step_id}}</div>
     </div>
     <div class="admin-mid-txt">Please describe your new step in details with text and image according to the following guides.</div>
     <!-- instruction content part -->
@@ -185,7 +185,7 @@
   <div class="uploadWrap">
       <!--<img id="room-photo" class="roomImg" src="../../static/images/test/room{{room_id}}/IMG{{room_id}}.png">-->
       {% if not steps.get(step_id).image=='' %}
-      <img id="room-photo" class="roomImg" src="../../static/images/test/room{{room_id}}/instruction/{{steps.get(step_id).image}}.png">
+      <img id="room-photo" class="roomImg" src="../../static/images/test/system{{system_id}}/instruction/{{steps.get(step_id).image}}">
       {% else %}
       <img id="room-photo" class="roomImg" src="">
       {% endif %}
