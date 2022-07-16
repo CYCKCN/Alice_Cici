@@ -54,8 +54,8 @@
     .admin-mid-txt{
         float: left;
         width: 90%;
-        margin-bottom: -5vh;
-
+        margin-bottom: 5vh;
+        padding-bottom: 3vh;
         font-weight: 100;
         font-size: 4vw;
         line-height: 3vh;
@@ -108,7 +108,7 @@
         margin-bottom: 0vh;
 
         font-weight: 0;
-        font-size: 5vw;
+        font-size: 4.5vw;
         line-height: 3vh;
         /* identical to box height */
 
@@ -128,10 +128,10 @@
     }
 
     .roomsubhead1{
-        font-size: 2.5vh;
-        font-weight: 750;
+        font-size: 1.5cm;
+        font-weight: 500;
 
-        padding-top: 10vh;
+        padding-top: 3vh;
         padding-bottom: 1vh;
         text-transform: uppercase;
     }
@@ -222,6 +222,18 @@
 	}
 
     .brief{
+        width: 100%;
+        padding-top: 6vh;
+
+        font-weight: 750;
+        font-size: 6vw;
+        line-height: 4vh;
+        /* identical to box height */
+
+        align-items: center;
+        letter-spacing: 0;
+
+        color: #000000;
         display: inline-block;
     }
 
@@ -288,16 +300,16 @@
         {% for k, v in steps.items() %}
             <!-- <div class="roomsubhead1">Case {{k}}</div> -->
             {% if v.devices %}
-                <div class="brief">For </div>
-                    {% for d in v.devices %}
+                <div class="brief">For {{v.devices}}, do:</div>
+                    <!-- {% for d in v.devices %}
                     <div class="brief">{{d}}, </div>
                     {% endfor %}
-                    <div class="brief">do: </div>
+                    <div class="brief">do: </div> -->
                 <!-- <div class="admin-step-txt">{{v.text}}</div> -->
             {% endif %}
             {% for stepID, stepInfo in v.items() %}
                 {% if stepID != "devices" %}
-                    <div class="roomsubhead1">{{stepID}}</div> 
+                    <div class="roomsubhead1">Step {{stepID}}</div> 
                     {% if stepInfo.text %}
                     <div class="admin-step-txt">{{stepInfo.text}}</div>
                     {% endif %}
@@ -306,8 +318,8 @@
                     <img id="room-photo{{stepID}}" class="roomImg" src="../../static/images/test/system{{system_id}}/instruction/{{stepInfo.image}}.png">
                     {% endif %}
 
-                    <textarea class="stepBox" type="text" placeholder="The details that you can further add on could be the location of some portable devices in the room, the Wi-Fi name and password, or the name of Apple TV and so on." name="help_text" value="{{steps.get(step_id).help}}"></textarea>
-                    name = help_{k}_{stepID}
+                    <textarea class="stepBox" type="text" placeholder="The details that you can further add on could be the location of some portable devices in the room, the Wi-Fi name and password, or the name of Apple TV and so on." name = help_{k}_{stepID} value="{{stepInfo.help}}"></textarea>
+                    
                 {% endif %}
             {% endfor %}
 
