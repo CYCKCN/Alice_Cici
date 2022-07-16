@@ -298,14 +298,8 @@
         <div class="empty-text">There is no step.</div>
     {% else %}
         {% for k, v in steps.items() %}
-            <!-- <div class="roomsubhead1">Case {{k}}</div> -->
             {% if v.devices %}
                 <div class="brief">For {{v.devices}}, do:</div>
-                    <!-- {% for d in v.devices %}
-                    <div class="brief">{{d}}, </div>
-                    {% endfor %}
-                    <div class="brief">do: </div> -->
-                <!-- <div class="admin-step-txt">{{v.text}}</div> -->
             {% endif %}
             {% for stepID, stepInfo in v.items() %}
                 {% if stepID != "devices" %}

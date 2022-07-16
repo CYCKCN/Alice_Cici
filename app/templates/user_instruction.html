@@ -274,31 +274,34 @@
     </div>  
     <div class="line">
         <div class="admin-txt">Instruction</div>
-        <div class="admin-small-txt">- Initial</div>
+        <div class="admin-small-txt">- {{room_id}}</div>
     </div>
-    <div class="admin-mid-txt">Initial stage is to get all steps required before turning on the devices ready, e.g. how to turn on the control box.</div>
-    <!-- instruction content part -->
+
     {% if steps|length==0 %}
         <div class="empty-text">There is no step.</div>
     {% else %}
         {% for k, v in steps.items() %}
-            <div class="roomsubhead1">Step {{k}}</div>
-            {% if v.text %}
-                <div class="roomsubhead">Text</div>
-                <div class="admin-step-txt">{{v.text}}</div>
+            {% if v.devices %}
+                <div class="brief">For {{v.devices}}, do:</div>
             {% endif %}
-            {% if v.image %}
-                <div class="roomsubhead">Image</div>
-                <img id="room-photo{{k}}" class="roomImg" src="../../static/images/test/room{{room_id}}/instruction/{{v.image}}.png">
-            {% endif %}
-            {% if v.command %}
-                <div class="roomsubhead">Command</div>
-                <div class="admin-step-txt">{{v.command}}</div>
-            {% endif %}
-            {% if v.help %}
-                <div class="roomsubhead">Help</div>
-                <div class="admin-step-txt">{{v.help}}</div>
-            {% endif %}
+            {% for stepID, stepInfo in v.items() %}
+                {% if stepID != "devices" %}
+                    <div class="roomsubhead1">Step {{stepID}}</div> 
+                    {% if stepInfo.text %}
+                    <div class="admin-step-txt">{{stepInfo.text}}</div>
+                    {% endif %}
+
+                    {% if stepInfo.image %}
+                    <img id="room-photo{{stepID}}" class="roomImg" src="../../static/images/test/system{{system_id}}/instruction/{{stepInfo.image}}.png">
+                    {% endif %}
+
+                    {% if stepInfo.help %}
+                    <div class="admin-step-txt">{{stepInfo.help}}</div>
+                    {% endif %}
+
+                {% endif %}
+            {% endfor %}
+
         {% endfor %}
     {% endif %}
     <input id="btn-confirm" type='submit' name="next" value="NEXT">
