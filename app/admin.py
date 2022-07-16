@@ -25,16 +25,6 @@ def enter():
 @admin_blue.route("/main", methods=['POST','GET'])
 @check_admin
 def main():
-    '''
-    roomInfo={
-        0:{'name':'5554','lift':'27-28','date':'August 21','time':'19:00-21:00'},
-        1:{'name':'4223','lift':'23','date':'September 21','time':'1:00-3:00'},
-        2:{'name':'4223','lift':'23','date':'September 21','time':'1:00-3:00'},
-        3:{'name':'4223','lift':'23','date':'September 21','time':'1:00-3:00'},
-        4:{'name':'4223','lift':'23','date':'September 21','time':'1:00-3:00'},
-        5:{'name':'4223','lift':'23','date':'September 21','time':'1:00-3:00'},
-        6:{'name':'4223','lift':'23','date':'September 21','time':'1:00-3:00'},
-    }'''
     error=request.args.get('error')
     if request.method == "POST":
         room_id=request.form.get('room_id') if not request.form.get('room_id')=='' else request.form.get('roomid')
