@@ -312,11 +312,19 @@ def device_list():
     #return render_template('admin_device_list.html',room_id=room_id,devices=devices_dict[room_id].getJson())
     return render_template('admin_device_list.html',room_id=room_id,devices=devices)
 
+steps={
+    'step 1':{'text':'', 'image':'', 'command':'', 'help':''},
+    'step 2':{'text':'', 'image':'', 'command':'', 'help':''},
+    'step 3':{'text':'', 'image':'', 'command':'', 'help':''},
+    'step 4':{'text':'', 'image':'', 'command':'', 'help':''},
+    'step 5':{'text':'', 'image':'', 'command':'', 'help':''},
+}
+
 @admin_blue.route("/room_instruction_preview", methods=['GET', 'POST'])
 @check_admin
 def room_instruction_preview():
     room_id = request.args.get('room_id')
-    return room_id
+    return render_template('instruction_initial.html',room_id=room_id, steps=steps)
 
 @admin_blue.route("/control", methods=['GET', 'POST'])
 # @check_admin

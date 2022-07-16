@@ -117,8 +117,8 @@ def device(room_id):
                 if request.form.get(d['name']):
                     dev.append(d['name'])
             accountdb.updateDevice(current_user.email, dev)
-            print(current_user.dev)
-            return redirect(url_for('user.initial'))
+            print(current_user.deviceIDList)
+            return redirect(url_for('user.instruction'))
 
     
     # dic=CURRENT_ROOM.set_data_choose_devices(use_related=True)
@@ -169,9 +169,17 @@ def booking(room_name):
     
     return render_template('booking.html', room_id=room_name,time=time_list,week=week,month=month,year=year,occupy=occupy)
 
-@user.route("/initial", methods=['POST','GET'])
+steps={
+    'step 1':{'text':'', 'image':'', 'command':'', 'help':''},
+    'step 2':{'text':'', 'image':'', 'command':'', 'help':''},
+    'step 3':{'text':'', 'image':'', 'command':'', 'help':''},
+    'step 4':{'text':'', 'image':'', 'command':'', 'help':''},
+    'step 5':{'text':'', 'image':'', 'command':'', 'help':''},
+}
+
+@user.route("/instruction", methods=['POST','GET'])
 @check_login
-def initial():
+def instruction():
     # print("initial")
     # print(current_user.room)
     # print(current_user.email)
@@ -187,57 +195,57 @@ def initial():
     
     return render_template('instruction_initial.html',room_id=current_user.room, steps=steps)
 
-@user.route("/turnon", methods=['POST','GET'])
-@check_login
-def turnon():
-    # print("turnon")
-    # print(current_user.room)
-    # print(current_user.email)
-    steps = roomdb.checkInsInitialStepList(current_user.room)
-    # print(steps)
-    if request.method == "POST":
-        next=request.form.get('next')
-        if next:
-            return redirect(url_for('user.pair'))
-        back=request.form.get('back')
-        if back:
-            return redirect(url_for('user.initial'))
+# @user.route("/turnon", methods=['POST','GET'])
+# @check_login
+# def turnon():
+#     # print("turnon")
+#     # print(current_user.room)
+#     # print(current_user.email)
+#     steps = roomdb.checkInsInitialStepList(current_user.room)
+#     # print(steps)
+#     if request.method == "POST":
+#         next=request.form.get('next')
+#         if next:
+#             return redirect(url_for('user.pair'))
+#         back=request.form.get('back')
+#         if back:
+#             return redirect(url_for('user.initial'))
     
-    return render_template('instruction_turnon.html', room_id=current_user.room, steps=steps)
+#     return render_template('instruction_turnon.html', room_id=current_user.room, steps=steps)
 
-@user.route("/pair", methods=['POST','GET'])
-@check_login
-def pair():
-    # print("pair")
-    # print(current_user.room)
-    # print(current_user.email)
-    steps = roomdb.checkInsInitialStepList(current_user.room)
-    if request.method == "POST":
-        next=request.form.get('next')
-        if next:
-            return redirect(url_for('user.zoom'))
-        back=request.form.get('back')
-        if back:
-            return redirect(url_for('user.turnon'))
+# @user.route("/pair", methods=['POST','GET'])
+# @check_login
+# def pair():
+#     # print("pair")
+#     # print(current_user.room)
+#     # print(current_user.email)
+#     steps = roomdb.checkInsInitialStepList(current_user.room)
+#     if request.method == "POST":
+#         next=request.form.get('next')
+#         if next:
+#             return redirect(url_for('user.zoom'))
+#         back=request.form.get('back')
+#         if back:
+#             return redirect(url_for('user.turnon'))
     
-    return render_template('instruction_pair.html', room_id=current_user.room,steps=steps)
+#     return render_template('instruction_pair.html', room_id=current_user.room,steps=steps)
 
-@user.route("/zoom", methods=['POST','GET'])
-@check_login
-def zoom():
-    # print("zoom")
-    # print(current_user.room)
-    # print(current_user.email)
-    steps = roomdb.checkInsInitialStepList(current_user.room)
-    if request.method == "POST":
-        next=request.form.get('next')
-        if next:
-            return redirect(url_for('user.search'))
-        back=request.form.get('back')
-        if back:
-            return redirect(url_for('user.pair'))
+# @user.route("/zoom", methods=['POST','GET'])
+# @check_login
+# def zoom():
+#     # print("zoom")
+#     # print(current_user.room)
+#     # print(current_user.email)
+#     steps = roomdb.checkInsInitialStepList(current_user.room)
+#     if request.method == "POST":
+#         next=request.form.get('next')
+#         if next:
+#             return redirect(url_for('user.search'))
+#         back=request.form.get('back')
+#         if back:
+#             return redirect(url_for('user.pair'))
     
-    return render_template('instruction_zoom.html',room_id=current_user.room,steps=steps)
+#     return render_template('instruction_zoom.html',room_id=current_user.room,steps=steps)
 
 @user.route("/profile", methods=['POST','GET'])
 def profile():
