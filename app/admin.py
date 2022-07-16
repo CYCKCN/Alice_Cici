@@ -324,7 +324,7 @@ steps={
 @check_admin
 def room_instruction_preview():
     room_id = request.args.get('room_id')
-    return render_template('instruction_initial.html',room_id=room_id, steps=steps)
+    return render_template('admin_instruction.html',room_id=room_id, steps=steps)
 
 @admin_blue.route("/control", methods=['GET', 'POST'])
 # @check_admin

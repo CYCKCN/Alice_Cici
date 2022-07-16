@@ -128,7 +128,7 @@
     }
 
     .roomsubhead1{
-        font-size: 3.1vh;
+        font-size: 2.5vh;
         font-weight: 750;
 
         padding-top: 10vh;
@@ -138,7 +138,7 @@
 
     .stepBox {
         width: 100%;
-        height: 10vh;
+        height: 20vh;
 
         font-size: 2vh;
         margin: 1vh 0 2vh 0;
@@ -221,6 +221,10 @@
         height: 5vh;
 	}
 
+    .brief{
+        display: inline-block;
+    }
+
     #btn-back {
         opacity: 0;
         margin: -8vh 0vw 0vh 81vw;
@@ -273,28 +277,31 @@
         </div>
     </div>  
     <div class="line">
-        <div class="admin-txt">Instruction</div>
-        <div class="admin-small-txt">- Initial</div>
+        <div class="admin-txt">Preview</div>
+        <div class="admin-small-txt">- {{room_id}}</div>
     </div>
-    <div class="admin-mid-txt">Initial stage is to get all steps required before turning on the devices ready, e.g. how to turn on the control box.</div>
+    <div class="admin-mid-txt">You can add on extra details apart from the templates in the HELP box.</div>
     <!-- instruction content part -->
     {% if steps|length==0 %}
         <div class="empty-text">There is no step.</div>
     {% else %}
         {% for k, v in steps.items() %}
-            <div class="roomsubhead1">Step {{k}}</div>
+            <div class="roomsubhead1">{{k}}</div>
             {% if v.text %}
-                <div class="roomsubhead">Text</div>
+                {% if device-involved %}
+                    <div class="brief">For </div>
+                        {% for d in device-involved %}
+                        <div class="brief">{{d}}, </div>
+                        {% endfor %}
+                        <div class="brief">do: </div>
+                {% endif %}
+                {% endif %}
                 <div class="admin-step-txt">{{v.text}}</div>
             {% endif %}
             {% if v.image %}
-                <div class="roomsubhead">Image</div>
                 <img id="room-photo{{k}}" class="roomImg" src="../../static/images/test/room{{room_id}}/instruction/{{v.image}}.png">
             {% endif %}
-            {% if v.command %}
-                <div class="roomsubhead">Command</div>
-                <div class="admin-step-txt">{{v.command}}</div>
-            {% endif %}
+            <textarea class="stepBox" type="text" placeholder="The details that you can further add on could be the location of some portable devices in the room, the Wi-Fi name and password, or the name of Apple TV and so on." name="help_text" value="{{steps.get(step_id).help}}"></textarea>
             {% if v.help %}
                 <div class="roomsubhead">Help</div>
                 <div class="admin-step-txt">{{v.help}}</div>
