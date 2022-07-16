@@ -87,6 +87,13 @@
         top: 27vh;
         box-shadow: 2vw 2vw 2vw rgba(0, 0, 0, 0.25);
     }
+    #overlay1 {
+        display: none;
+        position: absolute;
+        left: 16vw;
+        top: 27vh;
+        box-shadow: 2vw 2vw 2vw rgba(0, 0, 0, 0.25);
+    }
     .person-device {
         background:#f5f5f5;
         width: 72vw;
@@ -204,7 +211,33 @@
 				<label class="text" for="three">None</label>
       </div>
       <div class="subbtn">
-        <input type="submit" class="enter" name="personal" value="Save">
+        <input type="button" class="enter" name="personal" value="Next" onclick="on1()">
+      </div>
+		</div>
+	</div>
+
+  <div id="overlay1">
+		<div class="person-device">
+      <a onclick="off1()">
+        <svg class="close" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M14.0625 14.0625L0.9375 0.9375M0.9375 14.0625L14.0625 0.9375L0.9375 14.0625Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>          
+      </a>
+			<h2 class="perdev-question">Will you use Zoom?</h2>
+		    <div class="perdev-ans">
+				<input class="pick" type="checkbox" check="checked" id="one" name="yes" value="Macbook">
+				<label class="text" for="one">Yes</label>
+			</div>
+			<div class="perdev-ans">
+				<input class="pick" type="checkbox" id="two" name="yes-ipad" value="Windows">
+				<label class="text" for="two">Yes, with additional iPad</label>
+			</div>
+			<div class="perdev-ans">
+				<input class="pick" type="checkbox" id="three" name="no" value="None">
+				<label class="text" for="three">No</label>
+      </div>
+      <div class="subbtn">
+        <input type="submit" class="enter" name="zoom" value="Save">
       </div>
 		</div>
 	</div>	
@@ -223,6 +256,14 @@ function on() {
   
 function off() {
   document.getElementById("overlay").style.display = "none";
+}
+
+function on1() {
+  document.getElementById("overlay1").style.display = "block";
+}
+  
+function off1() {
+  document.getElementById("overlay1").style.display = "none";
 }
 Vue.createApp({
   data() {
