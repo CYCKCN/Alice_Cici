@@ -476,7 +476,7 @@ class RoomDB():
                     if deviceTypeList[str(deviceID)] in insDevice[str(caseID)]:
                         insPreview[str(caseID)]["devices"].append(deviceNameList[str(deviceID)])
                 for stepID in range(len(insCases[str(caseID)])):
-                    stepName = "step" + str(stepID + 1)
+                    stepName = str(stepID)
                     insPreview[str(caseID)][stepName] = insCases[str(caseID)][str(stepID)]
                     if "help" not in insPreview[str(caseID)][stepName]: insPreview[str(caseID)][stepName]["help"] = ""
             return insPreview

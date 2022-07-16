@@ -286,29 +286,34 @@
         <div class="empty-text">There is no step.</div>
     {% else %}
         {% for k, v in steps.items() %}
-            <div class="roomsubhead1">{{k}}</div>
-            {% if v.text %}
-                {% if device-involved %}
-                    <div class="brief">For </div>
-                        {% for d in device-involved %}
-                        <div class="brief">{{d}}, </div>
-                        {% endfor %}
-                        <div class="brief">do: </div>
+            <!-- <div class="roomsubhead1">Case {{k}}</div> -->
+            {% if v.devices %}
+                <div class="brief">For </div>
+                    {% for d in v.devices %}
+                    <div class="brief">{{d}}, </div>
+                    {% endfor %}
+                    <div class="brief">do: </div>
+                <!-- <div class="admin-step-txt">{{v.text}}</div> -->
+            {% endif %}
+            {% for stepID, stepInfo in v.items() %}
+                {% if stepID != "devices" %}
+                    <div class="roomsubhead1">{{stepID}}</div> 
+                    {% if stepInfo.text %}
+                    <div class="admin-step-txt">{{stepInfo.text}}</div>
+                    {% endif %}
+
+                    {% if stepInfo.image %}
+                    <img id="room-photo{{stepID}}" class="roomImg" src="../../static/images/test/system{{system_id}}/instruction/{{stepInfo.image}}.png">
+                    {% endif %}
+
+                    <textarea class="stepBox" type="text" placeholder="The details that you can further add on could be the location of some portable devices in the room, the Wi-Fi name and password, or the name of Apple TV and so on." name="help_text" value="{{steps.get(step_id).help}}"></textarea>
+                    name = help_{k}_{stepID}
                 {% endif %}
-                {% endif %}
-                <div class="admin-step-txt">{{v.text}}</div>
-            {% endif %}
-            {% if v.image %}
-                <img id="room-photo{{k}}" class="roomImg" src="../../static/images/test/room{{room_id}}/instruction/{{v.image}}.png">
-            {% endif %}
-            <textarea class="stepBox" type="text" placeholder="The details that you can further add on could be the location of some portable devices in the room, the Wi-Fi name and password, or the name of Apple TV and so on." name="help_text" value="{{steps.get(step_id).help}}"></textarea>
-            {% if v.help %}
-                <div class="roomsubhead">Help</div>
-                <div class="admin-step-txt">{{v.help}}</div>
-            {% endif %}
+            {% endfor %}
+
         {% endfor %}
     {% endif %}
-    <input id="btn-confirm" type='submit' name="next" value="NEXT">
+    <input id="btn-confirm" type='submit' name="save" value="SAVE">
   </div>
 </form>
 
