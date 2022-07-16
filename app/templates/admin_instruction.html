@@ -315,7 +315,7 @@
                     {% endif %}
 
                     {% if stepInfo.image %}
-                    <img id="room-photo{{stepID}}" class="roomImg" src="../../static/images/test/system{{system_id}}/instruction/{{stepInfo.image}}.png">
+                    <img id="room-photo{{stepID}}" class="roomImg" src="../../static/images/test/system{{system_id}}/instruction/{{stepInfo.image}}">
                     {% endif %}
 
                     <textarea class="stepBox" type="text" placeholder="The details that you can further add on could be the location of some portable devices in the room, the Wi-Fi name and password, or the name of Apple TV and so on." name = help_{k}_{stepID} value="{{stepInfo.help}}"></textarea>

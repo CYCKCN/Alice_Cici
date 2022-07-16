@@ -67,13 +67,12 @@ def room(room_id):
     print(room_id)
     roomName = room['roomName']
     roomLoc = room['roomLoc']
+    accountdb.updateRoom(current_user.email, room_id)
     if request.method == "POST":
         # CURRENT_ROOM(room_id=room_id)
         if request.form.get('enter'):
-            accountdb.updateRoom(current_user.email, room_id)
             return redirect(url_for('user.device',room_id=current_user.room))
         elif request.form.get('book'):
-            accountdb.updateRoom(current_user.email, room_id)
             return redirect(url_for('user.booking',room_name=current_user.room))
     
     return render_template('room.html', room_id=roomName, room_loc=roomLoc)
@@ -100,23 +99,25 @@ def device(room_id):
     for i, d in dic.items():
         print(d['name'], d['u'], d['v'])
     if request.method == "POST":
-        personal = request.form.get('personal')
+        zoom = request.form.get('zoom')
         confirm = request.form.get('confirm')  # how to run confirm button
 
-        if personal:
+        # if zoom:
             # CURRENT_ROOM.get_data_choose_devices()
             # CURRENT_ROOM.get_data_personal_device(device)
-            for d in PERSONAL_TYPE:
-                if request.form.get(d):
-                    accountdb.updatePersonal(current_user.email, d)
-            print(current_user.personal)
+        if request.form.get("mac"): accountdb.updateDevice(current_user.email, "1")
+        if request.form.get("win"): accountdb.updateDevice(current_user.email, "0")
+        if request.form.get("yes"): accountdb.updateDevice(current_user.email, "2")
+        if request.form.get("yes-ipad"): accountdb.updateDevice(current_user.email, "3")
+
+        print(current_user.deviceIDList)
             # CURRENT_ROOM.set_data_instruction()
         if confirm:
             dev = []
             for i, d in dic.items():
                 if request.form.get(d['name']):
-                    dev.append(d['name'])
-            accountdb.updateDevice(current_user.email, dev)
+                    deviceID = roomdb.getDeviceID(current_user.room, d['name'])
+                    accountdb.updateDevice(current_user.email, deviceID)
             print(current_user.deviceIDList)
             return redirect(url_for('user.instruction'))
 
@@ -169,13 +170,6 @@ def booking(room_name):
     
     return render_template('booking.html', room_id=room_name,time=time_list,week=week,month=month,year=year,occupy=occupy)
 
-steps={
-    'step 1':{'text':'', 'image':'', 'command':'', 'help':''},
-    'step 2':{'text':'', 'image':'', 'command':'', 'help':''},
-    'step 3':{'text':'', 'image':'', 'command':'', 'help':''},
-    'step 4':{'text':'', 'image':'', 'command':'', 'help':''},
-    'step 5':{'text':'', 'image':'', 'command':'', 'help':''},
-}
 
 @user.route("/instruction", methods=['POST','GET'])
 @check_login
@@ -183,7 +177,10 @@ def instruction():
     # print("initial")
     # print(current_user.room)
     # print(current_user.email)
-    steps = roomdb.checkInsInitialStepList(current_user.room)
+    room_id = current_user.room
+    userDeviceIDList = current_user.deviceIDList
+    userpreview = roomdb.generateUserPreview(room_id, userDeviceIDList)
+    # steps = roomdb.checkInsInitialStepList(current_user.room)
     # print(steps)
     if request.method == "POST":
         next=request.form.get('next')
@@ -193,7 +190,7 @@ def instruction():
         if back:
             return redirect(url_for('user.device',room_id=current_user.room))
     
-    return render_template('instruction_initial.html',room_id=current_user.room, steps=steps)
+    return render_template('user_instruction.html',room_id=current_user.room, steps=steps)
 
 # @user.route("/turnon", methods=['POST','GET'])
 # @check_login

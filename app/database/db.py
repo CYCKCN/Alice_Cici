@@ -110,18 +110,11 @@ class AccountDB():
         self.db.update_one({"accountEmail": accountEmail}, {'$set': {'room': roomName}})
         return "Info: Update Successfully!"
     
-    def updatePersonal(self, accountEmail, personal):
-        account = self.db.find_one({"accountEmail": accountEmail})
-        if account is None:
-            return "Err: Not Registered!"
-        self.db.update_one({"accountEmail": accountEmail}, {'$set': {'personal': personal}})
-        return "Info: Update Successfully!"
-    
     def updateDevice(self, accountEmail, device):
         account = self.db.find_one({"accountEmail": accountEmail})
-        if account is None:
-            return "Err: Not Registered!"
-        self.db.update_one({"accountEmail": accountEmail}, {'$set': {'device': device}})
+        if account is None: return "Err: Not Registered!"
+        if device not in account["deviceIDList"]: account["deviceIDList"].append(device)
+        self.db.update_one({"accountEmail": accountEmail}, {'$set': {'deviceIDList': account["deviceIDList"]}})
         return "Info: Update Successfully!"
     
     def findUser(self, accountEmail):
@@ -216,6 +209,7 @@ class RoomDB():
             roomInfo[index] = {}
             roomInfo[index]['name'] = room['roomName']
             roomInfo[index]['lift'] = room['roomLoc']
+            index += 1
         return roomInfo
 
     def checkRoomAvailable(self, roomName, date=None, extend_access_date=None, get_occupy=False):

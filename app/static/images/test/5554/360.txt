@@ -1,5 +1,0 @@
-device001 358 782
-device002 654 468
-device003 730 879
-device004 478 546
-device005 801 314

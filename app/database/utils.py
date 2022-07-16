@@ -104,14 +104,14 @@ class Account(object):
         self.room = room # "5554"
         self.deviceIDList = deviceIDList # deviceIDList
 
-class Device(object):
-    def __init__(self, roomName, deviceName, deviceType, deviceIP, deviceLocX, deviceLocY):
-        self.roomName = roomName # "5554"
-        self.deviceName = deviceName # "project-1"
-        self.deviceType = deviceType # "projector & screen"
-        self.deviceIP = deviceIP # "000.00.000.000:0000"
-        self.deviceLocX = deviceLocX # 1
-        self.deviceLocY = deviceLocY # 2
+# class Device(object):
+#     def __init__(self, roomName, deviceName, deviceType, deviceIP, deviceLocX, deviceLocY):
+#         self.roomName = roomName # "5554"
+#         self.deviceName = deviceName # "project-1"
+#         self.deviceType = deviceType # "projector & screen"
+#         self.deviceIP = deviceIP # "000.00.000.000:0000"
+#         self.deviceLocX = deviceLocX # 1
+#         self.deviceLocY = deviceLocY # 2
 
 class Room(object):
     def __init__(self, roomName, roomLoc, controlSystem):
