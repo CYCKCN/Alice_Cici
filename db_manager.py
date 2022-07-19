@@ -150,6 +150,7 @@ if __name__ == '__main__':
     # pwd = "11111111"
     # accountdb.register("admin@ust.com", pwd)
     # accountdb.updateAdminID("admin@ust.com")
+    accountdb.logout("admin@ust.com")
 
 
     

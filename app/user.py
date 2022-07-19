@@ -179,18 +179,19 @@ def instruction():
     # print(current_user.email)
     room_id = current_user.room
     userDeviceIDList = current_user.deviceIDList
+    room = roomdb.getroom(current_user.room)
     userpreview = roomdb.generateUserPreview(room_id, userDeviceIDList)
     # steps = roomdb.checkInsInitialStepList(current_user.room)
     # print(steps)
     if request.method == "POST":
         next=request.form.get('next')
         if next:
-            return redirect(url_for('user.turnon'))
+            return redirect(url_for('user.room', room_id=current_user.room))
         back=request.form.get('back')
         if back:
             return redirect(url_for('user.device',room_id=current_user.room))
     
-    return render_template('user_instruction.html',room_id=current_user.room, steps=steps)
+    return render_template('user_instruction.html',room_id=current_user.room, system_id=room["controlSystem"], steps=userpreview)
 
 # @user.route("/turnon", methods=['POST','GET'])
 # @check_login
@@ -252,7 +253,7 @@ def profile():
             return redirect(url_for('user.search'))
         logout=request.form.get('logout')
         if logout:
-            return redirect(url_for('admin.logout'))
+            return redirect(url_for('auth.logout'))
         back=request.form.get('back')
         if back:
             return redirect(url_for('user.search'))

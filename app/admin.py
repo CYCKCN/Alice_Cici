@@ -330,18 +330,21 @@ def room_instruction_preview():
     if request.method == "POST":
         savebtn=request.form.get('save')
         if savebtn:
+            for k, v in roomInsPreview.items():
+                for stepID, stepInfo in v.items():
+                    if stepID != "devices":
+                        # print(f"help_{k}_{stepID}")
+                        help = request.form.get(f"help_{k}_{stepID}")
+                        # print(help)
+                        if help: roomdb.addHelp(room_id, k, stepID, help)
             return redirect(url_for('admin.room',room_id=room_id))
 
-        for k, v in roomInsPreview.items():
-            for stepID, stepInfo in v.items():
-                if stepID != "devices":
-                    help = request.args.get(f"text_{k}_{stepID}")
-                    if help: roomdb.addHelp(room_id, k, stepID, help)
+        
     # print(roomInsPreview)
     return render_template('admin_instruction.html',room_id=room_id, system_id=room["controlSystem"], steps=roomInsPreview)
 
 @admin_blue.route("/control", methods=['GET', 'POST'])
-# @check_admin
+@check_admin
 def control():
 
     type_dict=systemdb.getSystemList()
@@ -370,7 +373,7 @@ def control():
     return render_template('admin_control_list.html', type_dict=type_dict)
 
 @admin_blue.route("/control_device", methods=['GET', 'POST'])
-# @check_admin
+@check_admin
 def control_device():
     system_id = request.args.get('system_id')
     type_dict = systemdb.getDeviceTypeList(system_id)
@@ -393,7 +396,7 @@ def control_device():
     return render_template('admin_control_device_list.html',system_id=system_id, type_dict=type_dict)
 
 @admin_blue.route("/control_case", methods=['GET', 'POST'])
-# @check_admin
+@check_admin
 def control_case():
     system_id = request.args.get('system_id')
     type_dict = systemdb.getInsDeviceList(system_id)
@@ -419,7 +422,7 @@ def control_case():
     return render_template('admin_control_case_list.html',system_id=system_id, type_dict=type_dict)
 
 @admin_blue.route("/control_case_instruction", methods=['GET', 'POST'])
-# @check_admin
+@check_admin
 def control_case_instruction():
     system_id = request.args.get('system_id')
     case_id = request.args.get('case_id')
@@ -474,7 +477,7 @@ def control_case_instruction():
                             choose_dev=choose_dev)
 
 @admin_blue.route("/control_case_steps", methods=['GET', 'POST'])
-# @check_admin
+@check_admin
 def control_case_steps():
     system_id = request.args.get('system_id')
     case_id = request.args.get('case_id')

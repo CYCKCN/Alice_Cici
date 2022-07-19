@@ -74,7 +74,7 @@ class AccountDB():
         
 
     def logout(self, accountEmail):
-        self.db.update_one({"accountEmail": accountEmail}, {'$set': {'room': "", 'personal': "", "device": []} })
+        self.db.update_one({"accountEmail": accountEmail}, {'$set': {'room': "", "deviceIDList": []} })
         return "Info: Logout Successfully!"
 
     def register(self, accountEmail, accountPw):
