@@ -71,6 +71,10 @@ class AccountDB():
             return "Err: You Are Not Authorized!"
         else:
             return "Info: Login successfully!"
+
+    def reset(self, accountEmail, password):
+        self.db.update_one({"accountEmail": accountEmail}, {'$set': {'accountPw': password} })
+        return "Info: Reset password successfully!"
         
 
     def logout(self, accountEmail):

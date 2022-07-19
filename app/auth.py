@@ -7,7 +7,8 @@ from flask_login import LoginManager, login_user, logout_user, current_user
 from numpy import identity
 
 from .database.db import accountdb, systemdb, roomdb
-from .database.utils import User, LoginForm
+from .database.utils import User, LoginForm, RegisterForm, ResetForm
+from werkzeug.security import generate_password_hash, check_password_hash
 # from .model import User, LoginForm
 
 auth = Blueprint('auth', __name__)
@@ -88,11 +89,51 @@ def logout():
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
-    return "register"
+    form=RegisterForm()
+    if request.method=='POST':
+        if form.validate():
+            email=form.email.data
+            password=form.password.data
+            passwordRepeat=form.passwordRepeat.data
+            if not password == passwordRepeat:
+                return render_template('register.html', form=form, exist=False, repeat=True)
+            
+            # exist=User.objects(email=email).first()
+            account = accountdb.findUser(email)
+            if account is None:
+                # hashpassword=generate_password_hash(password, method='sha256')
+                # user=User(username=username, password=hashpassword, email=email, room=room, roles=roles).save()
+                accountdb.register(email, password)
+                login_user(User(email=email))
+                #return form.username.data+' '+form.email.data+' '+form.room.data+' '+form.password.data+' '+form.roles.data
+                return redirect(url_for('main'))
+            else:
+                login_user(User(email=email))
+                return render_template('register.html', form=form, exist=True, repeat=False)
+                
+
+    return render_template('register.html', form=form, exist=False, repeat=False)
 
 @auth.route('/reset', methods=['GET', 'POST'])
 def reset():
-    return "reset"
+    form=ResetForm()
+    if request.method=="POST":
+        if form.validate():
+            email=form.email.data
+            password=form.password.data
+            passwordRepeat=form.passwordRepeat.data
+
+            if not password == passwordRepeat:
+                return render_template('reset.html', form=form, exist=False, repeat=True)
+
+            account = accountdb.findUser(email)
+            if not account:
+                return render_template('reset.html', form=form, exist=True, repeat=False)
+            else:
+                accountdb.reset(email, password)
+                return redirect(url_for('main'))
+
+    return render_template('reset.html', form=form, exist=False, repeat=False)
 
 
 
